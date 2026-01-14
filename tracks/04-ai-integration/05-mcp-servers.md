@@ -468,6 +468,13 @@ class SecureToolServer:
 
 ---
 
+## См. также
+
+- [AI Agents](./04-ai-agents.md) — архитектура AI-агентов, использующих инструменты
+- [AI API Integration](./06-ai-api-integration.md) — интеграция с API языковых моделей
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

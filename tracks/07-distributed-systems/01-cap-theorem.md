@@ -343,6 +343,13 @@ USING CONSISTENCY QUORUM;
 
 ---
 
+## См. также
+
+- [Consistency Models](./02-consistency-models.md) — модели консистентности и их спектр от сильной до слабой
+- [Replication](../06-databases/05-replication.md) — репликация данных в базах данных
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

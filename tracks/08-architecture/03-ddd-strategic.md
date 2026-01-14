@@ -452,6 +452,13 @@ type OrderService struct {
 
 ---
 
+## См. также
+
+- [DDD Tactical Patterns](./02-ddd-tactical.md) — тактические паттерны на уровне кода
+- [Microservices Patterns](./04-microservices-patterns.md) — паттерны микросервисной архитектуры
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

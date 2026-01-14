@@ -394,6 +394,13 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 ---
 
+## См. также
+
+- [Replication Theory](../07-distributed-systems/05-replication-theory.md) — теория репликации в распределённых системах
+- [Sharding](./06-sharding.md) — горизонтальное масштабирование данных
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

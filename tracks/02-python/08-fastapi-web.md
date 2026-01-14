@@ -420,4 +420,11 @@ async def test_async():
 
 ---
 
+## См. также
+
+- [Проектирование API](../08-architecture/07-api-design.md) — общие принципы дизайна API
+- [Сетевое программирование и gRPC](../00-go/08-networking-grpc.md) — веб-разработка на Go
+
+---
+
 [← Назад к списку тем](README.md)

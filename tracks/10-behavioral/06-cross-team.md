@@ -433,6 +433,13 @@ personal. Fix the system, not the people."
 
 ---
 
+## См. также
+
+- [Conflict Resolution](./02-conflict-resolution.md) — разрешение конфликтов между командами
+- [Leadership](./01-leadership.md) — влияние без формальной власти
+
+---
+
 ## Red Flags
 
 ```

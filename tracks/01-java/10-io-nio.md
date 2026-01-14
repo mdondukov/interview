@@ -520,6 +520,13 @@ while (true) {
 
 ---
 
+## См. также
+
+- [Go Networking & gRPC](../00-go/08-networking-grpc.md) — сетевое программирование в Go
+- [API Design](../08-architecture/07-api-design.md) — проектирование API и сетевых протоколов
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

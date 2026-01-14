@@ -507,4 +507,11 @@ print(collector.strings)
 
 ---
 
+## См. также
+
+- [Рефлексия и аннотации в Java](../01-java/11-reflection-annotations.md) — метапрограммирование в Java
+- [Рефлексия и кодогенерация в Go](../00-go/13-reflection-codegen.md) — reflect и генерация кода в Go
+
+---
+
 [← Назад к списку тем](README.md)

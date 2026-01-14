@@ -448,6 +448,13 @@ with clear reversibility plans usually win."
 
 ---
 
+## См. также
+
+- [Delivery & Execution](./08-delivery.md) — доставка результатов в условиях неопределённости
+- [Technical Decisions](./04-technical-decisions.md) — принятие решений с неполной информацией
+
+---
+
 ## Red Flags
 
 ```

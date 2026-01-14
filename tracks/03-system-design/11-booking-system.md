@@ -609,4 +609,11 @@ class CancellationService:
 
 ---
 
+## См. также
+
+- [Транзакции в базах данных](../06-databases/03-transactions.md) — блокировки и уровни изоляции для предотвращения double booking
+- [Rate Limiter](./02-rate-limiter.md) — контроль нагрузки при flash sales
+
+---
+
 [← Назад к списку тем](README.md)

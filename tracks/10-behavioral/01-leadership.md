@@ -191,6 +191,13 @@ this experience was pivotal in her deciding to stay in engineering."
 
 ---
 
+## См. также
+
+- [Mentoring](./05-mentoring.md) — развитие других и наставничество
+- [Cross-Team Collaboration](./06-cross-team.md) — работа с другими командами
+
+---
+
 ## Common Mistakes
 
 ```

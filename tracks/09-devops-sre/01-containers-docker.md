@@ -437,6 +437,13 @@ docker volume prune                 # Remove unused volumes
 
 ---
 
+## См. также
+
+- [Kubernetes](./02-kubernetes.md) — оркестрация контейнеров в production-среде
+- [Python Packaging & Deployment](../02-python/11-packaging-deployment.md) — упаковка Python-приложений в контейнеры
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

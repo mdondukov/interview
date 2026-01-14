@@ -760,6 +760,16 @@ func main() {
 
 ---
 
+## См. также
+
+- [Goroutines & Channels](./01-goroutines-channels.md) — использование горутин на практике
+- [Performance & Profiling](./09-performance-profiling.md) — профилирование и оптимизация
+- [Memory, Slices & Maps](./02-memory-slices-maps.md) — управление памятью
+- [JVM Fundamentals](../01-java/00-jvm-fundamentals.md) — сравнение с Java runtime
+- [Python Memory & GC](../02-python/02-memory-gc.md) — сравнение с Python GC
+
+---
+
 ## Практика
 
 1. **Scheduler Trace Explorer** — запусти программу с `GODEBUG=schedtrace=1000,scheddetail=1` и проанализируй вывод. Создай нагрузку разных типов (CPU, I/O, sleep) и наблюдай изменения.

@@ -582,4 +582,11 @@ class VideoRecommender:
 
 ---
 
+## См. также
+
+- [Распределённый кэш](./07-distributed-cache.md) — кэширование сегментов видео на edge серверах
+- [Kubernetes](../09-devops-sre/02-kubernetes.md) — оркестрация сервисов транскодирования
+
+---
+
 [← Назад к списку тем](README.md)

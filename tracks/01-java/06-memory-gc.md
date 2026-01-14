@@ -420,6 +420,14 @@ jvisualvm
 
 ---
 
+## См. также
+
+- [Go Memory, Slices & Maps](../00-go/02-memory-slices-maps.md) — управление памятью в Go
+- [Python Memory & GC](../02-python/02-memory-gc.md) — сборка мусора в Python
+- [Performance & Profiling](./09-performance-profiling.md) — профилирование и оптимизация производительности
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

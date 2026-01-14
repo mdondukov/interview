@@ -619,6 +619,13 @@ processor.forData(data)
 
 ---
 
+## См. также
+
+- [Exceptions & Error Handling](./09-exceptions.md) — правильная обработка исключений
+- [Memory & Garbage Collection](./06-memory-gc.md) — управление памятью и утечки
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

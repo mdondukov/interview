@@ -415,6 +415,13 @@ def sliding_window(text: str, window_size: int, overlap: int) -> list:
 
 ---
 
+## См. также
+
+- [Prompt Engineering](./01-prompt-engineering.md) — техники создания эффективных промптов для LLM
+- [AI-системы в архитектуре](../03-system-design/15-ai-systems.md) — проектирование систем с использованием LLM
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

@@ -355,6 +355,13 @@ Disagreeing diplomatically is a skill I've worked hard to develop."
 
 ---
 
+## См. также
+
+- [Incident Management](../09-devops-sre/06-incident-management.md) — управление инцидентами и постмортемы
+- [Delivery & Execution](./08-delivery.md) — доставка под давлением и управление ожиданиями
+
+---
+
 ## Red Flags
 
 ```

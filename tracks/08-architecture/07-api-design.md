@@ -564,6 +564,13 @@ Retry-After: 60
 
 ---
 
+## См. также
+
+- [Networking & gRPC в Go](../00-go/08-networking-grpc.md) — сетевое программирование и gRPC в Go
+- [FastAPI & Web в Python](../02-python/08-fastapi-web.md) — создание веб-API на Python
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

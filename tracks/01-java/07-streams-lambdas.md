@@ -403,6 +403,13 @@ Stream<Integer> boxed = IntStream.of(1, 2, 3).boxed();
 
 ---
 
+## См. также
+
+- [Python Data Structures](../02-python/01-data-structures.md) — функциональные подходы в Python
+- [Arrays & Hashing](../05-algorithms/01-arrays-hashing.md) — алгоритмы обработки коллекций
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

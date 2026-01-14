@@ -515,6 +515,13 @@ func (h *OrderEventHandler) Handle(ctx context.Context, event Event) error {
 
 ---
 
+## См. также
+
+- [Message Queues & Events в Go](../00-go/11-message-queues-events.md) — работа с очередями сообщений и событиями в Go
+- [Distributed Transactions](../07-distributed-systems/07-distributed-transactions.md) — распределённые транзакции и консистентность
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

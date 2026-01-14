@@ -374,6 +374,13 @@
 
 ---
 
+## См. также
+
+- [Monitoring & Observability](./05-monitoring-observability.md) — инструменты для обнаружения и диагностики инцидентов
+- [Capacity & Reliability](./07-capacity-reliability.md) — предотвращение инцидентов через планирование ёмкости
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

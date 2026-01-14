@@ -405,4 +405,11 @@ Fan-out write             Store once
 
 ---
 
+## См. также
+
+- [Сетевое взаимодействие и gRPC](../00-go/08-networking-grpc.md) — протоколы коммуникации и WebSocket
+- [Модели консистентности](../07-distributed-systems/02-consistency-models.md) — гарантии доставки и упорядочивания сообщений
+
+---
+
 [← Назад к списку тем](README.md)

@@ -348,6 +348,13 @@ ORDER BY seq_scan DESC;
 
 ---
 
+## См. также
+
+- [Query Optimization](./02-query-optimization.md) — оптимизация запросов и EXPLAIN
+- [Trees & Traversal](../05-algorithms/06-trees-traversal.md) — структуры данных деревьев (B-tree, и др.)
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

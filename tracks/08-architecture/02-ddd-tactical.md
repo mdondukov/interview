@@ -593,6 +593,13 @@ func (f *Factory) Reconstitute(
 
 ---
 
+## См. также
+
+- [DDD Strategic Patterns](./03-ddd-strategic.md) — стратегические паттерны для больших систем
+- [Data Modeling](../06-databases/04-data-modeling.md) — моделирование данных в базах данных
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

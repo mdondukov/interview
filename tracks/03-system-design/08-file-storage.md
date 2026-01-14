@@ -534,4 +534,11 @@ class GarbageCollector:
 
 ---
 
+## См. также
+
+- [Шардирование баз данных](../06-databases/06-sharding.md) — распределение данных по узлам хранения
+- [Репликация](../07-distributed-systems/05-replication-theory.md) — обеспечение отказоустойчивости и durability
+
+---
+
 [← Назад к списку тем](README.md)

@@ -451,6 +451,13 @@ ConcreteBuilder builder = new ConcreteBuilder()
 
 ---
 
+## См. также
+
+- [Python Type System](../02-python/07-type-system.md) — система типов и аннотации в Python
+- [Go Language Overview](../00-go/00-language-overview.md) — generics в Go 1.18+
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

@@ -515,4 +515,11 @@ class RedisClusterClient:
 
 ---
 
+## См. также
+
+- [Паттерны использования Redis](../06-databases/09-redis-patterns.md) — практические паттерны работы с Redis
+- [CAP-теорема](../07-distributed-systems/01-cap-theorem.md) — компромиссы между консистентностью и доступностью
+
+---
+
 [← Назад к списку тем](README.md)

@@ -526,6 +526,13 @@ class AgentWithMemory:
 
 ---
 
+## См. также
+
+- [MCP Servers](./05-mcp-servers.md) — интеграция агентов с внешними инструментами через Model Context Protocol
+- [Prompt Engineering](./01-prompt-engineering.md) — техники промптинга для управления поведением агентов
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

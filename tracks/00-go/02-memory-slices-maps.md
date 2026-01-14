@@ -895,6 +895,16 @@ func main() {
 
 ---
 
+## См. также
+
+- [Go Runtime](./04-go-runtime.md) — GC и управление памятью на уровне runtime
+- [Performance & Profiling](./09-performance-profiling.md) — профилирование аллокаций
+- [Java Memory & GC](../01-java/06-memory-gc.md) — сравнение моделей памяти
+- [Python Memory & GC](../02-python/02-memory-gc.md) — управление памятью в Python
+- [Arrays & Hashing](../05-algorithms/01-arrays-hashing.md) — алгоритмы на массивах и хеш-таблицах
+
+---
+
 ## Практика
 
 1. **Slice internals** — напиши функцию, которая выводит ptr, len, cap слайса через unsafe. Покажи, как они меняются при append и срезах.

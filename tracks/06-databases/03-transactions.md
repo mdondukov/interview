@@ -388,6 +388,13 @@ COMMIT;
 
 ---
 
+## См. также
+
+- [Distributed Transactions](../07-distributed-systems/07-distributed-transactions.md) — транзакции в распределённых системах
+- [Replication](./05-replication.md) — репликация и согласованность данных
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

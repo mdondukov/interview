@@ -428,6 +428,13 @@ you have to demonstrate it."
 
 ---
 
+## См. также
+
+- [Leadership](./01-leadership.md) — лидерство через развитие других
+- [Cross-Team Collaboration](./06-cross-team.md) — менторство за пределами своей команды
+
+---
+
 ## Red Flags
 
 ```

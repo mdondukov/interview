@@ -385,6 +385,13 @@ func (cb *CircuitBreaker) Execute(fn func() error) error {
 
 ---
 
+## См. также
+
+- [Incident Management](./06-incident-management.md) — реагирование на инциденты при исчерпании ёмкости
+- [Design Fundamentals](../03-system-design/00-design-fundamentals.md) — основы проектирования надёжных систем
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

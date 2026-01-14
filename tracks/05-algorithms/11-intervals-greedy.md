@@ -552,6 +552,13 @@ func canCompleteCircuit(gas []int, cost []int) int {
 
 ---
 
+## См. также
+
+- [Heap и Priority Queue](./10-heap-priority-queue.md) — min-heap для задачи Meeting Rooms
+- [Динамическое программирование](./08-dynamic-programming.md) — когда greedy не работает
+
+---
+
 ## На интервью
 
 ### Паттерны интервалов

@@ -1683,6 +1683,16 @@ func reconcile(ctx context.Context, orderRepo OrderRepo, paymentRepo PaymentRepo
 
 ---
 
+## См. также
+
+- [CAP Theorem](../07-distributed-systems/01-cap-theorem.md) — теорема CAP
+- [Consensus](../07-distributed-systems/04-consensus.md) — алгоритмы консенсуса
+- [Replication](../06-databases/05-replication.md) — репликация данных
+- [Distributed Transactions](../07-distributed-systems/07-distributed-transactions.md) — распределённые транзакции
+- [Message Queues & Events](./11-message-queues-events.md) — асинхронное взаимодействие
+
+---
+
 ## Практика
 
 1. **Distributed Lock:** Реализуй Redis lock с fencing token. Протестируй с network partition.

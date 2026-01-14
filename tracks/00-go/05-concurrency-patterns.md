@@ -1782,6 +1782,16 @@ func (b *BulkheadMetrics) Stats() map[string]int64 {
 
 ---
 
+## См. также
+
+- [Goroutines & Channels](./01-goroutines-channels.md) — базовые примитивы конкурентности
+- [Errors & Context](./03-errors-context.md) — отмена и таймауты
+- [Rate Limiter](../03-system-design/02-rate-limiter.md) — применение в System Design
+- [Resilience Patterns](../08-architecture/08-resilience-patterns.md) — паттерны отказоустойчивости
+- [Distributed Cache](../03-system-design/07-distributed-cache.md) — кеширование с конкурентным доступом
+
+---
+
 ## Практика
 
 1. **Worker Pool:** Реализуй worker pool с ограничением одновременных задач, graceful shutdown через context и метриками (обработано, в очереди).

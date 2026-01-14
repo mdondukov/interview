@@ -1330,6 +1330,16 @@ func GenerateGetter(structName, fieldName, fieldType string) string {
 
 ---
 
+## См. также
+
+- [Java Reflection & Annotations](../01-java/11-reflection-annotations.md) — рефлексия в Java
+- [Python Metaprogramming](../02-python/12-metaprogramming.md) — метапрограммирование в Python
+- [Tooling & Testing](./07-tooling-testing.md) — go generate и инструменты сборки
+- [Language Overview](./00-language-overview.md) — система типов Go
+- [Clean Architecture](../08-architecture/01-clean-architecture.md) — DI и генерация кода
+
+---
+
 ## Практика
 
 1. **Reflect:** Напиши generic deep copy функцию. Сравни производительность с manual copy.

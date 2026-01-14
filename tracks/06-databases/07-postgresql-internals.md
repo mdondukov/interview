@@ -447,6 +447,13 @@ FROM pg_statio_user_tables;
 
 ---
 
+## См. также
+
+- [Query Optimization](./02-query-optimization.md) — оптимизация запросов и EXPLAIN ANALYZE
+- [Indexing](./01-indexing.md) — индексы в PostgreSQL
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

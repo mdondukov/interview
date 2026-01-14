@@ -555,6 +555,13 @@ func (c *ResilientClient) Execute(ctx context.Context, fn func() error) error {
 
 ---
 
+## См. также
+
+- [Incident Management](../09-devops-sre/06-incident-management.md) — управление инцидентами и реагирование на сбои
+- [Failure Detection](../07-distributed-systems/08-failure-detection.md) — обнаружение сбоев в распределённых системах
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

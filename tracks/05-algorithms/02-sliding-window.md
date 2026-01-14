@@ -519,6 +519,13 @@ func maxSlidingWindow(nums []int, k int) []int {
 
 ---
 
+## См. также
+
+- [Массивы и хеширование](./01-arrays-hashing.md) — базовые операции с массивами и hash map
+- [Binary Search](./03-binary-search.md) — другой подход к поиску в отсортированных данных
+
+---
+
 ## На интервью
 
 ### Как распознать Sliding Window

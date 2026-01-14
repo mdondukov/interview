@@ -973,6 +973,16 @@ func (s *Service) ProcessOrder(ctx context.Context, orderID string) error {
 
 ---
 
+## См. также
+
+- [Goroutines & Channels](./01-goroutines-channels.md) — использование context для отмены горутин
+- [Java Exceptions](../01-java/09-exceptions.md) — сравнение подходов к обработке ошибок
+- [Python Errors & Debugging](../02-python/05-errors-debugging.md) — исключения в Python
+- [Resilience Patterns](../08-architecture/08-resilience-patterns.md) — паттерны отказоустойчивости
+- [Incident Management](../09-devops-sre/06-incident-management.md) — обработка инцидентов в продакшене
+
+---
+
 ## Практика
 
 1. **Custom error type** — реализуй тип ошибки с полями `Op`, `Kind`, `Err`, поддержкой `Unwrap`, `Is`, `As`. Покрой тестами.

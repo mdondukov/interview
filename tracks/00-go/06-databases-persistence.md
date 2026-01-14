@@ -1460,6 +1460,16 @@ func TestWithTxRollback(t *testing.T) {
 
 ---
 
+## См. также
+
+- [SQL Fundamentals](../06-databases/00-sql-fundamentals.md) — основы SQL
+- [Transactions](../06-databases/03-transactions.md) — теория транзакций и изоляции
+- [Indexing](../06-databases/01-indexing.md) — индексы и оптимизация запросов
+- [Python Databases & ORM](../02-python/09-databases-orm.md) — работа с БД в Python
+- [Distributed Transactions](../07-distributed-systems/07-distributed-transactions.md) — распределённые транзакции
+
+---
+
 ## Практика
 
 1. **database/sql:** Напиши connection pool с правильными настройками. Добавь graceful shutdown.

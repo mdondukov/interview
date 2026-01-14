@@ -452,6 +452,13 @@ Framework I use under pressure:
 
 ---
 
+## См. также
+
+- [Architecture Fundamentals](../08-architecture/00-architecture-fundamentals.md) — основы архитектурных решений
+- [Leadership](./01-leadership.md) — влияние и убеждение в технических решениях
+
+---
+
 ## Red Flags
 
 ```

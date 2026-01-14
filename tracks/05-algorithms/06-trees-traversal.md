@@ -575,6 +575,13 @@ func invertTree(root *TreeNode) *TreeNode {
 
 ---
 
+## См. также
+
+- [Binary Search](./03-binary-search.md) — поиск в BST основан на бинарном поиске
+- [Индексы в базах данных](../06-databases/01-indexing.md) — B-tree и структуры индексов
+
+---
+
 ## На интервью
 
 ### Выбор подхода

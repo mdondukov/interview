@@ -546,6 +546,13 @@ public void process(List<String> items) {
 
 ---
 
+## См. также
+
+- [Go Errors & Context](../00-go/03-errors-context.md) — обработка ошибок в Go
+- [Python Errors & Debugging](../02-python/05-errors-debugging.md) — исключения и отладка в Python
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

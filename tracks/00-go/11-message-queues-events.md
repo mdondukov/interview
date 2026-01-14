@@ -1617,6 +1617,16 @@ func (p *AccountBalanceProjection) Handle(event Event) error {
 
 ---
 
+## См. также
+
+- [Event-Driven Architecture](../08-architecture/05-event-driven.md) — паттерны событийной архитектуры
+- [Notification System](../03-system-design/03-notification-system.md) — проектирование системы уведомлений
+- [News Feed](../03-system-design/05-news-feed.md) — проектирование ленты новостей
+- [Distributed Transactions](../07-distributed-systems/07-distributed-transactions.md) — Saga и Outbox паттерны
+- [Integration Patterns](../08-architecture/06-integration-patterns.md) — паттерны интеграции систем
+
+---
+
 ## Практика
 
 1. **Kafka:** Реализуй producer/consumer с manual commit. Добавь graceful shutdown.

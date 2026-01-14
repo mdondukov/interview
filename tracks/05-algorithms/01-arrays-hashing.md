@@ -494,6 +494,13 @@ func subarraySum(nums []int, k int) int {
 
 ---
 
+## См. также
+
+- [Collections Framework в Java](../01-java/02-collections.md) — реализация hash map и array list в Java
+- [Структуры данных Python](../02-python/01-data-structures.md) — dict, set и list в Python
+
+---
+
 ## На интервью
 
 ### Как распознать паттерн

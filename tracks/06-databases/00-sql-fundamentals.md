@@ -506,6 +506,14 @@ FROM users;
 
 ---
 
+## См. также
+
+- [Indexing](./01-indexing.md) — индексы и оптимизация доступа к данным
+- [Databases & Persistence (Go)](../00-go/06-databases-persistence.md) — работа с базами данных в Go
+- [Databases & ORM (Python)](../02-python/09-databases-orm.md) — работа с базами данных в Python
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

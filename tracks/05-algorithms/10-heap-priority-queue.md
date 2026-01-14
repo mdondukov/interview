@@ -519,6 +519,13 @@ func kClosest(points [][]int, k int) [][]int {
 
 ---
 
+## См. также
+
+- [Графы](./07-graphs.md) — алгоритм Dijkstra использует min-heap
+- [Мониторинг и алертинг](../03-system-design/14-monitoring-alerting.md) — приоритетные очереди для обработки событий
+
+---
+
 ## На интервью
 
 ### Когда использовать heap

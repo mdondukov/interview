@@ -458,6 +458,13 @@ chapter I'm looking for."
 
 ---
 
+## См. также
+
+- [Leadership](./01-leadership.md) — демонстрация лидерских качеств
+- [Conflict Resolution](./02-conflict-resolution.md) — работа с разногласиями и сложными ситуациями
+
+---
+
 ## Red Flags
 
 ```

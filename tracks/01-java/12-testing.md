@@ -666,6 +666,14 @@ class GoodTests {
 
 ---
 
+## См. также
+
+- [Go Tooling & Testing](../00-go/07-tooling-testing.md) — тестирование в Go
+- [Python Tooling & Testing](../02-python/06-tooling-testing.md) — тестирование в Python
+- [Testing Strategies](../08-architecture/09-testing-strategies.md) — стратегии тестирования в архитектуре
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

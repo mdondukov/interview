@@ -380,6 +380,13 @@ func (ch *ConsistentHash) GetNode(key string) string {
 
 ---
 
+## См. также
+
+- [Sharding](../06-databases/06-sharding.md) — шардирование баз данных и стратегии распределения данных
+- [Ride Sharing System Design](../03-system-design/12-ride-sharing.md) — пример геопартиционирования в системе такси
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

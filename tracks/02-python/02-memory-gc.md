@@ -964,4 +964,11 @@ class Cache:
 
 ---
 
+## См. также
+
+- [Память и GC в Java](../01-java/06-memory-gc.md) — сравнение garbage collection в JVM и CPython
+- [Память, слайсы и карты в Go](../00-go/02-memory-slices-maps.md) — управление памятью в Go
+
+---
+
 [← Назад к списку тем](README.md)

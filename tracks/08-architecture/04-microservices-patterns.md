@@ -431,6 +431,13 @@ func (s *OrderService) ProcessOrder(ctx context.Context, orderID string) error {
 
 ---
 
+## См. также
+
+- [Event-Driven Architecture](./05-event-driven.md) — событийная архитектура и асинхронное взаимодействие
+- [DDD Strategic Patterns](./03-ddd-strategic.md) — стратегические паттерны DDD для определения границ сервисов
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

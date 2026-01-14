@@ -400,4 +400,11 @@ with open('large.bin', 'rb') as f:
 
 ---
 
+## См. также
+
+- [Производительность и профилирование в Go](../00-go/09-performance-profiling.md) — оптимизация Go приложений
+- [Оптимизация запросов](../06-databases/02-query-optimization.md) — оптимизация SQL запросов
+
+---
+
 [← Назад к списку тем](README.md)

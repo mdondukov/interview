@@ -1219,6 +1219,16 @@ func TestUserAPIContract(t *testing.T) {
 
 ---
 
+## См. также
+
+- [Java Testing](../01-java/12-testing.md) — тестирование в Java (JUnit, Mockito)
+- [Python Tooling & Testing](../02-python/06-tooling-testing.md) — тестирование в Python
+- [Testing Strategies](../08-architecture/09-testing-strategies.md) — стратегии тестирования
+- [CI/CD](../09-devops-sre/03-ci-cd.md) — интеграция тестов в пайплайны
+- [Performance & Profiling](./09-performance-profiling.md) — бенчмарки и профилирование
+
+---
+
 ## Практика
 
 1. **Modules:** Настрой `go.mod` с `replace` для локальной библиотеки. Добавь зависимость, обнови версию, запусти `go mod graph`.

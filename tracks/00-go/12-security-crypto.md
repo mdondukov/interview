@@ -1456,6 +1456,16 @@ credentials.json
 
 ---
 
+## См. также
+
+- [Payment System](../03-system-design/10-payment-system.md) — безопасность платёжных систем
+- [File Storage](../03-system-design/08-file-storage.md) — шифрование данных
+- [API Design](../08-architecture/07-api-design.md) — аутентификация API
+- [Rate Limiter](../03-system-design/02-rate-limiter.md) — защита от DDoS
+- [Incident Management](../09-devops-sre/06-incident-management.md) — реагирование на инциденты безопасности
+
+---
+
 ## Практика
 
 1. **Passwords:** Реализуй регистрацию/логин с bcrypt. Добавь rehash при login.

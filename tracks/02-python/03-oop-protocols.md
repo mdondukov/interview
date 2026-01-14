@@ -1173,4 +1173,11 @@ class CRUDService(CreateMixin, UpdateMixin, DeleteMixin):
 
 ---
 
+## См. также
+
+- [Принципы ООП в Java](../01-java/01-oop-principles.md) — сравнение ООП подходов в Python и Java
+- [Чистая архитектура](../08-architecture/01-clean-architecture.md) — применение ООП принципов в архитектуре
+
+---
+
 [← Назад к списку тем](README.md)

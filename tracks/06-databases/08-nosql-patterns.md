@@ -416,6 +416,13 @@ LIMIT 10
 
 ---
 
+## См. также
+
+- [Redis Patterns](./09-redis-patterns.md) — паттерны использования Redis
+- [Vector Databases](../04-ai-integration/03-vector-databases.md) — векторные базы данных для AI
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

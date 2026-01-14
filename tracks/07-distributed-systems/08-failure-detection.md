@@ -361,6 +361,13 @@ func (n *SWIMNode) suspect(nodeID string) {
 
 ---
 
+## См. также
+
+- [Coordination](./09-coordination.md) — сервисы координации и service discovery
+- [Incident Management](../09-devops-sre/06-incident-management.md) — управление инцидентами и реагирование на сбои
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

@@ -475,6 +475,13 @@ so is calm. Your job is to bring calm."
 
 ---
 
+## См. также
+
+- [Dealing with Ambiguity](./07-ambiguity.md) — работа с неопределённостью и приоритизация
+- [CI/CD](../09-devops-sre/03-ci-cd.md) — непрерывная интеграция и доставка
+
+---
+
 ## Red Flags
 
 ```

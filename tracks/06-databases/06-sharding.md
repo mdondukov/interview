@@ -416,6 +416,13 @@ SELECT * FROM orders WHERE created_at > '2024-01-01';
 
 ---
 
+## См. также
+
+- [Replication](./05-replication.md) — репликация для высокой доступности
+- [Partitioning](../07-distributed-systems/06-partitioning.md) — партиционирование в распределённых системах
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

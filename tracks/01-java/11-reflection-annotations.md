@@ -550,6 +550,13 @@ int max = (int) staticHandle.invoke(10, 20);
 
 ---
 
+## См. также
+
+- [Go Reflection & Codegen](../00-go/13-reflection-codegen.md) — рефлексия и кодогенерация в Go
+- [Python Metaprogramming](../02-python/12-metaprogramming.md) — метапрограммирование в Python
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

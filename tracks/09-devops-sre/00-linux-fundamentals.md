@@ -363,6 +363,13 @@ ltrace -p PID             # Library calls
 
 ---
 
+## См. также
+
+- [Containers & Docker](./01-containers-docker.md) — контейнеризация и изоляция процессов на основе Linux namespaces и cgroups
+- [Go Runtime](../00-go/04-go-runtime.md) — управление памятью и процессами в Go, взаимодействие с ОС
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

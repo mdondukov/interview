@@ -304,6 +304,13 @@ behavior. Curiosity before judgment."
 
 ---
 
+## См. также
+
+- [Cross-Team Collaboration](./06-cross-team.md) — навигация межкомандных конфликтов
+- [Leadership](./01-leadership.md) — влияние без формальной власти
+
+---
+
 ## Common Mistakes
 
 ```

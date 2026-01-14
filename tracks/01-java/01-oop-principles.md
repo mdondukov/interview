@@ -628,6 +628,13 @@ Prefer composition because:
 
 ---
 
+## См. также
+
+- [Python OOP & Protocols](../02-python/03-oop-protocols.md) — ООП и протоколы в Python
+- [Clean Architecture](../08-architecture/01-clean-architecture.md) — применение SOLID в архитектуре
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

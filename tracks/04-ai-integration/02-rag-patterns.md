@@ -525,6 +525,13 @@ Is this answer fully supported by the context? (yes/partially/no)
 
 ---
 
+## См. также
+
+- [Vector Databases](./03-vector-databases.md) — векторные базы данных для хранения и поиска эмбеддингов
+- [NoSQL Patterns](../06-databases/08-nosql-patterns.md) — паттерны работы с нереляционными хранилищами
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

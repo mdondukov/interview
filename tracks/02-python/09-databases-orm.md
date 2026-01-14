@@ -366,4 +366,11 @@ stmt = select(User).where(
 
 ---
 
+## См. также
+
+- [Основы SQL](../06-databases/00-sql-fundamentals.md) — фундаментальные концепции SQL
+- [Базы данных и persistence в Go](../00-go/06-databases-persistence.md) — работа с БД в Go
+
+---
+
 [← Назад к списку тем](README.md)

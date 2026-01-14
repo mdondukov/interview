@@ -365,4 +365,11 @@ def render_template(template_id: str, data: dict) -> dict:
 
 ---
 
+## См. также
+
+- [Очереди сообщений и события](../00-go/11-message-queues-events.md) — работа с Kafka, RabbitMQ и паттерны асинхронной обработки
+- [Event-Driven архитектура](../08-architecture/05-event-driven.md) — проектирование событийных систем
+
+---
+
 [← Назад к списку тем](README.md)

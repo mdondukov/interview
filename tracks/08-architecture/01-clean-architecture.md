@@ -584,6 +584,13 @@ func TestUserRepository_Save(t *testing.T) {
 
 ---
 
+## См. также
+
+- [DDD Tactical Patterns](./02-ddd-tactical.md) — тактические паттерны для моделирования домена
+- [OOP Principles](../01-java/01-oop-principles.md) — принципы ООП в Java
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

@@ -1666,4 +1666,11 @@ async def test_performance():
 
 ---
 
+## См. также
+
+- [Горутины и каналы](../00-go/01-goroutines-channels.md) — модель конкурентности в Go
+- [Продвинутая конкурентность в Java](../01-java/05-concurrency-advanced.md) — многопоточность и параллелизм в JVM
+
+---
+
 [← Назад к списку тем](README.md)

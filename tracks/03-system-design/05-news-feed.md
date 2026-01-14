@@ -485,4 +485,11 @@ async def notify_close_friends(author_id: str, post_id: str):
 
 ---
 
+## См. также
+
+- [Распределённый кэш](./07-distributed-cache.md) — кэширование ленты и hot данных
+- [Шардирование баз данных](../06-databases/06-sharding.md) — партиционирование данных для масштабирования
+
+---
+
 [← Назад к списку тем](README.md)

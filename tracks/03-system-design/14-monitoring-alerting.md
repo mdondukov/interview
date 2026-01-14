@@ -633,4 +633,11 @@ class RetentionManager:
 
 ---
 
+## См. также
+
+- [Мониторинг и наблюдаемость](../09-devops-sre/05-monitoring-observability.md) — практики observability и инструменты
+- [Управление инцидентами](../09-devops-sre/06-incident-management.md) — процессы реагирования на алерты
+
+---
+
 [← Назад к списку тем](README.md)

@@ -1537,6 +1537,16 @@ query {
 
 ---
 
+## См. также
+
+- [API Design](../08-architecture/07-api-design.md) — проектирование API
+- [Chat / Messenger](../03-system-design/04-chat-messenger.md) — проектирование real-time систем
+- [Resilience Patterns](../08-architecture/08-resilience-patterns.md) — circuit breaker, retry, timeout
+- [Monitoring & Observability](../09-devops-sre/05-monitoring-observability.md) — метрики и трейсинг
+- [Python FastAPI & Web](../02-python/08-fastapi-web.md) — веб-разработка в Python
+
+---
+
 ## Практика
 
 1. **HTTP Server:** Реализуй сервер с middleware chain (logging, metrics, recovery, auth), graceful shutdown и health checks.

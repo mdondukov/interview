@@ -767,6 +767,15 @@ func TestAgainstRealDB(t *testing.T) {
 
 ---
 
+## См. также
+
+- [Goroutines & Channels](./01-goroutines-channels.md) — конкурентность как ключевая особенность Go
+- [Go Runtime](./04-go-runtime.md) — как работает планировщик и GC
+- [JVM Fundamentals](../01-java/00-jvm-fundamentals.md) — сравнение runtime моделей Go и Java
+- [Python Language Overview](../02-python/00-language-overview.md) — сравнение философий языков
+
+---
+
 ## Практика
 
 1. **Императивный vs декларативный** — напиши два варианта фильтрации слайса: императивный цикл и «функциональный» с generic `Filter[T]`. Сравни читаемость.

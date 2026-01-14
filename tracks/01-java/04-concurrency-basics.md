@@ -546,6 +546,13 @@ long sum = adder.sum();  // Get total
 
 ---
 
+## См. также
+
+- [Concurrency Advanced](./05-concurrency-advanced.md) — продвинутые механизмы многопоточности в Java
+- [Goroutines & Channels](../00-go/01-goroutines-channels.md) — модель конкурентности в Go
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

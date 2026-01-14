@@ -1427,6 +1427,16 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 
 ---
 
+## См. также
+
+- [Go Runtime](./04-go-runtime.md) — внутреннее устройство runtime и GC
+- [Memory, Slices & Maps](./02-memory-slices-maps.md) — оптимизация работы с памятью
+- [Java Memory & GC](../01-java/06-memory-gc.md) — сравнение с Java профилированием
+- [Query Optimization](../06-databases/02-query-optimization.md) — оптимизация запросов к БД
+- [Monitoring & Observability](../09-devops-sre/05-monitoring-observability.md) — продакшн мониторинг
+
+---
+
 ## Практика
 
 1. **Профили:** Напиши бенчмарк для двух версий алгоритма. Собери CPU/heap профили, сравни с benchstat.

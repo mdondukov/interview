@@ -466,6 +466,13 @@ CREATE TABLE document_versions (
 
 ---
 
+## См. также
+
+- [DDD Tactical Patterns](../08-architecture/02-ddd-tactical.md) — тактические паттерны Domain-Driven Design
+- [NoSQL Patterns](./08-nosql-patterns.md) — моделирование данных в NoSQL
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

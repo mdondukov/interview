@@ -554,6 +554,13 @@ func shipWithinDays(weights []int, days int) int {
 
 ---
 
+## См. также
+
+- [Деревья и обход](./06-trees-traversal.md) — бинарные деревья поиска (BST)
+- [Индексы в базах данных](../06-databases/01-indexing.md) — B-tree индексы используют бинарный поиск
+
+---
+
 ## На интервью
 
 ### Как распознать Binary Search

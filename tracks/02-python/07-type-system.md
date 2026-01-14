@@ -427,4 +427,11 @@ if TYPE_CHECKING:
 
 ---
 
+## См. также
+
+- [Generics в Java](../01-java/03-generics.md) — система дженериков в Java
+- [Обзор языка Go](../00-go/00-language-overview.md) — статическая типизация в Go
+
+---
+
 [← Назад к списку тем](README.md)

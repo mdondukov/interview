@@ -398,6 +398,13 @@ LIMIT 20;
 
 ---
 
+## См. также
+
+- [Indexing](./01-indexing.md) — индексы и их влияние на производительность
+- [PostgreSQL Internals](./07-postgresql-internals.md) — внутреннее устройство PostgreSQL
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

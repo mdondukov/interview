@@ -500,6 +500,13 @@ def safety_check(response: str) -> tuple[bool, str]:
 
 ---
 
+## См. также
+
+- [LLM Fundamentals](./00-llm-basics.md) — основы работы языковых моделей и параметры генерации
+- [RAG Patterns](./02-rag-patterns.md) — паттерны дополнения промптов внешним контекстом
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

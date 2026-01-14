@@ -316,6 +316,13 @@ type WebSocketHandler struct {
 
 ---
 
+## См. также
+
+- [Design Fundamentals](../03-system-design/00-design-fundamentals.md) — основы проектирования систем и ключевые принципы
+- [CAP Theorem](./01-cap-theorem.md) — теорема о компромиссах между консистентностью, доступностью и устойчивостью к разделению
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

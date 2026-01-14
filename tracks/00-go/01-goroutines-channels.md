@@ -1291,6 +1291,16 @@ func processWithTimeout(items []Item) error {
 
 ---
 
+## См. также
+
+- [Concurrency Patterns](./05-concurrency-patterns.md) — паттерны построения конкурентных систем
+- [Errors & Context](./03-errors-context.md) — отмена и таймауты через context
+- [Java Concurrency Basics](../01-java/04-concurrency-basics.md) — сравнение подходов к многопоточности
+- [Python Asyncio](../02-python/04-asyncio-concurrency.md) — асинхронность в Python
+- [Rate Limiter](../03-system-design/02-rate-limiter.md) — применение конкурентности в System Design
+
+---
+
 ## Практика
 
 1. **Lifecycle management** — реализуй worker pool с graceful shutdown через context. Добавь таймаут на завершение.

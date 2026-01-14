@@ -787,6 +787,13 @@ result = ai.complete([{"role": "user", "content": "Hello"}])
 
 ---
 
+## См. также
+
+- [AI Backend Patterns](./07-ai-backend-patterns.md) — паттерны бэкенда для AI-сервисов
+- [Resilience Patterns](../08-architecture/08-resilience-patterns.md) — паттерны отказоустойчивости при работе с внешними API
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

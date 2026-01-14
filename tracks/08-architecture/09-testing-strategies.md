@@ -573,6 +573,13 @@ func TestUser1(t *testing.T)
 
 ---
 
+## См. также
+
+- [Tooling & Testing в Go](../00-go/07-tooling-testing.md) — инструменты и тестирование в Go
+- [Testing в Java](../01-java/12-testing.md) — тестирование в Java
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

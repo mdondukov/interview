@@ -211,6 +211,13 @@ a similar challenge I had..."
 
 ---
 
+## См. также
+
+- [Leadership](./01-leadership.md) — вопросы о лидерстве и влиянии
+- [Failure & Learning](./03-failure-learning.md) — как рассказывать об ошибках и уроках
+
+---
+
 ## Red Flags
 
 ```

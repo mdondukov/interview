@@ -373,6 +373,13 @@ Similar to Saga but with explicit reserve/confirm phases
 
 ---
 
+## См. также
+
+- [Transactions](../06-databases/03-transactions.md) — транзакции и ACID-свойства в базах данных
+- [Event-Driven Architecture](../08-architecture/05-event-driven.md) — событийная архитектура и паттерн Saga
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

@@ -461,6 +461,13 @@ func CopyData(dst Writer, src Reader) error {
 
 ---
 
+## См. также
+
+- [Design Fundamentals](../03-system-design/00-design-fundamentals.md) — основы проектирования систем и ключевые принципы
+- [Clean Architecture](./01-clean-architecture.md) — организация кода с независимой бизнес-логикой
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

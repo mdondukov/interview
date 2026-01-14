@@ -488,4 +488,11 @@ class ClockAwareSnowflake(Snowflake):
 
 ---
 
+## См. также
+
+- [URL Shortener](./01-url-shortener.md) — практическое применение генерации коротких ID
+- [Время и упорядочивание](../07-distributed-systems/03-time-ordering.md) — проблемы синхронизации часов в распределённых системах
+
+---
+
 [← Назад к списку тем](README.md)

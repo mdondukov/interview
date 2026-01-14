@@ -541,6 +541,13 @@ int sum4 = customPool.submit(() ->
 
 ---
 
+## См. также
+
+- [Concurrency Basics](./04-concurrency-basics.md) — основы многопоточности в Java
+- [Python Asyncio & Concurrency](../02-python/04-asyncio-concurrency.md) — асинхронное программирование в Python
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

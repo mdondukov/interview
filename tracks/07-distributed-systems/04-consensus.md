@@ -368,6 +368,13 @@ CockroachDB:
 
 ---
 
+## См. также
+
+- [Replication Theory](./05-replication-theory.md) — теория репликации и State Machine Replication
+- [Time and Ordering](./03-time-ordering.md) — логические часы и упорядочивание событий
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

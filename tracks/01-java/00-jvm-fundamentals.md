@@ -397,6 +397,13 @@ System.out.println(s1 == s6);  // false
 
 ---
 
+## См. также
+
+- [Go Runtime](../00-go/04-go-runtime.md) — сравнение runtime-систем Go и JVM
+- [Python Memory & GC](../02-python/02-memory-gc.md) — управление памятью в Python
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

@@ -352,6 +352,13 @@ func (gc GCounter) Merge(other GCounter) {
 
 ---
 
+## См. также
+
+- [CAP Theorem](./01-cap-theorem.md) — теорема CAP и выбор между консистентностью и доступностью
+- [Transactions](../06-databases/03-transactions.md) — транзакции и уровни изоляции в базах данных
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

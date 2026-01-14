@@ -510,6 +510,13 @@ rdb.MGet(ctx, "{user:123}:profile", "{user:123}:settings")
 
 ---
 
+## См. также
+
+- [Distributed Cache](../03-system-design/07-distributed-cache.md) — проектирование распределённого кеша
+- [NoSQL Patterns](./08-nosql-patterns.md) — паттерны NoSQL баз данных
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

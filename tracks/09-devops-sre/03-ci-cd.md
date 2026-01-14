@@ -459,6 +459,13 @@ Benefits:
 
 ---
 
+## См. также
+
+- [Kubernetes](./02-kubernetes.md) — целевая платформа для деплоя через CI/CD пайплайны
+- [Testing Strategies](../08-architecture/09-testing-strategies.md) — стратегии тестирования для интеграции в CI/CD
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

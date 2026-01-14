@@ -1021,6 +1021,13 @@ class ModelSelector:
 
 ---
 
+## См. также
+
+- [AI API Integration](./06-ai-api-integration.md) — работа с API провайдеров LLM
+- [AI-системы в архитектуре](../03-system-design/15-ai-systems.md) — проектирование систем с использованием LLM
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

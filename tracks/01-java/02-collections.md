@@ -496,6 +496,13 @@ Comparator<Person> nullsLast = Comparator.nullsLast(byName);
 
 ---
 
+## См. также
+
+- [Arrays & Hashing](../05-algorithms/01-arrays-hashing.md) — алгоритмы работы с массивами и хеш-таблицами
+- [Python Data Structures](../02-python/01-data-structures.md) — структуры данных в Python
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

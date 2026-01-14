@@ -437,6 +437,13 @@ class HybridVectorStore:
 
 ---
 
+## См. также
+
+- [RAG Patterns](./02-rag-patterns.md) — паттерны Retrieval-Augmented Generation с использованием векторного поиска
+- [Indexing](../06-databases/01-indexing.md) — индексирование данных и оптимизация поиска
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

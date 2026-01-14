@@ -478,4 +478,11 @@ const debouncedGetSuggestions = debounce(getSuggestions, 100);
 
 ---
 
+## См. также
+
+- [Деревья и обходы](../05-algorithms/06-trees-traversal.md) — структура данных Trie для автодополнения
+- [Индексирование в базах данных](../06-databases/01-indexing.md) — оптимизация поиска и индексов
+
+---
+
 [← Назад к списку тем](README.md)

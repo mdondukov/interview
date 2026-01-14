@@ -636,6 +636,13 @@ String formatted = FMT."%-10s: %5d\{name}\{count}";
 
 ---
 
+## См. также
+
+- [Streams & Lambdas](./07-streams-lambdas.md) — функциональное программирование в Java 8+
+- [JVM Fundamentals](./00-jvm-fundamentals.md) — основы платформы JVM
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

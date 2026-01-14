@@ -450,6 +450,13 @@ func (h *IdempotentHandler) Handle(ctx context.Context, event Event) error {
 
 ---
 
+## См. также
+
+- [Event-Driven Architecture](./05-event-driven.md) — событийная архитектура и CQRS
+- [API Design](./07-api-design.md) — проектирование API и интеграций
+
+---
+
 ## На интервью
 
 ### Типичные вопросы

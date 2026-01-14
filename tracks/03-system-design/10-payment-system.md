@@ -534,4 +534,11 @@ class ReconciliationService:
 
 ---
 
+## См. также
+
+- [Транзакции в базах данных](../06-databases/03-transactions.md) — ACID-гарантии и изоляция транзакций
+- [Распределённые транзакции](../07-distributed-systems/07-distributed-transactions.md) — паттерны Saga и Two-Phase Commit
+
+---
+
 [← Назад к списку тем](README.md)
