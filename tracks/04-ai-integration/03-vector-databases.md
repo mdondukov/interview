@@ -415,8 +415,8 @@ class HybridVectorStore:
             limit=top_k * 2
         )
 
-        # Full-text search
-        text_results = self.bm25_search(query, top_k * 2)
+        # Full-text search (bm25_search method needs to be implemented)
+        text_results = self.bm25_search(query, top_k * 2)  # TODO: implement bm25_search
 
         # Reciprocal Rank Fusion
         return self.rrf_merge(vector_results, text_results, top_k)

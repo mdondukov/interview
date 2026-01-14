@@ -285,7 +285,8 @@ class VideoProcessor:
             output_path
         ]
 
-        await asyncio.create_subprocess_exec(*cmd)
+        process = await asyncio.create_subprocess_exec(*cmd)
+        await process.wait()
         return output_path
 ```
 

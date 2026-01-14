@@ -66,13 +66,12 @@ VACUUM FULL users;
 -- VACUUM ANALYZE: vacuum + обновление статистики
 VACUUM ANALYZE users;
 
--- Настройки autovacuum
--- postgresql.conf
-autovacuum = on
-autovacuum_vacuum_threshold = 50
-autovacuum_vacuum_scale_factor = 0.2  -- 20% dead tuples
-autovacuum_analyze_threshold = 50
-autovacuum_analyze_scale_factor = 0.1
+-- Настройки autovacuum (postgresql.conf):
+-- autovacuum = on
+-- autovacuum_vacuum_threshold = 50
+-- autovacuum_vacuum_scale_factor = 0.2  -- 20% dead tuples
+-- autovacuum_analyze_threshold = 50
+-- autovacuum_analyze_scale_factor = 0.1
 
 -- Для конкретной таблицы
 ALTER TABLE orders SET (
@@ -153,21 +152,19 @@ ORDER BY last_vacuum DESC NULLS LAST;
 ### Настройки WAL
 
 ```sql
--- Уровень WAL
--- minimal: минимум (нельзя replication)
--- replica: для streaming replication (default)
--- logical: для logical replication
-wal_level = replica
-
--- Synchronous commit
--- on: ждать fsync (durability гарантирована)
--- off: не ждать (быстрее, но риск потери)
-synchronous_commit = on
-
--- Checkpoint
-checkpoint_timeout = 5min        -- Макс время между checkpoints
-checkpoint_completion_target = 0.9
-max_wal_size = 1GB              -- Макс размер WAL до checkpoint
+-- postgresql.conf settings:
+-- wal_level = replica
+--   (minimal: минимум, нельзя replication)
+--   (replica: для streaming replication, default)
+--   (logical: для logical replication)
+--
+-- synchronous_commit = on
+--   (on: ждать fsync, durability гарантирована)
+--   (off: не ждать, быстрее, но риск потери)
+--
+-- checkpoint_timeout = 5min
+-- checkpoint_completion_target = 0.9
+-- max_wal_size = 1GB
 ```
 
 ### Мониторинг WAL

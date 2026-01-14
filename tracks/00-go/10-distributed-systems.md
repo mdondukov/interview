@@ -993,7 +993,7 @@ server := grpc.NewServer(
 )
 
 // Клиент
-conn, err := grpc.Dial(address,
+conn, err := grpc.NewClient(address,
     grpc.WithStatsHandler(otelgrpc.NewClientHandler()),
 )
 ```

@@ -307,9 +307,10 @@ async def process_notification(notification: dict):
 ```python
 # Template storage
 templates = {
+    # Note: Using single braces for str.format() compatibility
     "welcome_email": {
-        "subject": "Welcome to {{app_name}}, {{user_name}}!",
-        "body": "Hi {{user_name}}, use code {{promo_code}} for 20% off!"
+        "subject": "Welcome to {app_name}, {user_name}!",
+        "body": "Hi {user_name}, use code {promo_code} for 20% off!"
     }
 }
 

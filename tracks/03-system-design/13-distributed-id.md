@@ -104,6 +104,7 @@ Max throughput: 4096 × 1000 = 4M IDs/sec per machine
 ```python
 import time
 import threading
+from datetime import datetime
 
 class Snowflake:
     # Custom epoch (2024-01-01 00:00:00 UTC)

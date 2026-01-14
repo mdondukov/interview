@@ -92,8 +92,9 @@ x: int = first([1, 2, 3])       # T = int
 y: str = first(["a", "b", "c"]) # T = str
 
 # Bounded TypeVar
-from typing import Comparable
-T = TypeVar('T', bound=Comparable)
+# Note: Comparable не существует в typing, это гипотетический пример
+# Можно использовать Protocol для определения Comparable
+T = TypeVar('T', bound='Comparable')  # Предполагается определённый Protocol
 
 def max_item(items: List[T]) -> T:
     return max(items)

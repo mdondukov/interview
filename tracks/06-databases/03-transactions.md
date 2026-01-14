@@ -176,14 +176,14 @@ COMMIT;
 ### Предотвращение
 
 ```sql
--- 1. Всегда блокировать в одном порядке
+-- 1. Всегда блокировать в одном порядке (pseudo-code)
 -- ❌ Плохо
-T1: lock(A), lock(B)
-T2: lock(B), lock(A)
+-- T1: lock(A), lock(B)
+-- T2: lock(B), lock(A)
 
 -- ✅ Хорошо
-T1: lock(A), lock(B)
-T2: lock(A), lock(B)
+-- T1: lock(A), lock(B)
+-- T2: lock(A), lock(B)
 
 -- 2. Использовать SELECT FOR UPDATE
 BEGIN;

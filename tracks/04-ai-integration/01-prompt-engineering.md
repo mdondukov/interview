@@ -260,8 +260,8 @@ class User(BaseModel):
 class ExtractedUsers(BaseModel):
     users: List[User]
 
-# Patch client with instructor
-client = instructor.patch(OpenAI())
+# Create client with instructor
+client = instructor.from_openai(OpenAI())
 
 # Get structured output
 users = client.chat.completions.create(

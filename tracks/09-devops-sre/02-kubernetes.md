@@ -182,6 +182,9 @@ data:
 
 ---
 # Secret
+# ВНИМАНИЕ: Secrets в Kubernetes хранятся в base64 (НЕ зашифрованы по умолчанию)!
+# В production используйте: Sealed Secrets, External Secrets, HashiCorp Vault,
+# или включите encryption at rest для etcd.
 apiVersion: v1
 kind: Secret
 metadata:

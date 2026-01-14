@@ -144,9 +144,8 @@ result, _ = addToInt64(3.14, 10)                 // 13
 
 Варианты записи:
 ```go
-var _ io.Reader = (*myReader)(nil)     // проверка pointer receiver
-var _ io.Reader = myReader{}           // проверка value receiver
-var _ io.Reader = (*myReader)(nil)     // pointer receiver покрывает оба случая
+var _ io.Reader = (*myReader)(nil)     // проверка pointer receiver (покрывает оба случая)
+var _ io.Reader = myReader{}           // проверка value receiver (только value receiver методы)
 ```
 
 **Пример.**

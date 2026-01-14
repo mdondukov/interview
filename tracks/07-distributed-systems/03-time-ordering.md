@@ -199,14 +199,17 @@ func (vc VectorClock) Merge(other VectorClock) VectorClock {
 func (vc VectorClock) Compare(other VectorClock) int {
     less, greater := false, false
 
+    // Check all keys in vc
     for k, v := range vc {
-        if v < other[k] {
+        ov := other[k]
+        if v < ov {
             less = true
-        } else if v > other[k] {
+        } else if v > ov {
             greater = true
         }
     }
 
+    // Check keys in other that are not in vc
     for k, v := range other {
         if _, ok := vc[k]; !ok && v > 0 {
             less = true

@@ -526,7 +526,7 @@ class User:
     email: str
     password: str = field(repr=False)  # Не показывать в repr
     id: int = field(default_factory=lambda: id(object()))
-    created_at: float = field(default_factory=time.time, compare=False)
+    created_at: float = field(default_factory=time.time, compare=False)  # import time
 
 # Post-init обработка
 @dataclass

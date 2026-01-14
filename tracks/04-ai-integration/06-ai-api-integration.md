@@ -544,19 +544,19 @@ def safe_openai_call(client: OpenAI, messages: list) -> dict:
 ```python
 import time
 import asyncio
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 @dataclass
 class RateLimiter:
     requests_per_minute: int
     tokens_per_minute: int
-    _request_tokens: float = 0
-    _token_tokens: float = 0
-    _last_update: float = 0
+    _request_tokens: float = field(init=False)
+    _token_tokens: float = field(init=False)
+    _last_update: float = field(init=False)
 
     def __post_init__(self):
-        self._request_tokens = self.requests_per_minute
-        self._token_tokens = self.tokens_per_minute
+        self._request_tokens = float(self.requests_per_minute)
+        self._token_tokens = float(self.tokens_per_minute)
         self._last_update = time.time()
 
     def _refill(self):
@@ -657,6 +657,7 @@ def cached_completion(client, model: str, messages: list) -> str:
 ```python
 import numpy as np
 from openai import OpenAI
+from typing import Optional
 
 class SemanticCache:
     def __init__(self, client: OpenAI, threshold: float = 0.95):
@@ -674,7 +675,7 @@ class SemanticCache:
     def _cosine_similarity(self, a: np.ndarray, b: np.ndarray) -> float:
         return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
 
-    def get(self, query: str) -> Optional[str]:
+    def get(self, query: str) -> "Optional[str]":
         query_embedding = self._get_embedding(query)
 
         for cached_embedding, cached_query, cached_response in self.cache:

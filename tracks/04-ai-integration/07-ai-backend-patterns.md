@@ -154,6 +154,7 @@ async def get_task_status(task_id: str):
 ```python
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, HttpUrl
+from typing import Optional
 import httpx
 import asyncio
 
@@ -314,7 +315,7 @@ async def websocket_chat(websocket: WebSocket):
 ```python
 from fastapi import FastAPI, BackgroundTasks
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 import asyncio
 from openai import AsyncOpenAI
 

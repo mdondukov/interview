@@ -139,6 +139,8 @@ except ZeroDivisionError:
     traceback.print_tb(exc_tb)
 
 # raise from - exception chaining
+import json
+
 def load_config(path):
     try:
         with open(path) as f:
@@ -677,6 +679,8 @@ with managed_file('test.txt') as f:
     content = f.read()
 
 # Подавление исключений
+import os
+
 class SuppressErrors:
     def __init__(self, *exceptions):
         self.exceptions = exceptions

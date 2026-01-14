@@ -369,6 +369,7 @@ CREATE INDEX idx_posts_tags ON posts USING gin(tags);
 CREATE TABLE orders (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    external_order_id TEXT,
     status TEXT NOT NULL DEFAULT 'pending'
         CHECK (status IN ('pending', 'processing', 'completed', 'cancelled')),
     total NUMERIC NOT NULL CHECK (total >= 0),

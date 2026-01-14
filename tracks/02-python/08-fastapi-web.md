@@ -351,6 +351,7 @@ class User(BaseModel):
     name: str = Field(..., description="User's full name")
     age: int = Field(..., ge=0, description="User's age")
 
+    # Pydantic v1 syntax. Для v2: model_config = ConfigDict(json_schema_extra={...})
     class Config:
         schema_extra = {
             "example": {"name": "Alice", "age": 30}

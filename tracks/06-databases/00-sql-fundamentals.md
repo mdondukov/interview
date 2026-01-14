@@ -246,12 +246,13 @@ SELECT
 FROM stock_prices;
 
 -- Поиск gaps в последовательности
-SELECT
-    id,
-    LAG(id) OVER (ORDER BY id) as prev_id,
-    id - LAG(id) OVER (ORDER BY id) as gap
-FROM records
-WHERE id - LAG(id) OVER (ORDER BY id) > 1;
+WITH gaps AS (
+    SELECT id, LAG(id) OVER (ORDER BY id) as prev_id
+    FROM records
+)
+SELECT id, prev_id, id - prev_id as gap
+FROM gaps
+WHERE id - prev_id > 1;
 ```
 
 ### FIRST_VALUE / LAST_VALUE

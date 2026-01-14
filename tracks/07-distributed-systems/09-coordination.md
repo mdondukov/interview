@@ -244,7 +244,8 @@ func leaderElection(cli *clientv3.Client, nodeID string) {
 }
 
 func watchLeader(cli *clientv3.Client) {
-    election := concurrency.NewElection(cli.Session, "/app/leader")
+    session, _ := concurrency.NewSession(cli)
+    election := concurrency.NewElection(session, "/app/leader")
 
     // Watch for leader changes
     for resp := range election.Observe(context.Background()) {

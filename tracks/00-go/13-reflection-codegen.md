@@ -454,6 +454,7 @@ import (
     "go/parser"
     "go/token"
     "os"
+    "strings"
     "text/template"
 )
 

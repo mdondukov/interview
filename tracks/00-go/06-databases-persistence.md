@@ -197,7 +197,7 @@ NULL в SQL — частый источник багов. Интервьюер �
 │ sql.NullFloat64 │ { Float64 float64; Valid bool }          │
 │ sql.NullBool    │ { Bool bool; Valid bool }                │
 │ sql.NullTime    │ { Time time.Time; Valid bool }           │
-│ sql.NullByte    │ { Byte byte; Valid bool } (Go 1.22+)     │
+│ sql.NullByte    │ { Byte byte; Valid bool } (Go 1.17+)     │
 └─────────────────┴──────────────────────────────────────────┘
 ```
 
@@ -294,18 +294,20 @@ err := db.QueryRowContext(ctx, `
 // user.Email будет пустой строкой вместо NULL
 ```
 
-**Generic Null тип (Go 1.22+):**
+**Generic Null тип (гипотетический/предложенный):**
 ```go
-// sql.Null[T] — generic версия
+// Примечание: sql.Null[T] НЕ существует в стандартной библиотеке Go.
+// Это гипотетический пример generic версии, которая могла бы выглядеть так:
 type User struct {
     ID    int64
-    Email sql.Null[string]
-    Age   sql.Null[int]
+    Email sql.Null[string]  // Не существует в stdlib!
+    Age   sql.Null[int]     // Не существует в stdlib!
 }
 
 if user.Email.Valid {
     fmt.Println(user.Email.V)  // V — значение
 }
+// Для работы с nullable типами используйте sql.NullString, sql.NullInt64 и др.
 ```
 
 **Типичные ошибки.**

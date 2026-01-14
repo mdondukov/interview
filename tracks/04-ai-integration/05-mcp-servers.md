@@ -394,7 +394,7 @@ server.register_provider("database", DatabaseTools())
 ### Input Validation
 
 ```python
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator, ValidationError
 from typing import Optional
 
 class SearchInput(BaseModel):
@@ -402,7 +402,8 @@ class SearchInput(BaseModel):
     limit: int = Field(default=10, ge=1, le=100)
     filters: Optional[dict] = None
 
-    @validator('query')
+    @field_validator('query')
+    @classmethod
     def sanitize_query(cls, v):
         # Remove potential injection attempts
         dangerous = ['DROP', 'DELETE', 'UPDATE', ';', '--']
@@ -411,7 +412,8 @@ class SearchInput(BaseModel):
                 raise ValueError(f"Invalid query content")
         return v
 
-    @validator('filters')
+    @field_validator('filters')
+    @classmethod
     def validate_filters(cls, v):
         if v is None:
             return v

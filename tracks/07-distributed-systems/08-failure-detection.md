@@ -158,10 +158,9 @@ func (d *PhiAccrualDetector) Phi() float64 {
     stdDev := d.intervals.StdDev()
 
     // P(interval > timeSinceLast) assuming normal distribution
-    // Using complementary CDF
-    y := float64(timeSinceLast) - mean
-    e := math.Exp(-y / stdDev)
-    p := 1.0 / (1.0 + e)
+    // Using complementary error function (proper normal CDF)
+    z := (float64(timeSinceLast) - mean) / stdDev
+    p := 0.5 * math.Erfc(z / math.Sqrt2)
 
     return -math.Log10(p)
 }

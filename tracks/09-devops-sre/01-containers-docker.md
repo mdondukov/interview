@@ -87,15 +87,23 @@ docker logs -f web                  # Follow logs
 docker exec -it web bash            # Shell into container
 
 # Common run options
+# -d: Detached
+# --name: Container name
+# -p: Port mapping host:container
+# -v: Volume mount
+# -e: Environment variable
+# --restart: Restart policy
+# --memory: Memory limit
+# --cpus: CPU limit
 docker run \
-  -d \                              # Detached
-  --name web \                      # Container name
-  -p 8080:80 \                      # Port mapping host:container
-  -v /host/path:/container/path \   # Volume mount
-  -e ENV_VAR=value \                # Environment variable
-  --restart unless-stopped \        # Restart policy
-  --memory 512m \                   # Memory limit
-  --cpus 0.5 \                      # CPU limit
+  -d \
+  --name web \
+  -p 8080:80 \
+  -v /host/path:/container/path \
+  -e ENV_VAR=value \
+  --restart unless-stopped \
+  --memory 512m \
+  --cpus 0.5 \
   nginx:latest
 
 # Inspect
@@ -393,14 +401,21 @@ docker-compose pull                 # Pull images
 ### Security Flags
 
 ```bash
+# --read-only: Read-only filesystem
+# --cap-drop ALL: Drop all capabilities
+# --cap-add NET_BIND_SERVICE: Add specific capability
+# --security-opt no-new-privileges: No privilege escalation
+# --user 1000:1000: Non-root user
+# --memory 256m: Memory limit
+# --cpus 0.5: CPU limit
 docker run \
-  --read-only \                     # Read-only filesystem
-  --cap-drop ALL \                  # Drop all capabilities
-  --cap-add NET_BIND_SERVICE \      # Add specific capability
-  --security-opt no-new-privileges \ # No privilege escalation
-  --user 1000:1000 \                # Non-root user
-  --memory 256m \                   # Memory limit
-  --cpus 0.5 \                      # CPU limit
+  --read-only \
+  --cap-drop ALL \
+  --cap-add NET_BIND_SERVICE \
+  --security-opt no-new-privileges \
+  --user 1000:1000 \
+  --memory 256m \
+  --cpus 0.5 \
   nginx
 ```
 

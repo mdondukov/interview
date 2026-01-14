@@ -246,7 +246,7 @@ func (l *OrderLoader) Execute() {
 
 ```sql
 -- ❌ Плохо: функция убивает индекс
-SELECT * FROM users WHERE YEAR(created_at) = 2024;
+SELECT * FROM users WHERE EXTRACT(YEAR FROM created_at) = 2024;
 
 -- ✅ Хорошо: range query
 SELECT * FROM users

@@ -132,7 +132,10 @@ class SimpleAgent:
         if name == "search":
             return web_search(args["query"])
         elif name == "calculator":
-            return eval(args["expression"])
+            # WARNING: eval() is unsafe with untrusted input!
+            # Use ast.literal_eval() for simple expressions or a safe math parser
+            import ast
+            return ast.literal_eval(args["expression"])
         # ... more tools
 ```
 

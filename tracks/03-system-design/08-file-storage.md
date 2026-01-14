@@ -441,7 +441,9 @@ class ErasureCodingService:
     def decode(self, chunks: list, missing_indices: list) -> bytes:
         # Reconstruct from available chunks
         # Reed-Solomon can recover if missing <= parity_chunks
-        return self.rs.decode(chunks)
+        # Note: missing_indices indicates which chunks are unavailable;
+        # the RS library uses this internally to reconstruct the data
+        return self.rs.decode(chunks, missing_indices)
 ```
 
 ### 5. Garbage Collection

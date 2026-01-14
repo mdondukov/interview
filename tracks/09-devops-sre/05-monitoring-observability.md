@@ -329,7 +329,7 @@ func handleRequest(ctx context.Context) {
 ### Prometheus Alerting Rules
 
 ```yaml
-# alertmanager rules
+# prometheus alerting rules
 groups:
   - name: application
     rules:

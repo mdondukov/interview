@@ -1165,7 +1165,8 @@ func isRetryable(err error) bool {
     // Validation errors, business errors — not retryable
     var netErr net.Error
     if errors.As(err, &netErr) {
-        return netErr.Temporary()
+        // Примечание: netErr.Temporary() deprecated, используем Timeout()
+        return netErr.Timeout()
     }
 
     var validationErr *ValidationError

@@ -86,12 +86,13 @@ class MultiHeadAttention:
 
     def forward(self, x):
         # Split into heads, apply attention, concatenate
-        Q = self.W_q(x).view(batch, seq_len, n_heads, d_k)
-        K = self.W_k(x).view(batch, seq_len, n_heads, d_k)
-        V = self.W_v(x).view(batch, seq_len, n_heads, d_k)
+        batch, seq_len, _ = x.shape
+        Q = self.W_q(x).view(batch, seq_len, self.n_heads, self.d_k)
+        K = self.W_k(x).view(batch, seq_len, self.n_heads, self.d_k)
+        V = self.W_v(x).view(batch, seq_len, self.n_heads, self.d_k)
 
         attn_output = attention(Q, K, V)
-        return self.W_o(attn_output.view(batch, seq_len, d_model))
+        return self.W_o(attn_output.view(batch, seq_len, -1))
 ```
 
 ### Key Concepts

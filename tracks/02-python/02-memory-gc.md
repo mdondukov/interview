@@ -176,7 +176,7 @@ class Resource:
         print(f"Created: {name}")
 
     def __del__(self):
-        print(f"Destroyed: {name}")
+        print(f"Destroyed: {self.name}")
 
 r = Resource("test")  # Created: test
 r = None              # Destroyed: test (сразу!)

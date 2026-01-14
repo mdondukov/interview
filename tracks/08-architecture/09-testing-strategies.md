@@ -60,7 +60,7 @@ func TestOrder_AddItem_FailsWhenNotDraft(t *testing.T) {
     order, _ := NewOrder("order-1", "customer-1")
     order.Submit() // Change status to submitted
 
-    err := order.AddItem("product-1", "Widget", Money{Amount: 1000}, 2)
+    err := order.AddItem("product-1", "Widget", Money{Amount: 1000, Currency: "USD"}, 2)
 
     assert.Error(t, err)
     assert.Contains(t, err.Error(), "draft")
@@ -153,6 +153,13 @@ func (m *MockUserRepository) Save(ctx context.Context, user *User) error {
     args := m.Called(ctx, user)
     return args.Error(0)
 }
+
+// Примечание: FindByEmail должен быть добавлен в интерфейс UserRepository:
+// type UserRepository interface {
+//     FindByID(ctx context.Context, id string) (*User, error)
+//     FindByEmail(ctx context.Context, email string) (*User, error)  // Добавить!
+//     Save(ctx context.Context, user *User) error
+// }
 
 // Test using mock
 func TestUserService_CreateUser(t *testing.T) {

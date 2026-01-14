@@ -543,6 +543,22 @@ class SlackChannel:
 ### 5. Data Retention & Downsampling
 
 ```python
+from datetime import datetime, timedelta
+
+def parse_duration(duration_str: str) -> timedelta:
+    """Parse duration string like '7d', '30d', '365d' into timedelta"""
+    value = int(duration_str[:-1])
+    unit = duration_str[-1]
+    if unit == 'd':
+        return timedelta(days=value)
+    elif unit == 'h':
+        return timedelta(hours=value)
+    elif unit == 'm':
+        return timedelta(minutes=value)
+    elif unit == 's':
+        return timedelta(seconds=value)
+    raise ValueError(f"Unknown duration unit: {unit}")
+
 class RetentionManager:
     RETENTION_POLICIES = [
         {'resolution': '10s', 'retention': '7d'},

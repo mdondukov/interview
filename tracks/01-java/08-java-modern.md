@@ -611,27 +611,22 @@ var firstEntry = map.firstEntry();
 var lastEntry = map.lastEntry();
 ```
 
-### String Templates (Preview)
+### String Templates (Preview - Removed)
 
 ```java
-// String interpolation (preview in Java 21)
+// ВНИМАНИЕ: String Templates (STR, FMT) были удалены в Java 23!
+// Эта функция была preview в Java 21-22, но была удалена из-за проблем с дизайном.
+// Ниже приведён пример того, как это работало в preview-версиях:
+
+// String interpolation (preview in Java 21-22, REMOVED in Java 23)
 String name = "World";
-String greeting = STR."Hello, \{name}!";
+// String greeting = STR."Hello, \{name}!";  // Не работает в Java 23+
 
-// Expressions
-int x = 10, y = 20;
-String result = STR."\{x} + \{y} = \{x + y}";
+// Вместо этого используйте String.format() или MessageFormat:
+String greeting = String.format("Hello, %s!", name);
 
-// Multi-line
-String json = STR."""
-    {
-        "name": "\{name}",
-        "value": \{value}
-    }
-    """;
-
-// FMT processor for formatting
-String formatted = FMT."%-10s: %5d\{name}\{count}";
+// Или StringBuilder / конкатенацию:
+String greeting2 = "Hello, " + name + "!";
 ```
 
 ---

@@ -272,7 +272,7 @@ items = [1, 2, 2, 3, 3, 3]
 unique = list(set(items))  # [1, 2, 3] (порядок не гарантирован!)
 
 # С сохранением порядка (Python 3.7+)
-unique_ordered = list(dict.fromkeys(items))  # [1, 2, 2, 3]
+unique_ordered = list(dict.fromkeys(items))  # [1, 2, 3]
 
 # 2. Быстрая проверка принадлежности
 valid_users = {"alice", "bob", "charlie"}

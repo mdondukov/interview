@@ -347,10 +347,10 @@ async def process_writes():
 
 ### 4. Cache Stampede Prevention
 
-```
-Problem: When cache expires, many requests hit DB simultaneously
+**Problem:** When cache expires, many requests hit DB simultaneously
 
-Solution 1: Locking
+**Solution 1: Locking**
+
 ```python
 def get_with_lock(key: str, fetch_func):
     value = cache.get(key)
@@ -374,8 +374,8 @@ def get_with_lock(key: str, fetch_func):
         return get_with_lock(key, fetch_func)
 ```
 
-```
-Solution 2: Probabilistic Early Expiration
+**Solution 2: Probabilistic Early Expiration**
+
 ```python
 import random
 import time

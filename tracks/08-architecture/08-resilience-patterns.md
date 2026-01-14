@@ -76,8 +76,8 @@ func (cb *CircuitBreaker) Execute(fn func() error) error {
 }
 
 func (cb *CircuitBreaker) canExecute() bool {
-    cb.mu.RLock()
-    defer cb.mu.RUnlock()
+    cb.mu.Lock()
+    defer cb.mu.Unlock()
 
     switch cb.state {
     case StateClosed:
@@ -85,12 +85,8 @@ func (cb *CircuitBreaker) canExecute() bool {
     case StateOpen:
         // Check if timeout passed
         if time.Since(cb.lastFailure) > cb.timeout {
-            cb.mu.RUnlock()
-            cb.mu.Lock()
             cb.state = StateHalfOpen
             cb.successes = 0
-            cb.mu.Unlock()
-            cb.mu.RLock()
             return true
         }
         return false
@@ -236,7 +232,8 @@ func isRetryable(err error) bool {
     // 4xx (except 429), business errors - not retryable
     var netErr net.Error
     if errors.As(err, &netErr) {
-        return netErr.Temporary() || netErr.Timeout()
+        // Примечание: netErr.Temporary() deprecated, используем только Timeout()
+        return netErr.Timeout()
     }
 
     var httpErr *HTTPError

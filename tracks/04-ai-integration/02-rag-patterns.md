@@ -395,6 +395,8 @@ final = reranker.rerank(query, candidates, top_k=5)
 ### Query Transformation
 
 ```python
+import json
+
 def expand_query(query: str) -> list[str]:
     """Generate multiple query variations for better recall."""
     prompt = f"""Generate 3 alternative ways to ask this question:

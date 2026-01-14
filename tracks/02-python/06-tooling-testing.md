@@ -291,7 +291,7 @@ Mocking — необходим для изоляции тестов от вне�
 ### Пример
 
 ```python
-from unittest.mock import Mock, MagicMock, patch, AsyncMock
+from unittest.mock import Mock, MagicMock, patch, AsyncMock, PropertyMock
 
 # Mock объект
 mock = Mock()

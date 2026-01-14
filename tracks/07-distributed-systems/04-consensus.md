@@ -50,7 +50,7 @@
 │  Практические обходы:                                               │
 │  - Randomization (probabilistic termination)                        │
 │  - Timeouts (partial synchrony assumption)                          │
-│  - Failure detectors (орakle for crashes)                           │
+│  - Failure detectors (oracle for crashes)                           │
 │                                                                     │
 │  Реальные системы используют timeouts:                              │
 │  "Eventually synchronous" модель                                    │
@@ -210,7 +210,10 @@ func (n *RaftNode) startElection() {
     n.currentTerm++
     n.votedFor = n.id
 
-    votes := 1  // vote for self
+    var (
+        votes int32 = 1  // vote for self
+        once  sync.Once
+    )
 
     for _, peer := range n.peers {
         go func(peer string) {
@@ -222,9 +225,8 @@ func (n *RaftNode) startElection() {
             })
 
             if resp.VoteGranted {
-                votes++
-                if votes > len(n.peers)/2 {
-                    n.becomeLeader()
+                if atomic.AddInt32(&votes, 1) > int32(len(n.peers)/2) {
+                    once.Do(n.becomeLeader)
                 }
             }
         }(peer)

@@ -507,6 +507,8 @@ class OverbookingManager:
 ### 5. Cancellation & Refunds
 
 ```python
+from datetime import date
+
 class CancellationService:
     async def cancel_booking(self, booking_id: str, reason: str):
         async with db.transaction():
