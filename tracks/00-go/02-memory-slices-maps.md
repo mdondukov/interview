@@ -929,3 +929,7 @@ func main() {
 - [slices package](https://pkg.go.dev/slices) — generic функции для слайсов (Go 1.21+)
 - [maps package](https://pkg.go.dev/maps) — generic функции для карт (Go 1.21+)
 - [sync.Pool design](https://github.com/golang/go/blob/master/src/sync/pool.go) — исходники Pool
+
+---
+
+← [01-goroutines-channels](./01-goroutines-channels.md) | [Трек Go](./README.md) | [03-errors-context](./03-errors-context.md) →

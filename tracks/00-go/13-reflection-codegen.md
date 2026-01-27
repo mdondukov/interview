@@ -1367,3 +1367,7 @@ func GenerateGetter(structName, fieldName, fieldType string) string {
 - [Writing Go Analyzers](https://github.com/golang/tools/blob/master/go/analysis/doc.go)
 - [The Laws of Reflection](https://go.dev/blog/laws-of-reflection)
 - Talks: "Advanced Testing with Go" — Mitchell Hashimoto
+
+---
+
+← [12-security-crypto](./12-security-crypto.md) | [Трек Go](./README.md)

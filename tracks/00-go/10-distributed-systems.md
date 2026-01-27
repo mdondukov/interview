@@ -1719,3 +1719,7 @@ func reconcile(ctx context.Context, orderRepo OrderRepo, paymentRepo PaymentRepo
 - [How to do distributed locking](https://martin.kleppmann.com/2016/02/08/how-to-do-distributed-locking.html)
 - [Outbox Pattern](https://microservices.io/patterns/data/transactional-outbox.html)
 - Talks: "Distributed Systems in One Lesson" — Tim Berglund
+
+---
+
+← [09-performance-profiling](./09-performance-profiling.md) | [Трек Go](./README.md) | [11-message-queues-events](./11-message-queues-events.md) →

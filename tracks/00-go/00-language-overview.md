@@ -799,3 +799,7 @@ func TestAgainstRealDB(t *testing.T) {
 - [Why Go?](https://talks.golang.org/2012/splash.article) — Rob Pike о мотивации создания языка
 - [golang.org/x/exp/constraints](https://pkg.go.dev/golang.org/x/exp/constraints) — стандартные constraints (до Go 1.21)
 - [cmp package](https://pkg.go.dev/cmp) — `Ordered` constraint в Go 1.21+
+
+---
+
+[Трек Go](./README.md) | [01-goroutines-channels](./01-goroutines-channels.md) →

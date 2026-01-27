@@ -1816,3 +1816,7 @@ func (b *BulkheadMetrics) Stats() map[string]int64 {
 - [The Go Memory Model](https://go.dev/ref/mem)
 - Kavya Joshi — "Understanding Channels" (GopherCon 2017)
 - Bryan Mills — "Rethinking Classical Concurrency Patterns" (GopherCon 2018)
+
+---
+
+← [04-go-runtime](./04-go-runtime.md) | [Трек Go](./README.md) | [06-databases-persistence](./06-databases-persistence.md) →

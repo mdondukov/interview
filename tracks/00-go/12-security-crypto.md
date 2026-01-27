@@ -1492,3 +1492,7 @@ credentials.json
 - [Let's Encrypt with Go](https://letsencrypt.org/docs/client-options/)
 - Books: "Secure by Design" — Dan Bergh Johnsson
 - Talks: "Secure Go" — Filippo Valsorda
+
+---
+
+← [11-message-queues-events](./11-message-queues-events.md) | [Трек Go](./README.md) | [13-reflection-codegen](./13-reflection-codegen.md) →

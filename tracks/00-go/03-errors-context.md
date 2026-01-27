@@ -1007,3 +1007,7 @@ func (s *Service) ProcessOrder(ctx context.Context, orderID string) error {
 - [context package](https://pkg.go.dev/context) — документация
 - [slog package](https://pkg.go.dev/log/slog) — structured logging (Go 1.21+)
 - [Dave Cheney: Don't just check errors, handle them gracefully](https://dave.cheney.net/2016/04/27/dont-just-check-errors-handle-them-gracefully)
+
+---
+
+← [02-memory-slices-maps](./02-memory-slices-maps.md) | [Трек Go](./README.md) | [04-go-runtime](./04-go-runtime.md) →

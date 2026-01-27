@@ -1463,3 +1463,7 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 - [google/pprof](https://github.com/google/pprof)
 - [Prometheus Go client](https://prometheus.io/docs/guides/go-application/)
 - Talks: Dave Cheney "High Performance Go Workshop"
+
+---
+
+← [08-networking-grpc](./08-networking-grpc.md) | [Трек Go](./README.md) | [10-distributed-systems](./10-distributed-systems.md) →

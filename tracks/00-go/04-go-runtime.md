@@ -794,3 +794,7 @@ func main() {
 - [runtime package](https://pkg.go.dev/runtime) — документация runtime функций
 - [GC Guide](https://tip.golang.org/doc/gc-guide) — официальный гайд по GC
 - [go tool trace](https://pkg.go.dev/cmd/trace) — документация trace tool
+
+---
+
+← [03-errors-context](./03-errors-context.md) | [Трек Go](./README.md) | [05-concurrency-patterns](./05-concurrency-patterns.md) →

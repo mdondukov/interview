@@ -1571,3 +1571,7 @@ query {
 - [Prometheus Go client](https://prometheus.io/docs/guides/go-application/)
 - [sqlc documentation](https://sqlc.dev/)
 - [ent documentation](https://entgo.io/)
+
+---
+
+← [07-tooling-testing](./07-tooling-testing.md) | [Трек Go](./README.md) | [09-performance-profiling](./09-performance-profiling.md) →

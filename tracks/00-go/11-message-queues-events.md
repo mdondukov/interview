@@ -1654,3 +1654,7 @@ func (p *AccountBalanceProjection) Handle(event Event) error {
 - [Event Sourcing in Practice](https://eventstore.com/event-sourcing/)
 - [Transactional Outbox](https://microservices.io/patterns/data/transactional-outbox.html)
 - Talks: "Event Sourcing You are doing it wrong" — David Schmitz
+
+---
+
+← [10-distributed-systems](./10-distributed-systems.md) | [Трек Go](./README.md) | [12-security-crypto](./12-security-crypto.md) →

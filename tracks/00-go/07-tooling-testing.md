@@ -1254,3 +1254,7 @@ func TestUserAPIContract(t *testing.T) {
 - [Profiling Go Programs](https://go.dev/blog/pprof)
 - [runtime/metrics package](https://pkg.go.dev/runtime/metrics)
 - [testify library](https://github.com/stretchr/testify)
+
+---
+
+← [06-databases-persistence](./06-databases-persistence.md) | [Трек Go](./README.md) | [08-networking-grpc](./08-networking-grpc.md) →

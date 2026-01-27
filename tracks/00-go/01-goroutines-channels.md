@@ -1324,3 +1324,7 @@ func processWithTimeout(items []Item) error {
 - [Rob Pike: Concurrency Is Not Parallelism](https://www.youtube.com/watch?v=oV9rvDllKEg) — классический доклад
 - [golang.org/x/sync](https://pkg.go.dev/golang.org/x/sync) — errgroup, semaphore, singleflight
 - [context package](https://pkg.go.dev/context) — документация context
+
+---
+
+← [00-language-overview](./00-language-overview.md) | [Трек Go](./README.md) | [02-memory-slices-maps](./02-memory-slices-maps.md) →

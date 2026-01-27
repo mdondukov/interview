@@ -1498,3 +1498,7 @@ func TestWithTxRollback(t *testing.T) {
 - [GORM](https://gorm.io/docs/)
 - [ent](https://entgo.io/docs/getting-started)
 - [squirrel](https://github.com/Masterminds/squirrel)
+
+---
+
+← [05-concurrency-patterns](./05-concurrency-patterns.md) | [Трек Go](./README.md) | [07-tooling-testing](./07-tooling-testing.md) →
