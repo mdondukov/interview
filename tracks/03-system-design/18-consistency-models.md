@@ -1365,7 +1365,7 @@ BALANCED:
   └─ Терпим 1 failure
 ```
 
-**Read Repair и Hinted Handoff:**
+**Read Repair и Hinted Handoff (восстановление при чтении и подсказываемая передача):**
 
 ```
 READ REPAIR (исправление при чтении):
@@ -1626,7 +1626,7 @@ test_quorum_high_availability()
 1. "Пишем на W из N реплик, читаем с R из N реплик"
 2. "Если W + R > N, гарантируем strong consistency"
 3. "Примеры: Dynamo, Cassandra, Riak"
-4. "Trade-off: latency vs consistency vs availability"
+4. "Компромисс: latency vs consistency vs availability"
 
 **Возможные follow-up:**
 - "Как выбрать W и R?" → Зависит от требований
@@ -1960,7 +1960,7 @@ test_vector_clocks()
 
 ### Детальный разбор
 
-**Decision Tree для выбора консистентности:**
+**Дерево решений для выбора консистентности:**
 
 ```
 ┌─────────────────────────────────────────┐
@@ -2188,7 +2188,7 @@ def demonstrate_choice():
     choice = chooser.choose_for_banking_system()
     print(f"   Model: {choice.model.value}")
     print(f"   Reasoning: {choice.reasoning}")
-    print(f"   Trade-offs:\n{choice.tradeoffs}")
+    print(f"   Компромиссы:\n{choice.tradeoffs}")
     print(f"   Difficulty: {choice.implementation_difficulty}\n")
 
     # Social Network
@@ -2310,29 +2310,29 @@ APPROACH 1: Central Sequencer (strong order)
   Replica1         Replica2      Replica3
   (read-only)      (read-only)    (read-only)
 
-Pros: Simple, strong order
-Cons: Primary is bottleneck, single point of failure
+Плюсы: Простой, сильный порядок
+Минусы: Primary это bottleneck, single point of failure
 
 
-APPROACH 2: Distributed Sequencing (with quorum)
-Client A          Client B
+ПОДХОД 2: Распределённое секвенцирование (с quorum)
+Клиент A          Клиент B
     │                 │
     ├─────────┬───────┤
     │         │       │
     ▼         ▼       ▼
-Replica1   Replica2  Replica3
+Реплика1   Реплика2  Реплика3
     │         │       │
     └────┬────┴───┬───┘
          │        │
-    Quorum write:
-    Write to 2/3 replicas with seq_num
+    Quorum запись:
+    Писать в 2/3 реплик с seq_num
 
-    Quorum read:
-    Read from 2/3 replicas
-    Deliver in order of seq_num
+    Quorum чтение:
+    Читать из 2/3 реплик
+    Доставлять в порядке seq_num
 
-Pros: No single bottleneck
-Cons: More complex, possible gaps
+Плюсы: Нет single bottleneck
+Минусы: Более сложно, возможны пропуски
 ```
 
 **Гарантии для чата:**

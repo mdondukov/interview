@@ -86,13 +86,13 @@ Bandwidth (на чтение при peak):
                                      │
 ┌──────────┐    ┌──────────────┐    ┌▼─────────┐    ┌─────────────┐
 │  Client  │───▶│Load Balancer │───▶│API Server│───▶│    Cache    │
-└──────────┘    └──────────────┘    └┬────────┘    └──────┬──────┘
-                                     │                    │
-                                     │            ┌───────▼────────┐
+└──────────┘    └──────────────┘    └┬─────────┘    └──────┬──────┘
+                                     │                     │
+                                     │            ┌────────▼───────┐
                                      └───────────▶│    Database    │
                                                   └────────────────┘
 
-User Flow:
+Поток пользователя:
 1. Client отправляет длинный URL на API Server
 2. API Server генерирует уникальный код (6-8 символов)
 3. Записывает маппинг в БД
@@ -207,7 +207,7 @@ class URLShortenerAPI:
 - Нарисуй high-level архитектуру (5-10 компонентов)
 - Обсуди trade-off: SQL vs NoSQL, кэширование, асинхронность
 - Покажи знание классических паттернов: sharding, replication, circuit breaker
-- Follow-up: «Как обработать 10x traffic spike?» — добавить инстанс, scale cache, optimize queries
+- Уточняющий вопрос: «Как обработать 10x traffic spike?» — добавить инстанс, scale cache, optimize queries
 
 ---
 
@@ -291,8 +291,8 @@ short_code = hash_based_code_gen(long_url, retry_count=1)  # "d4e5f6"
 
 **Подход 2: Distributed ID + Base62**
 ```
-┌──────────────────────────────────────────────────────────────────┐
-│                       Snowflake ID (64-bit)                      │
+┌─────────────────────────────────────────────────────────────────┐
+│                       Snowflake ID (64-bit)                     │
 ├─────────────┬──────────────────┬─────────────┬──────────────────┤
 │ Timestamp   │  Machine ID      │  Sequence   │  Random bits     │
 │ (41 bits)   │  (10 bits)       │  (12 bits)  │  (1 bit)         │
@@ -381,12 +381,12 @@ short_code = base62_encode(snowflake_id)  # "a1b2c3d4e5f"
 │              Key Generation Service (отдельный сервис)          │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
-│  1. Генерирует батчи уникальных кодов в фоне (например, по    │
+│  1. Генерирует батчи уникальных кодов в фоне (например, по      │
 │     1M кодов за раз)                                            │
 │                                                                 │
 │  2. Хранит коды в отдельной таблице с статусом:                 │
-│     - AVAILABLE — готов к использованию                        │
-│     - USED — был выделен API server                            │
+│     - AVAILABLE — готов к использованию                         │
+│     - USED — был выделен API server                             │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
        │
@@ -492,17 +492,17 @@ class URLShortenerAPI:
 
 **Сравнение подходов:**
 ```
-┌──────────────┬────────────────┬──────────────┬─────────────────┐
-│ Характеристика │ Hash-based    │ Snowflake    │ Pre-generated   │
-├──────────────┼────────────────┼──────────────┼─────────────────┤
-│ Коллизии     │ Возможны       │ Нет          │ Нет             │
-│ Скорость     │ Медленно        │ Быстро       │ Очень быстро    │
-│ Complexity   │ Низкая         │ Средняя      │ Высокая         │
-│ Идемпотентность│ Да (один URL  │ Нет (разные  │ Нет             │
-│              │  = один код)   │  коды)       │                 │
-│ Координация  │ Не нужна       │ Нужна (часы) │ Нужна (КГС)     │
-│ Масштабируемость│ Хорошо       │ Отлично      │ Отлично         │
-└──────────────┴────────────────┴──────────────┴─────────────────┘
+┌──────────────────┬────────────────┬──────────────┬─────────────────┐
+│ Характеристика   │ Hash-based     │ Snowflake    │ Pre-generated   │
+├──────────────────┼────────────────┼──────────────┼─────────────────┤
+│ Коллизии         │ Возможны       │ Нет          │ Нет             │
+│ Скорость         │ Медленно       │ Быстро       │ Очень быстро    │
+│ Complexity       │ Низкая         │ Средняя      │ Высокая         │
+│ Идемпотентность  │ Да (один URL   │ Нет (разные  │ Нет             │
+│                  │  = один код)   │  коды)       │                 │
+│ Координация      │ Не нужна       │ Нужна (часы) │ Нужна (КГС)     │
+│ Масштабируемость │ Хорошо         │ Отлично      │ Отлично         │
+└──────────────────┴────────────────┴──────────────┴─────────────────┘
 ```
 
 **Типичные ошибки.**
@@ -515,7 +515,7 @@ class URLShortenerAPI:
 - Объясни каждый подход с диаграммой
 - Обсуди trade-off: простота vs производительность
 - Рекомендуй Snowflake для большинства случаев (good balance)
-- Follow-up: «Какой подход выбрать при 100K QPS?» — Pre-generated для минимальной latency
+- Уточняющий вопрос: «Какой подход выбрать при 100K QPS?» — Pre-generated для минимальной latency
 
 ---
 
@@ -719,7 +719,7 @@ assert hash_based_short_code(url1) == code1
 - Объясни алгоритм кодирования и декодирования
 - Покажи, как считаются combinations (62^n)
 - Упомяни, почему base62, а не base64
-- Follow-up: «Как выбрать оптимальную длину кода?» — балансировать между коллизиями и длиной
+- Уточняющий вопрос: «Как выбрать оптимальную длину кода?» — балансировать между коллизиями и длиной
 
 ---
 
@@ -752,9 +752,9 @@ sqrt(56.8B) ≈ 238,000 URLs нужно
 └────────┬────────┘
          │
          ▼
-┌──────────────────────────────────┐
-│ hash(URL + counter) for counter  │
-│ in range(0, max_retries)         │
+┌─────────────────────────────────┐
+│ hash(URL + counter) for counter │
+│ in range(0, max_retries)        │
 └────────┬────────────────────────┘
          │
          ├─► counter=0: hash("URL") → "aBcDeFg" → Check DB
@@ -803,15 +803,15 @@ class HashBasedGenerator:
 └────────┬────────┘
          │
          ▼
-┌──────────────────────────────────┐
-│ hash(URL) → code                 │
+┌─────────────────────────────────┐
+│ hash(URL) → code                │
 └────────┬────────────────────────┘
          │
          ▼
-┌──────────────────────────────────┐
-│ INSERT code INTO urls...         │
-│ ON CONFLICT (code) UPDATE        │
-│ long_url = EXCLUDED.long_url     │
+┌─────────────────────────────────┐
+│ INSERT code INTO urls...        │
+│ ON CONFLICT (code) UPDATE       │
+│ long_url = EXCLUDED.long_url    │
 └────────┬────────────────────────┘
          │
          ├─► Успех: code уникален
@@ -849,28 +849,28 @@ def upsert_url(self, long_url: str) -> str:
 └────────┬────────┘
          │
          ▼
-┌──────────────────────────────┐
-│ hash(URL) — использовать     │
+┌─────────────────────────────┐
+│ hash(URL) — использовать    │
 │ больше байтов (e.g., 8      │
-│ вместо 6)                    │
+│ вместо 6)                   │
 └────────┬────────────────────┘
          │
          ▼
-┌──────────────────────────────┐
-│ Base62 encode                │
+┌─────────────────────────────┐
+│ Base62 encode               │
 │ Результат: 9-10 символов    │
-│ вместо 6-7                   │
-└────────────────────────────┘
+│ вместо 6-7                  │
+└─────────────────────────────┘
          │
          ▼
-┌──────────────────────────────┐
-│ Вероятность коллизии:        │
-│ 62^9 = 13.8 триллионов       │
-│ → практически невозможна     │
-└────────────────────────────┘
+┌─────────────────────────────┐
+│ Вероятность коллизии:       │
+│ 62^9 = 13.8 триллионов      │
+│ → практически невозможна    │
+└─────────────────────────────┘
 ```
 
-**Trade-off:** Коды длиннее (9-10 символов), но гарантия уникальности без retries.
+**Компромисс:** Коды длиннее (9-10 символов), но гарантия уникальности без retries.
 
 ```python
 def generate_large_hash(self, long_url: str) -> str:
@@ -886,7 +886,7 @@ def generate_large_hash(self, long_url: str) -> str:
 
 ```
 ┌────────────┬──────────────────┬──────────────────────────────────────┐
-│ Длина кода │ Всего комбинаций │ URLs до 50% коллизии (Birthday)       │
+│ Длина кода │ Всего комбинаций │ URLs до 50% коллизии (Birthday)      │
 ├────────────┼──────────────────┼──────────────────────────────────────┤
 │ 5          │ 916M             │ 38K                                  │
 │ 6          │ 56.8B            │ 238K                                 │
@@ -951,7 +951,7 @@ class LargerHashStrategy:
 - Объясни Birthday Paradox и вероятность коллизий
 - Обсуди каждый метод с pros/cons
 - Рекомендуй комбинацию: большой хеш (8 байтов) + retry для safety
-- Follow-up: «Как мониторить коллизии?» — логировать в каждом retry, аналитика
+- Уточняющий вопрос: «Как мониторить коллизии?» — логировать в каждом retry, аналитика
 
 ---
 
@@ -1158,7 +1158,7 @@ response = table.query(
 - Начни с requirements: scale, consistency, queries
 - Рекомендуй SQL для среднего масштаба с аналитикой, NoSQL для huge scale
 - Упомяни гибридный подход (DynamoDB + PostgreSQL)
-- Follow-up: «Как шардировать PostgreSQL?» — по hash(short_code) % N, нужен шардирующий слой
+- Уточняющий вопрос: «Как шардировать PostgreSQL?» — по hash(short_code) % N, нужен шардирующий слой
 
 ---
 
@@ -1178,11 +1178,11 @@ response = table.query(
 └────────┬─────────┘
          │
          ▼
-    ┌─────────────┐
-    │ Cache Hit?  │
+    ┌────────────┐
+    │ Cache Hit? │
     └──┬──────┬──┘
        │      │
-     YES    NO
+     YES     NO
        │      │
        │      ▼
        │   ┌──────────┐
@@ -1403,7 +1403,7 @@ class URLShortenerService:
 - Объясни Парето (20/80)
 - Покажи расчёт размера кэша
 - Обсуди TTL vs LRU vs Event-based инвалидацию
-- Follow-up: «Как обновить кэш при изменении URL?» — publish-subscribe pattern или direct invalidation
+- Уточняющий вопрос: «Как обновить кэш при изменении URL?» — publish-subscribe pattern или direct invalidation
 
 ---
 
@@ -1501,14 +1501,14 @@ class URLShortenerService:
 
 ```
 ┌─────────────────────────┬──────────────────────┬──────────────────────┐
-│ Характеристика          │ 301 Permanent        │ 302 Temporary         │
+│ Характеристика          │ 301 Permanent        │ 302 Temporary        │
 ├─────────────────────────┼──────────────────────┼──────────────────────┤
 │ Server Load             │ Ниже (браузер кэш)   │ Выше (всегда идёт)   │
-│ Analytics               │ Теряем после кэша    │ Есть всегда           │
-│ Target URL flexibility  │ Нельзя менять        │ Можно менять          │
-│ Bandwidth consumption   │ Ниже (меньше req)    │ Выше                  │
-│ SEO impact              │ ✓ Передаёт authority │ ✗ Не передаёт         │
-│ Browser caching         │ Обычно forever       │ Обычно нет            │
+│ Analytics               │ Теряем после кэша    │ Есть всегда          │
+│ Target URL flexibility  │ Нельзя менять        │ Можно менять         │
+│ Bandwidth consumption   │ Ниже (меньше req)    │ Выше                 │
+│ SEO impact              │ ✓ Передаёт authority │ ✗ Не передаёт        │
+│ Browser caching         │ Обычно forever       │ Обычно нет           │
 └─────────────────────────┴──────────────────────┴──────────────────────┘
 ```
 
@@ -1600,7 +1600,7 @@ def redirect_optimized(short_code):
 - Объясни разницу и когда использовать каждый
 - Обсуди trade-off: нагрузка vs аналитика
 - Рекомендуй гибридный подход: 302 для большинства, 301 для popular/permanent
-- Follow-up: «Как минимизировать overhead 302?» — кэширование, асинхронная аналитика, load balancing
+- Уточняющий вопрос: «Как минимизировать overhead 302?» — кэширование, асинхронная аналитика, load balancing
 
 ---
 
@@ -1619,11 +1619,11 @@ def redirect_optimized(short_code):
 │                     URL Shortener at Scale                       │
 ├──────────────────────────────────────────────────────────────────┤
 │                                                                  │
-│  Current: 100M DAU → 115K avg QPS (read), 1.2K (write)          │
-│  Target: 1B DAU  → 1.15M avg QPS (read), 12K (write)            │
+│  Current: 100M DAU → 115K avg QPS (read), 1.2K (write)           │
+│  Target: 1B DAU  → 1.15M avg QPS (read), 12K (write)             │
 │                                                                  │
 │  Bottlenecks:                                                    │
-│  1. API Servers — scale horizontally (add instances)            │
+│  1. API Servers — scale horizontally (add instances)             │
 │  2. Cache — scale Redis cluster                                  │
 │  3. Database — scale via sharding                                │
 │  4. Network — CDN for popular URLs                               │
@@ -1652,10 +1652,10 @@ def redirect_optimized(short_code):
 └────────┬─────┘
          │
     ┌────┴─────┐
-    │           │
-┌───▼──┐ ┌──▼───┐ ... ┌──────┐
-│API 1 │ │API 2 │     │API 20│ ← 20 инстансов
-└──────┘ └──────┘     └──────┘
+    │          │
+┌───▼──┐    ┌──▼───┐ ... ┌──────┐
+│API 1 │    │API 2 │     │API 20│ ← 20 инстансов
+└──────┘    └──────┘     └──────┘
 
 Load Balancer: Round-robin, least connections, consistent hashing
 ```
@@ -1681,7 +1681,7 @@ Redis Cluster (Sharded):
 ┌───────┴──────────────┴──────────────┴────────┐
 │  Client (Redis Client with cluster aware)    │
 │  Хеширует key → определяет shard → запрос    │
-└────────────────────────────────────────────────┘
+└──────────────────────────────────────────────┘
 
 Распределение: hash(short_code) % num_shards
 ```
@@ -1826,8 +1826,8 @@ CDN кэширует:
 │ US-DC   │    │ EU-DC    │   │ APAC-DC  │   │ LATAM-DC │
 │ (master)│    │(replica) │   │(replica) │   │(replica) │
 └─────────┘    └──────────┘   └──────────┘   └──────────┘
-     │              │             │             │
-     └──────────────┼─────────────┼─────────────┘
+     │              │             │                │
+     └──────────────┼─────────────┼────────────────┘
                     │
             ┌───────▼────────┐
             │ Replication    │
@@ -1889,10 +1889,10 @@ Read: из ближайшего региона (replica или cache)
         ┌───────────┼──────────────────┐
         │           │                  │
         │    ┌──────▼──────┐   ┌───────▼────┐
-        │    │ Read       │   │ Read       │
-        │    │ Replicas   │   │ Replicas   │
-        │    │ (EU Region)│   │ (APAC)     │
-        │    └────────────┘   └────────────┘
+        │    │ Read        │   │ Read       │
+        │    │ Replicas    │   │ Replicas   │
+        │    │ (EU Region) │   │ (APAC)     │
+        │    └─────────────┘   └────────────┘
         │
     ┌───▼────────────┐
     │ Message Queue  │
@@ -1913,7 +1913,7 @@ Read: из ближайшего региона (replica или cache)
 - Определи bottleneck (DB, cache, network, CPU)
 - Рекомендуй решение для каждого bottleneck
 - Упомяни consistent hashing для добавления шардов без rehashing
-- Follow-up: «Как добавить shard без downtime?» — consistent hashing, shadow sharding
+- Уточняющий вопрос: «Как добавить shard без downtime?» — consistent hashing, shadow sharding
 
 ---
 
@@ -2159,10 +2159,10 @@ Kafka Partitioning:
 │                  Topic: url_clicks                          │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  Partition 0: short_codes hashing to 0 % num_partitions   │
-│  Partition 1: short_codes hashing to 1 % num_partitions   │
+│  Partition 0: short_codes hashing to 0 % num_partitions     │
+│  Partition 1: short_codes hashing to 1 % num_partitions     │
 │  ...                                                        │
-│  Partition N-1: short_codes hashing to N-1 % num_partitions│
+│  Partition N-1: short_codes hashing to N-1 % num_partitions │
 │                                                             │
 │  Consumer Group: multiple consumers, each reads partition   │
 │                                                             │
@@ -2185,7 +2185,7 @@ Kafka Partitioning:
 - Объясни разницу sync vs async
 - Покажи architecture с Kafka/queue
 - Упомяни Redis для real-time counts, DB для historical
-- Follow-up: «Как гарантировать at-least-once delivery?» — Kafka offset management + idempotent DB writes
+- Уточняющий вопрос: «Как гарантировать at-least-once delivery?» — Kafka offset management + idempotent DB writes
 
 ---
 
@@ -2205,9 +2205,9 @@ Master-Slave Replication:
 │ Master (RW)  │ (US-DC primary)
 │              │
 │ bin log ──┐  │
-└──────────┼──┘
-           │
-        ┌──▼────────────────────────────┐
+└───────────┼──┘
+            │
+        ┌───▼────────────────────────────┐
         │   Replication Pipeline         │
         │   (Network, ordered, durable)  │
         └──────────┬─────────────────────┘
@@ -2216,8 +2216,8 @@ Master-Slave Replication:
         │ Slave (R) — Replica │ (EU-DC)
         │                     │
         │ Apply bin log       │
-        │ (eventually        │
-        │  consistent)       │
+        │ (eventually         │
+        │  consistent)        │
         └─────────────────────┘
 
 Failover (when Master dies):
@@ -2380,22 +2380,22 @@ except Exception as e:
 ├────────────────────────────────────────────────────────────────┤
 │                                                                │
 │  US Region (Primary)              EU Region (Secondary)        │
-│  ┌────────────────────┐           ┌────────────────────┐      │
-│  │ US-AZ-A (active)   │           │ EU-AZ-A (replica)  │      │
-│  │ - API (10 instances)           │ - API (5 instances)│      │
-│  │ - DB Master        │◄──────────│ - DB Replica       │      │
-│  │ - Cache (3 shards) │           │ - Cache (3 shards) │      │
-│  └────────────────────┘           └────────────────────┘      │
-│           │                                │                   │
-│           │  Replication Pipeline          │                   │
-│           └────────────┬────────────────────┘                   │
+│  ┌────────────────────┐           ┌────────────────────┐       │
+│  │ US-AZ-A (active)   │           │ EU-AZ-A (replica)  │       │
+│  │ - API (10 instances)           │ - API (5 instances)│       │
+│  │ - DB Master        │◄──────────│ - DB Replica       │       │
+│  │ - Cache (3 shards) │           │ - Cache (3 shards) │       │
+│  └────────────────────┘           └────────────────────┘       │
+│           │                                 │                  │
+│           │  Replication Pipeline           │                  │
+│           └────────────┬────────────────────┘                  │
 │                        │                                       │
-│  US-AZ-B (standby)     │     EU-AZ-B (standby)                │
-│  ┌────────────────────┐│     ┌────────────────────┐           │
-│  │ - API (3 instances)││     │ - API (2 instances)│           │
-│  │ - DB Replica       │└────▶│ - DB Replica       │           │
-│  │ - Cache (local)    │      │ - Cache (local)    │           │
-│  └────────────────────┘      └────────────────────┘           │
+│  US-AZ-B (standby)     │     EU-AZ-B (standby)                 │
+│  ┌────────────────────┐│     ┌────────────────────┐            │
+│  │ - API (3 instances)││     │ - API (2 instances)│            │
+│  │ - DB Replica       │└────▶│ - DB Replica       │            │
+│  │ - Cache (local)    │      │ - Cache (local)    │            │
+│  └────────────────────┘      └────────────────────┘            │
 │                                                                │
 └────────────────────────────────────────────────────────────────┘
 
@@ -2468,7 +2468,7 @@ class HealthChecker:
 - Объясни master-slave replication
 - Упомяни circuit breaker для graceful degradation
 - Рекомендуй multi-AZ deployment для geographic HA
-- Follow-up: «Как избежать split-brain?» — consensus algorithm (Raft) или external coordinator (Zookeeper)
+- Уточняющий вопрос: «Как избежать split-brain?» — consensus algorithm (Raft) или external coordinator (Zookeeper)
 
 ---
 
@@ -2641,7 +2641,7 @@ def redirect(short_code: str):
 - Обсуди customer requirements (хотят ли custom aliases?)
 - Объясни rate limiting strategy (per IP, per user, global)
 - Рекомендуй monitoring и logging для abuse detection
-- Follow-up: «Как обнаружить phishing links?» — malware database, domain reputation scoring, user reports
+- Уточняющий вопрос: «Как обнаружить phishing links?» — malware database, domain reputation scoring, user reports
 
 ---
 
@@ -2649,40 +2649,40 @@ def redirect(short_code: str):
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│           URL Shortener Design Decisions                   │
+│           URL Shortener Design Decisions                    │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
 │ 1. Code Generation:                                         │
-│    → Snowflake ID (good balance of perf & simplicity)      │
+│    → Snowflake ID (good balance of perf & simplicity)       │
 │    → Pre-generated keys (if extreme perf needed)            │
 │                                                             │
 │ 2. Database:                                                │
-│    → SQL + Sharding (if need analytics & complex queries)  │
-│    → NoSQL (if pure key-value, extreme scale)              │
-│    → Hybrid (NoSQL for URLs, SQL for analytics)            │
+│    → SQL + Sharding (if need analytics & complex queries)   │
+│    → NoSQL (if pure key-value, extreme scale)               │
+│    → Hybrid (NoSQL for URLs, SQL for analytics)             │
 │                                                             │
 │ 3. Caching:                                                 │
-│    → Redis cluster (multi-AZ, replication)                 │
-│    → Cache hot 20% (80/20 rule)                            │
-│    → TTL ~1-24 hours                                       │
+│    → Redis cluster (multi-AZ, replication)                  │
+│    → Cache hot 20% (80/20 rule)                             │
+│    → TTL ~1-24 hours                                        │
 │                                                             │
 │ 4. Redirect:                                                │
-│    → 301 for permanent, predictable target                 │
-│    → 302 for analytics & flexibility                       │
+│    → 301 for permanent, predictable target                  │
+│    → 302 for analytics & flexibility                        │
 │                                                             │
 │ 5. Analytics:                                               │
 │    → Async (Kafka/queue) not blocking                       │
-│    → Redis for real-time, DB for historical               │
+│    → Redis for real-time, DB for historical                 │
 │                                                             │
-│ 6. HA/Failover:                                            │
-│    → Master-slave replication                              │
-│    → Multi-AZ deployment                                   │
-│    → Circuit breakers & health checks                      │
+│ 6. HA/Failover:                                             │
+│    → Master-slave replication                               │
+│    → Multi-AZ deployment                                    │
+│    → Circuit breakers & health checks                       │
 │                                                             │
-│ 7. Scaling:                                                │
-│    → Horizontal scaling (stateless API)                    │
-│    → Sharding (database)                                   │
-│    → CDN (for popular URLs)                                │
+│ 7. Scaling:                                                 │
+│    → Horizontal scaling (stateless API)                     │
+│    → Sharding (database)                                    │
+│    → CDN (for popular URLs)                                 │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```

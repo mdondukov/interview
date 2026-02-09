@@ -168,7 +168,7 @@ Yearly Storage: {yearly_storage / 1024**5:.2f} PB
 - Начни с требований и requirements.
 - Размерь capacity на бумаге в реальном времени.
 - Объясни, почему Cassandra а не PostgreSQL для сообщений.
-- Follow-up: «Как обеспечить message ordering?» — TIMEUUID + client-side sorting.
+- Уточняющий вопрос: «Как обеспечить message ordering?» — TIMEUUID + client-side sorting.
 
 ---
 
@@ -225,7 +225,7 @@ Client                          Server
 
 **WebSocket Handshake:**
 ```
-Client requests upgrade:
+Client запрашивает upgrade:
 GET /chat HTTP/1.1
 Host: server.com
 Upgrade: websocket
@@ -233,7 +233,7 @@ Connection: Upgrade
 Sec-WebSocket-Key: x3JJHMbDL1EzLkh9GBhXDw==
 Sec-WebSocket-Version: 13
 
-Server responds:
+Server отвечает:
 HTTP/1.1 101 Switching Protocols
 Upgrade: websocket
 Connection: Upgrade
@@ -504,7 +504,7 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):
 - Объясни процесс WebSocket handshake.
 - Покажи разницу между WebSocket и long polling на диаграмме.
 - Упомяни heartbeat для обнаружения мертвых соединений.
-- Follow-up: «Как масштабировать WebSocket на несколько серверов?» — Redis Pub/Sub для cross-server messaging.
+- Уточняющий вопрос: «Как масштабировать WebSocket на несколько серверов?» — Redis Pub/Sub для cross-server messaging.
 
 ---
 
@@ -739,7 +739,7 @@ class ClientHeartbeat:
       self.task.cancel()
 ```
 
-**Trade-offs:**
+**Компромиссы:**
 ```
 Approach 1: Accuracy = High (every action updates presence)
 ├─ Плюсы: Real-time status updates
@@ -764,7 +764,7 @@ Approach 3: Presence = Low (check on demand)
 - Объясни архитектуру: Redis TTL + heartbeat.
 - Покажи, как обрабатывать multi-device presence.
 - Упомяни использование Redis Pub/Sub для cross-server broadcast.
-- Follow-up: «Как обрабатывать сетевые сбои?» — graceful degradation, retry с backoff.
+- Уточняющий вопрос: «Как обрабатывать сетевые сбои?» — graceful degradation, retry с backoff.
 
 ---
 
@@ -974,7 +974,7 @@ async def handle_message(sender_id: str, conversation_id: str, content: str):
 - Объясни, почему TIMEUUID а не sequence numbers.
 - Покажи Cassandra schema с clustering order.
 - Упомяни client-side re-sorting для edge cases.
-- Follow-up: «Как обрабатывать edited messages?» — timestamp edit, но original order by message_id.
+- Уточняющий вопрос: «Как обрабатывать edited messages?» — timestamp edit, но original order by message_id.
 
 ---
 
@@ -1226,7 +1226,7 @@ class LargeGroupOptimization:
 - Объясни trade-offs fan-out write vs fan-out read.
 - Покажи, как выбирать threshold (обычно 100-500).
 - Упомяни caching для улучшения read performance.
-- Follow-up: «Как обрабатывать 10K member group?» — only push to active, others pull on demand.
+- Уточняющий вопрос: «Как обрабатывать 10K member group?» — only push to active, others pull on demand.
 
 ---
 
@@ -1494,7 +1494,7 @@ class ClientReadReceipt:
 - Объясни архитектуру: cache + async processing.
 - Покажи, как debouncing улучшает performance.
 - Упомяни eventual consistency — read receipt не требует strong consistency.
-- Follow-up: «Как показывать "Typing" indicator?» — аналогичный pattern с debouncing.
+- Уточняющий вопрос: «Как показывать "Typing" indicator?» — аналогичный pattern с debouncing.
 
 ---
 
@@ -1806,7 +1806,7 @@ class DataRetention:
 - Объясни почему Cassandra а не PostgreSQL: write-throughput, time-series optimization.
 - Покажи date-based partitioning и TTL.
 - Упомяни S3 архивирование для cost optimization.
-- Follow-up: «Как импортировать архивированные сообщения?» — query S3 via Athena или загрузить в Cassandra.
+- Уточняющий вопрос: «Как импортировать архивированные сообщения?» — query S3 via Athena или загрузить в Cassandra.
 
 ---
 
@@ -2205,7 +2205,7 @@ class AdvancedSearch:
 - Объясни async индексирование через message queue.
 - Покажи ES query с фильтрами.
 - Упомяни important fields: content, created_at, conversation_id.
-- Follow-up: «Как поискать без учёта регистра?» — lowercase analyzer в mapping.
+- Уточняющий вопрос: «Как поискать без учёта регистра?» — lowercase analyzer в mapping.
 
 ---
 
@@ -2589,8 +2589,8 @@ User loses private key             Recovery key or passphrase backup
 **На интервью.**
 - Объясни asymmetric + symmetric combo и зачем обе нужны.
 - Покажи проблемы и solutions (key management, etc).
-- Упомяни Signal protocol как best practice.
-- Follow-up: «Как добавить forward secrecy?» — use ECDH + ratcheting, не RSA.
+- Упомяни Signal protocol как лучшая практика.
+- Уточняющий вопрос: «Как добавить forward secrecy?» — use ECDH + ratcheting, не RSA.
 
 ---
 
@@ -2852,7 +2852,7 @@ class MonitoringDashboard:
 - Нарисуй架构 для 500M DAU с явным распределением.
 - Объясни scaling каждого компонента (WebSocket, Redis, Cassandra, Kafka).
 - Упомяни observability и мониторинг как обязательные.
-- Follow-up: «Что делать если один Cassandra node падает?» — replicas + failover.
+- Уточняющий вопрос: «Что делать если один Cassandra node падает?» — replicas + failover.
 
 ---
 
@@ -2887,7 +2887,7 @@ class MonitoringDashboard:
 ## Дополнительные материалы
 
 - [Designing Data-Intensive Applications](https://dataintensive.net/) — глава про messaging и stream processing
-- [Signal Protocol Documentation](https://signal.org/docs/) — best practice для E2E encryption
+- [Signal Protocol Documentation](https://signal.org/docs/) — лучшая практика для E2E encryption
 - [Cassandra Best Practices](https://cassandra.apache.org/doc/latest/cassandra/architecture/index.html) — время-серийные данные
 - [Elasticsearch Guide](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html) — полнотекстовый поиск
 - [WebSocket API Spec](https://tools.ietf.org/html/rfc6455) — официальная спецификация

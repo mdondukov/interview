@@ -153,7 +153,7 @@ def get_user(user_id: str):
 **На интервью.**
 - Объясни, почему cache улучшает latency и throughput, с цифрами
 - Назови 3-5 типичных использования cache в социальной сети
-- Follow-up: «Какие проблемы cache создаёт?» — inconsistency, invalidation complexity, memory cost
+- Уточняющий вопрос: «Какие проблемы cache создаёт?» — inconsistency, invalidation complexity, memory cost
 
 ---
 
@@ -375,7 +375,7 @@ for i in range(10):
 - Нарисуй кольцо с точками узлов и ключей
 - Объясни, что при добавлении узла перехешировать только ~1/n данных
 - Упомяни virtual nodes как решение неравномерности
-- Follow-up: «Как обрабатывать failed узел?» — перехеширование ключей на replicas
+- Уточняющий вопрос: «Как обрабатывать failed узел?» — перехеширование ключей на replicas
 
 ---
 
@@ -498,26 +498,26 @@ class LRUCache:
         self.cache = OrderedDict()
 
     def get(self, key: str):
-        """Get value and mark as recently used"""
+        """Получить значение и отметить как недавно использованное"""
         if key not in self.cache:
             return None
 
-        # Move to end (most recently used)
+        # Переместить в конец (самое недавно использованное)
         self.cache.move_to_end(key)
         return self.cache[key]
 
     def set(self, key: str, value):
-        """Set value, evict if necessary"""
+        """Установить значение, вытеснить при необходимости"""
         if key in self.cache:
-            # Already exists, just update and mark recent
+            # Уже существует, просто обновляем и отмечаем как свежее
             self.cache.move_to_end(key)
             self.cache[key] = value
         else:
-            # New key
+            # Новый ключ
             if len(self.cache) >= self.capacity:
-                # Evict least recently used (first item in OrderedDict)
+                # Вытесняем least recently used (первый элемент в OrderedDict)
                 evicted_key, _ = self.cache.popitem(last=False)
-                print(f"Evicted {evicted_key}")
+                print(f"Вытеснен {evicted_key}")
 
             self.cache[key] = value
 
@@ -588,8 +588,8 @@ print(f"Peak memory: {info['used_memory_peak_human']}")
 **На интервью.**
 - Объясни, как LRU выбирает ключ для вытеснения
 - Назови случаи, когда LFU лучше LRU
-- Follow-up: «Как реализовать LFU эффективно?» — heap + frequency tracking
-- Follow-up: «Что если нужен гибридный подход?» — комбинировать TTL + LRU
+- Уточняющий вопрос: «Как реализовать LFU эффективно?» — heap + frequency tracking
+- Уточняющий вопрос: «Что если нужен гибридный подход?» — комбинировать TTL + LRU
 
 ---
 
@@ -643,27 +643,27 @@ Latency: ~50-100ms (DB latency)
 └──┬───┘
    │
    ├──────────► Cache ─────┐
-   │            (write)    │ → Немедленно возвращаем
+   │           (запись)    │ → Немедленно возвращаем
    │                       │
    └──────────────────┐    │
                       ▼    ▼
-                   Queue   ┌──────────────┐
-                           │ Background   │
-                           │ Worker (async)
-                           └──────┬───────┘
+                  Очередь  ┌──────────────────┐
+                           │ Фоновый          │
+                           │ воркер (async)   │
+                           └──────┬───────────┘
                                   ▼
-                                Cache → DB (batch write)
+                            Cache → DB (batch запись)
 ```
 
 Гарантии: Cache персистируется асинхронно
 
 ```
-Плюсы:
+Преимущества:
 - Быстро (return immediately)
-- Batch write к DB (экономит network)
-- Cache absorbs spike нагрузки
+- Batch запись в DB (экономит network)
+- Cache поглощает скачки нагрузки
 
-Минусы:
+Недостатки:
 - Eventual consistency
 - Риск потери при сбое cache (можно добавить WAL)
 - Сложнее отладка (async логика)
@@ -680,25 +680,25 @@ Throughput: очень высокий
 │ App  │
 └──┬───┘
    │
-   │ (bypass cache, write directly)
+   │ (bypass cache, пишем напрямую)
    │
    └──────────────────────────────► DB
-                                  (write)
+                                (запись)
 
-Cache остаётся как читаемая copy, не обновляется на write
+Cache остаётся как читаемая копия, не обновляется при write
 ```
 
-Гарантии: DB истинный источник, cache optional
+Гарантии: DB истинный источник, cache опциональный
 
 ```
-Плюсы:
+Преимущества:
 - Простая консистентность (write идёт в DB)
 - Не заполняет cache мусором
 - Хорошо для write-heavy workloads
 
-Минусы:
-- Write не получает benefits cache
-- Возможен cache stale data
+Недостатки:
+- Write не получает преимуществ cache
+- Возможен cache с устаревшими данными
 - Нужна инвалидация при write
 
 Latency: ~50-100ms (DB latency)
@@ -855,8 +855,8 @@ write_back_with_durability:
 **На интервью.**
 - Объясни разницу write-through vs write-back с latency цифрами
 - Когда use write-around? — для bulk writes, когда cache не помогает
-- Follow-up: «Как добавить durability к write-back?» — WAL + batch commits
-- Follow-up: «Как обрабатывать spikey traffic?» — write-back + queue limits
+- Уточняющий вопрос: «Как добавить durability к write-back?» — WAL + batch commits
+- Уточняющий вопрос: «Как обрабатывать spikey traffic?» — write-back + queue limits
 
 ---
 
@@ -1141,8 +1141,8 @@ for i in range(5):
 **На интервью.**
 - Объясни, почему cache invalidation сложная
 - Назови 3 подхода и trade-offs
-- Follow-up: «Как обрабатывать cascade invalidation?» — помечать dependencies
-- Follow-up: «Что если DB update и cache invalidation не atomic?» — используй distributed lock или message queue
+- Уточняющий вопрос: «Как обрабатывать cascade invalidation?» — помечать dependencies
+- Уточняющий вопрос: «Что если DB update и cache invalidation не atomic?» — используй distributed lock или message queue
 
 ---
 
@@ -1357,8 +1357,8 @@ MIGRATE host port key db timeout # Мигрировать ключ
 **На интервью.**
 - Объясни, как ключ маршрутизируется на узел (CRC16 % 16384)
 - Как обрабатывается failover при сбое узла?
-- Follow-up: «Как добавить новый узел без downtime?» — reshard slots постепенно
-- Follow-up: «Когда использовать hash tags?» — когда нужна группировка ключей на один узел
+- Уточняющий вопрос: «Как добавить новый узел без downtime?» — reshard slots постепенно
+- Уточняющий вопрос: «Когда использовать hash tags?» — когда нужна группировка ключей на один узел
 
 ---
 
@@ -1678,8 +1678,8 @@ test_stampede_with_singleflight()
 **На интервью.**
 - Объясни сценарий cache stampede с цифрами
 - Назови 3 решения и их trade-offs
-- Follow-up: «Как комбинировать несколько решений?» — lock для безопасности + early refresh для улучшения hit rate
-- Follow-up: «Как выбрать TTL чтобы минимизировать stampede?» — balance между freshness и stability
+- Уточняющий вопрос: «Как комбинировать несколько решений?» — lock для безопасности + early refresh для улучшения hit rate
+- Уточняющий вопрос: «Как выбрать TTL чтобы минимизировать stampede?» — balance между freshness и stability
 
 ---
 
@@ -1951,8 +1951,8 @@ users = client.batch_get(["user:1", "user:2", "user:3"])
 **На интервью.**
 - Нарисуй timeline для race condition scenario
 - Объясни, почему "invalidate first" безопаснее
-- Follow-up: «Как обрабатывать cascade invalidation?» — пометить dependencies или use event-based invalidation
-- Follow-up: «Что если DB и cache асинхронны?» — eventual consistency, нужна TTL backup
+- Уточняющий вопрос: «Как обрабатывать cascade invalidation?» — пометить dependencies или use event-based invalidation
+- Уточняющий вопрос: «Что если DB и cache асинхронны?» — eventual consistency, нужна TTL backup
 
 ---
 
@@ -2206,8 +2206,8 @@ for key, value in stats.items():
 **На интервью.**
 - Назови 5+ ключевых метрик cache
 - Что считаешь нормальным hit rate? — > 90%
-- Follow-up: «Что если hit rate 50%?» — либо неправильный TTL, либо cache не подходит для этого workload
-- Follow-up: «Как отладить low hit rate?» — посмотреть access pattern, есть ли hot keys
+- Уточняющий вопрос: «Что если hit rate 50%?» — либо неправильный TTL, либо cache не подходит для этого workload
+- Уточняющий вопрос: «Как отладить low hit rate?» — посмотреть access pattern, есть ли hot keys
 
 ---
 
@@ -2537,7 +2537,7 @@ for key, value in stats.items():
 
 4. Compression (сжатие)
    Сжимать values если > 1KB
-   Trade-off: CPU vs memory
+   Компромисс: CPU vs memory
 ```
 
 **Типичные ошибки.**
@@ -2549,8 +2549,8 @@ for key, value in stats.items():
 **На интервью.**
 - Когда use vertical vs horizontal scaling?
 - Объясни процесс добавления узла в Redis Cluster
-- Follow-up: «Как минимизировать latency при миграции?» — batch migration, use pipeline
-- Follow-up: «Зачем нужен tiered cache?» — улучшает hit rate и latency
+- Уточняющий вопрос: «Как минимизировать latency при миграции?» — batch migration, use pipeline
+- Уточняющий вопрос: «Зачем нужен tiered cache?» — улучшает hit rate и latency
 
 ---
 

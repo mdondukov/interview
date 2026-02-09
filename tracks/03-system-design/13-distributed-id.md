@@ -192,12 +192,12 @@ xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 │ generation │ + variant│ + clock  │ or random
 └────────────────────────────────────────────────┘
 
-Advantages:
+Преимущества:
 - Sortable по времени (по первым 60 bits)
 - Можно извлечь timestamp из ID
 - Deterministic для того же узла в то же время
 
-Disadvantages:
+Недостатки:
 - Раскрывает MAC адрес узла (privacy issue)
 - Требует часов на каждом узле (clock skew проблемы)
 - 128 bits очень большой
@@ -217,13 +217,13 @@ Disadvantages:
 │ bits       │ bits     │ bits     │ bits (with fixed marker)
 └────────────────────────────────────────────────┘
 
-Advantages:
+Преимущества:
 - Простой и не требует координации
 - Приватный — не раскрывает информацию
 - Стандартный, поддерживается везде
 - Очень низкая вероятность коллизии (birthday paradox: ~2.71 × 10^18 IDs для 50% коллизии)
 
-Disadvantages:
+Недостатки:
 - Не sortable (совершенно случайный)
 - 128 bits — большой размер
 - Плохая локальность для индексов
@@ -245,12 +245,12 @@ UUID v5 = SHA-1(namespace + name)
 - ISO OID namespace: 6ba7b812-9dad-11d1-80b4-00c04fd430c8
 - X.500 DN namespace: 6ba7b814-9dad-11d1-80b4-00c04fd430c8
 
-Advantages:
+Преимущества:
 - Deterministic: один namespace+name → один ID всегда
 - Не требует хранить маппинг
 - Reproducible (можно пересчитать ID без БД)
 
-Disadvantages:
+Недостатки:
 - Не sortable по времени
 - SHA-1 вычисление дороже чем простой random
 - Нужно знать namespace (не подходит для ad-hoc ID)
@@ -258,13 +258,13 @@ Disadvantages:
 
 **Сравнение:**
 ```
-┌─────────────┬──────────┬──────────┬─────────┬──────────────┐
-│ Version     │ Size     │ Sortable │ Privacy │ Use Case     │
-├─────────────┼──────────┼──────────┼─────────┼──────────────┤
-│ v1 (time)   │ 128 bits │ Yes*     │ No      │ Not for dist │
-│ v4 (random) │ 128 bits │ No       │ Yes     │ Simple cases │
-│ v5 (hash)   │ 128 bits │ No       │ Yes     │ Determinism  │
-└─────────────┴──────────┴──────────┴─────────┴──────────────┘
+┌─────────────┬──────────┬────────────┬─────────┬──────────────┐
+│ Версия      │ Размер   │ Сортируемо │ Privacy │ Use Case     │
+├─────────────┼──────────┼────────────┼─────────┼──────────────┤
+│ v1 (time)   │ 128 bits │ Да*        │ Нет     │ Not for dist │
+│ v4 (random) │ 128 bits │ Нет        │ Да      │ Simple cases │
+│ v5 (hash)   │ 128 bits │ Нет        │ Да      │ Determinism  │
+└─────────────┴──────────┴────────────┴─────────┴──────────────┘
 ```
 
 **Пример.**
@@ -556,7 +556,7 @@ print(f"Generated {count:,} IDs in {elapsed:.3f}s = {count/elapsed:,.0f} IDs/sec
 - Обсуди требования к machine ID assignment и координации
 - Упомяни clock synchronization проблемы и как их обработать
 - Покажи как парсить ID и извлечь timestamp
-- Follow-up: как масштабировать на несколько датацентров? (answer: encode DC в machine_id)
+- Уточняющий вопрос: как масштабировать на несколько датацентров? (answer: encode DC в machine_id)
 
 ---
 
@@ -583,18 +583,18 @@ print(f"Generated {count:,} IDs in {elapsed:.3f}s = {count/elapsed:,.0f} IDs/sec
 │ Timestamp part      │   Random part            │
 └─────────────────────────────────────────────────┘
 
-Encoding: Crockford's Base32
-  Alphabet: 0123456789ABCDEFGHJKMNPQRSTVWXYZ
-  (32 characters, no I, L, O, U to avoid confusion)
-  26 chars ULID = 10 chars timestamp + 16 chars random
+Кодирование: Crockford's Base32
+  Алфавит: 0123456789ABCDEFGHJKMNPQRSTVWXYZ
+  (32 символа, без I, L, O, U для избежания путаницы)
+  26 символов ULID = 10 символов timestamp + 16 символов random
 
-Timestamp part (48 bits = 10 Crockford Base32 chars):
-  - 48 bits = 281,474,976,710,656 milliseconds
-  - ≈ 8,921 years (from 1970 to 10889)
+Часть timestamp (48 бит = 10 символов Crockford Base32):
+  - 48 бит = 281,474,976,710,656 миллисекунд
+  - ≈ 8,921 лет (с 1970 по 10889)
 
-Random part (80 bits = 16 Crockford Base32 chars):
-  - 2^80 = 1,208,925,819,614,629,174,706,176 combinations
-  - Collision probability extremely low
+Часть random (80 бит = 16 символов Crockford Base32):
+  - 2^80 = 1,208,925,819,614,629,174,706,176 комбинаций
+  - Вероятность коллизии экстремально низкая
 ```
 
 **ULID vs Snowflake:**
@@ -810,7 +810,7 @@ class ULIDStorage:
 - Покажи сравнение с Snowflake и когда выбрать что
 - Объясни lexicographic ordering и как это помогает sortability
 - Обсуди implementation complexity vs benefits
-- Follow-up: как реализовать monotonic ULID? (answer: используй counter с timestamp)
+- Уточняющий вопрос: как реализовать monotonic ULID? (answer: используй counter с timestamp)
 
 ---
 
@@ -841,57 +841,57 @@ Result:
 
 ─────────────────────────────────────────────────────────
 
-Problem: Machine 1 clock goes backward (clock skew):
+Проблема: Часы машины 1 идут назад (clock skew):
 
-Machine 1: T=1000ms ─────► T=1001ms ──► Clock jump back!
-           ID(42,0)       ID(42,0)      T=995ms ← ERROR!
-                          ↓seq=1        T < last_timestamp
-                                        Cannot generate ID
+Машина 1: T=1000ms ─────► T=1001ms ──► Часы прыгнули назад!
+          ID(42,0)       ID(42,0)      T=995ms ← ОШИБКА!
+                         ↓seq=1        T < last_timestamp
+                                       Невозможно генерировать ID
 
-Machine 2: T=1000ms ─────► T=1001ms ──► T=1002ms
-           ID(43,0)       ID(43,0)      ID(43,0)
-                          ↓seq=1        ↓seq=2
+Машина 2: T=1000ms ─────► T=1001ms ──► T=1002ms
+          ID(43,0)       ID(43,0)      ID(43,0)
+                         ↓seq=1        ↓seq=2
 
-Result:
-- Machine 1 stops generating IDs (ClockMovedBackwardError)
-- System availability degraded
-- Inconsistent ID generation
-
-─────────────────────────────────────────────────────────
-
-Problem: Machine 1 clock drifts (too slow):
-
-Machine 1: T=1000ms ─────► T=1000ms ─────► T=1001ms
-           ID(42,0)       ID(42,0)        ID(42,0)
-                          ↓seq=1
-                          ↓seq=2          ↓seq=3
-                          ... seq overflow...
-
-Machine 2: T=1000ms ─────► T=1001ms ─────► T=1002ms
-           ID(43,0)       ID(43,0)        ID(43,0)
-                          ↓seq=1          ↓seq=1
-
-Result:
-- Machine 1 generates more IDs in same timestep (seq overflow more often)
-- Must wait for next ms (backpressure)
-- Reduced throughput on affected machine
+Результат:
+- Машина 1 перестаёт генерировать ID (ClockMovedBackwardError)
+- Доступность системы деградирована
+- Несогласованная генерация ID
 
 ─────────────────────────────────────────────────────────
 
-Problem: Duplicate generation if clock resets:
+Проблема: Часы машины 1 отстают (слишком медленно):
 
-Machine 1: T=1000ms → T=1001ms → ... → T=1100ms
-           ╱    \
-           │ CRASH & RESTART
-           │ Load last_timestamp from checkpoint: T=1050ms (old!)
-           │
-           └─► T=1030ms (after restart) — lower than checkpoint!
-               Cannot generate (clock backward from 1050 to 1030)
+Машина 1: T=1000ms ─────► T=1000ms ─────► T=1001ms
+          ID(42,0)       ID(42,0)        ID(42,0)
+                         ↓seq=1
+                         ↓seq=2          ↓seq=3
+                         ... переполнение seq...
 
-BUT if machine doesn't check:
-           T=1030ms → generate ID with timestamp 1030
-           BUT a previous ID already exists with same timestamp!
-           COLLISION!
+Машина 2: T=1000ms ─────► T=1001ms ─────► T=1002ms
+          ID(43,0)       ID(43,0)        ID(43,0)
+                         ↓seq=1          ↓seq=1
+
+Результат:
+- Машина 1 генерирует больше ID за один временной шаг (переполнение seq чаще)
+- Должна ждать следующую ms (backpressure)
+- Пропускная способность снижена на затронутой машине
+
+─────────────────────────────────────────────────────────
+
+Проблема: Дублирование если часы сбросятся:
+
+Машина 1: T=1000ms → T=1001ms → ... → T=1100ms
+          ╱    \
+          │ КРАХ И ПЕРЕЗАГРУЗКА
+          │ Загрузить last_timestamp из checkpoint: T=1050ms (старая!)
+          │
+          └─► T=1030ms (после перезагрузки) — ниже чем checkpoint!
+              Невозможно генерировать (часы назад с 1050 на 1030)
+
+НО если машина не проверяет:
+          T=1030ms → генерировать ID с timestamp 1030
+          НО предыдущий ID уже существует с тем же timestamp!
+          КОЛЛИЗИЯ!
 ```
 
 **Clock synchronization approach:**
@@ -923,10 +923,10 @@ BUT if machine doesn't check:
 │                                                      │
 └─────────────────────────────────────────────────────┘
 
-Typical NTP accuracy:
-- ±10ms in same datacenter
-- ±100ms across regions
-- Must account for this in Snowflake design
+Типичная точность NTP:
+- ±10ms в одном датацентре
+- ±100ms между регионами
+- Должно учитываться в проектировании Snowflake
 ```
 
 **Пример.**
@@ -1104,7 +1104,7 @@ print("\nClock health:", gen.get_health())
 - Покажи как реализовать tolerance к small drift
 - Обсуди checkpointing и monitoring для clock health
 - Упомяни NTP accuracy в разных сценариях (LAN, WAN, cross-DC)
-- Follow-up: как обрабатывать clock resets? (answer: checkpoint last_timestamp, check on startup)
+- Уточняющий вопрос: как обрабатывать clock resets? (answer: checkpoint last_timestamp, check on startup)
 
 ---
 
@@ -1375,7 +1375,7 @@ for i in range(len(ids) - 1):
 - Покажи как Snowflake обеспечивает per-node monotonicity
 - Обсуди cost of strict global monotonicity (centralization, bottleneck)
 - Покажи примеры как использовать timestamp для ordering
-- Follow-up: Что если timestamp одинаковый для разных машин? (answer: используй machine_id as tiebreaker)
+- Уточняющий вопрос: Что если timestamp одинаковый для разных машин? (answer: используй machine_id as tiebreaker)
 
 ---
 
@@ -1561,7 +1561,7 @@ print(f"Completed in {elapsed:.2f}s")
 - Покажи как Snowflake структура предотвращает коллизии (machine_id + sequence)
 - Обсуди требования к уникальности machine_id
 - Упомяни как обрабатывать sequence overflow
-- Follow-up: Что если слишком много коллизий? (answer: используй больший ID размер или измени алгоритм)
+- Уточняющий вопрос: Что если слишком много коллизий? (answer: используй больший ID размер или измени алгоритм)
 
 ---
 
@@ -1795,7 +1795,7 @@ print(f"  Base64:     {len(b64)} chars")
 - Объясни trade-off между size и readability
 - Обсуди выбор формата для разных сценариев (storage, API, URL)
 - Упомяни sortability и как это влияет на индексы
-- Follow-up: Как интегрировать кодирование в REST API? (answer: automatic in serialization layer)
+- Уточняющий вопрос: Как интегрировать кодирование в REST API? (answer: automatic in serialization layer)
 
 ---
 
@@ -2068,7 +2068,7 @@ Issue 5: ID ordering across datacenters
 - Покажи как machine_id assignment работает (ZK ephemeral nodes)
 - Обсуди critical decisions (HTTP API, soft state, NTP)
 - Упомяни lessons learned (simplicity, minimized coordination)
-- Follow-up: Как бы ты адаптировал Snowflake для своей компании?
+- Уточняющий вопрос: Как бы ты адаптировал Snowflake для своей компании?
 
 ---
 
@@ -2199,22 +2199,22 @@ Scenario 2: Network partition (DCs disconnected)
             Master ZK (UNAVAILABLE)
             Cannot coordinate
 
-Risk: If both DCs try to use same machine_id range
-      → COLLISION!
+Риск: Если оба DC попытаются использовать одинаковый machine_id диапазон
+     → КОЛЛИЗИЯ!
 ```
 
-**Recovery strategy:**
+**Стратегия восстановления:**
 ```
-During partition, allow local generation with risks:
-1. Each DC respects its allocated range (0-99 for DC1, etc.)
-2. Even if partition, each DC only uses its range
-3. No collision as long as ranges don't overlap
-4. When healed: sync machine_id registries
+Во время разделения, разрешить локальную генерацию с рисками:
+1. Каждый DC уважает свой выделенный диапазон (0-99 для DC1, и т.д.)
+2. Даже при разделении, каждый DC использует только свой диапазон
+3. Нет коллизий если диапазоны не перекрываются
+4. После восстановления: синхронизировать реестры machine_id
 
-If someone tries to violate (use wrong range):
-1. Could detect: DC1 tries to use 150 (EU range)
-2. Prevention: Config-based enforcement
-3. Emergency mode: if partition detected, stricter quotas
+Если кто-то попытается нарушить (использовать неправильный диапазон):
+1. Можно обнаружить: DC1 пытается использовать 150 (EU диапазон)
+2. Профилактика: Config-based enforcement
+3. Режим чрезвычайной ситуации: если обнаружено разделение, более строгие квоты
 ```
 
 **Пример: Multi-DC Snowflake:**
@@ -2355,31 +2355,31 @@ async def main():
         print(f"ID {id}: generated in {dc}")
 ```
 
-**Best practices для multi-DC:**
+**Лучшая практикаs для multi-DC:**
 ```
-1. Machine ID allocation:
+1. Выделение Machine ID:
    ✓ Pre-allocate ranges per DC (avoid coordination)
    ✓ Reserve extra for growth
    ✓ Document allocation in config
 
-2. Clock synchronization:
+2. Синхронизация часов:
    ✓ NTP within each DC (±10ms)
    ✓ Accept ~100ms skew across DCs (not on critical path)
    ✓ Monitor clock health in each DC independently
 
-3. ZooKeeper coordination:
+3. ZooKeeper координация:
    ✓ Local ZK cluster per DC (low latency)
    ✓ Optional cross-DC ZK replication (for conflict resolution)
    ✓ Graceful degradation if connection lost
 
-4. Monitoring and alerting:
+4. Мониторинг и алерты:
    ✓ Monitor machine_id assignment latency
    ✓ Alert on clock drift > threshold
    ✓ Alert on ZK disconnection
    ✓ Track ID collisions (should be 0)
    ✓ Track sequence overflow events
 
-5. Testing:
+5. Тестирование:
    ✓ Test single DC failure
    ✓ Test network partition (sync recovery)
    ✓ Test clock skew scenarios
@@ -2399,20 +2399,20 @@ async def main():
 - Discuss network partition scenarios and recovery
 - Show how to determine DC from ID itself
 - Discuss monitoring and alerting requirements
-- Follow-up: How would you handle 10 datacenters? (answer: same approach, just more ranges)
+- Уточняющий вопрос: How would you handle 10 datacenters? (answer: same approach, just more ranges)
 
 ---
 
 ## Резюме и сравнение подходов
 
-| Подход | Bits | Coordination | Throughput | Sortable | Use Case |
-|--------|------|--------------|-----------|----------|----------|
-| UUID v4 | 128 | None | High | No | Simple, no special requirements |
-| UUID v1 | 128 | None | High | Yes* | Time-ordered, but privacy issues |
-| Snowflake | 64 | Machine ID | 4M/s per node | Yes | High-scale distributed (Twitter, Uber) |
-| ULID | 128 | None | High | Yes | Distributed, no coordination needed |
-| DB Sequence | 64 | Full | Medium | Yes | Simple, low scale, single DB |
-| Redis | 64 | Central | High | Partial | Centralized systems |
+| Подход | Bits | Координация | Throughput | Сортируемо | Use Case |
+|--------|------|-------------|-----------|------------|----------|
+| UUID v4 | 128 | Нет | High | Нет | Simple, no special requirements |
+| UUID v1 | 128 | Нет | High | Да* | Time-ordered, but privacy issues |
+| Snowflake | 64 | Machine ID | 4M/s per node | Да | High-scale distributed (Twitter, Uber) |
+| ULID | 128 | Нет | High | Да | Distributed, no coordination needed |
+| DB Sequence | 64 | Полная | Medium | Да | Simple, low scale, single DB |
+| Redis | 64 | Central | High | Частично | Centralized systems |
 
 *UUID v1 sortable but has known weaknesses
 

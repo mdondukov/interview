@@ -372,7 +372,7 @@ class RaftNode:
 - Нарисуйте диаграмму state transitions между Follower/Candidate/Leader
 - Объясните, почему term увеличивается монотонно
 - Дайте пример: как обновляется лог, когда leader отказывает
-- Follow-up: "Что если leader падает после commit'а но до отправки ответа client'у?"
+- Уточняющий вопрос: "Что если leader падает после commit'а но до отправки ответа client'у?"
 
 ---
 
@@ -573,7 +573,7 @@ class RaftElection:
 - Объясните, почему randomization election timeout важна
 - Нарисуйте диаграмму: что происходит когда есть multiple candidates?
 - Дайте пример: как избежать split-brain
-- Follow-up: "Сколько времени может занять выбор лидера?" (Ответ: несколько election timeout'ов в худшем случае)
+- Уточняющий вопрос: "Сколько времени может занять выбор лидера?" (Ответ: несколько election timeout'ов в худшем случае)
 
 ---
 
@@ -795,7 +795,7 @@ class RaftLogReplication:
 - Нарисуйте процесс: как leader разруливает diverged logs?
 - Объясните, почему нужно проверять prevLogIndex и prevLogTerm
 - Дайте пример: что если leader отправляет 1000 записей на slow follower? (Ответ: может использовать snapshot'ы)
-- Follow-up: "Как долго может занять репликация?" (Зависит от сети и размера лога)
+- Уточняющий вопрос: "Как долго может занять репликация?" (Зависит от сети и размера лога)
 
 ---
 
@@ -897,7 +897,7 @@ Term'ы обеспечивают:
 3. Невозвратимость: old leader в term 1 никогда не сможет перезаписать term 4
 ```
 
-**Importance of Persistence:**
+**Важность Persistence (долговечности состояния):**
 
 ```python
 class PersistentState:
@@ -941,40 +941,40 @@ class PersistentState:
 **Term в контексте выборов:**
 
 ```
-Scenario: Network partition
+Сценарий: Разделение сети
 
 ┌─────────────────────────────────────────┐
-│ Cluster: [A, B, C, D, E]                │
-│ Leader: A (term=5)                      │
+│ Кластер: [A, B, C, D, E]                │
+│ Лидер: A (term=5)                       │
 └─────────────────────────────────────────┘
            │
-           ├─[PARTITION]─┤
-           │             │
-      Group 1        Group 2
+           ├─[РАЗДЕЛЕНИЕ]─┤
+           │              │
+      Группа 1       Группа 2
       (A, B, C)      (D, E)
 
-Time t=0: Partition happens
-  Group 1: A continues as leader, term=5
-  Group 2: No majority, elections begin
+Время t=0: Разделение происходит
+  Группа 1: A продолжает как лидер, term=5
+  Группа 2: Нет большинства, выборы начинаются
 
-Time t=1: Group 2 elections
-  D becomes candidate, starts term 6 election
-  But D, E < 3 votes needed (D only has D, E)
-  Can't win!
+Время t=1: Выборы Группы 2
+  D становится candidate, начинает выборы term 6
+  Но D, E < 3 голосов нужно (D только D, E)
+  Не может выиграть!
 
-Time t=2: Group 1 updates
-  Leader A in term 5 updates all of A, B, C
+Время t=2: Группа 1 обновляется
+  Лидер A в term 5 обновляет всех A, B, C
 
-Time t=3: Partition heals
-  D, E get AppendEntries from A with term=5
-  D, E see term 5 > their term (still 5)
-  Actually D might have voted in term 6, so:
-  D updates term=5 when seeing A, becomes follower
+Время t=3: Разделение заживает
+  D, E получают AppendEntries от A с term=5
+  D, E видят term 5 > их term (всё ещё 5)
+  На самом деле D может проголосовать в term 6, поэтому:
+  D обновляет term=5 когда видит A, становится follower
 
-Key insight:
-  - Group 1 (majority) continues normally
-  - Group 2 (minority) cannot commit anything
-  - When healed: Group 2 catches up from Group 1
+Ключевая идея:
+  - Группа 1 (большинство) продолжает нормально
+  - Группа 2 (меньшинство) не может committing ничего
+  - При заживлении: Группа 2 догонит Группу 1
 ```
 
 ### Пример
@@ -1070,7 +1070,7 @@ class TermManagement:
 - Объясните, почему term монотонно возрастает
 - Дайте пример: как term предотвращает split-brain
 - Объясните, почему term'ы нужно сохранять на диск
-- Follow-up: "Что если узел упал и потерял свой current_term?" (Ответ: может нарушить safety, поэтому обязана persistence)
+- Уточняющий вопрос: "Что если узел упал и потерял свой current_term?" (Ответ: может нарушить safety, поэтому обязана persistence)
 
 ---
 
@@ -1084,7 +1084,7 @@ Raft обеспечивает three safety properties: (1) Election Safety — �
 
 ### Детальный разбор
 
-**Safety Properties in Detail:**
+**Свойства безопасности в деталях:**
 
 ```
 Property 1: Election Safety
@@ -1134,7 +1134,7 @@ Property 3: Log Matching
 └─────────────────────────────────────────────┘
 ```
 
-**Leader Completeness Property:**
+**Свойство полноты лидера:**
 
 ```
 Ключевая идея:
@@ -1333,7 +1333,7 @@ class SafetyDemo:
 - Объясните три safety properties: Election Safety, Leader Append-Only, Log Matching
 - Дайте пример: почему quorum необходимо
 - Объясните Leader Completeness (hardest part)
-- Follow-up: "Может ли committed запись быть потеряна?" (Ответ: Нет, потому что большинство имеет её и любое новое большинство пересекается)
+- Уточняющий вопрос: "Может ли committed запись быть потеряна?" (Ответ: Нет, потому что большинство имеет её и любое новое большинство пересекается)
 
 ---
 
@@ -1347,7 +1347,7 @@ Raft предотвращает split-brain через quorum voting. Если �
 
 ### Детальный разбор
 
-**Split-brain Problem:**
+**Проблема Split-brain:**
 
 ```
 Классическая проблема без консенсуса:
@@ -1404,7 +1404,7 @@ Result:
   -> Data consistency maintained!
 ```
 
-**Key insight: Quorum Overlap:**
+**Ключевое наблюдение: Пересечение Quorum'ов:**
 
 ```
 Доказательство что не может быть двух лидеров:
@@ -1473,7 +1473,7 @@ Result:
   No data loss for committed data!
 ```
 
-**Implementation Details:**
+**Детали реализации:**
 
 ```python
 class SplitBrainPrevention:
@@ -1621,7 +1621,7 @@ class SplitBrainDemo:
 - Нарисуйте диаграмму: группы после partition
 - Объясните, почему меньшинство не может commit'ить
 - Дайте пример: что происходит с данными во время partition
-- Follow-up: "Что если partition длится 10 минут?" (Ответ: группа с меньшинством просто не может ничего делать, но система safe)
+- Уточняющий вопрос: "Что если partition длится 10 минут?" (Ответ: группа с меньшинством просто не может ничего делать, но система safe)
 
 ---
 
@@ -1663,7 +1663,7 @@ Raft и Paxos оба решают консенсус, но по-разному: 
 └──────────────────────┴──────────────────────┴──────────────────────┘
 ```
 
-**Paxos Overview:**
+**Обзор Paxos:**
 
 ```
 Paxos делит участников на три роли:
@@ -1726,7 +1726,7 @@ RAFT:
 └───────────────────────────────────────────────────┘
 ```
 
-**Raft: Leader-driven approach:**
+**Raft: Подход на основе лидера:**
 
 ```
 Term: Leader election фаза
@@ -1773,7 +1773,7 @@ Problem: If multiple proposers, can conflict!
   -> Can cause livelock!
 ```
 
-**Fault Tolerance:**
+**Устойчивость к отказам:**
 
 ```
 Raft (crash failures):
@@ -1900,7 +1900,7 @@ class PaxosAcceptor:
 - Объясните: Raft использует leader, Paxos нет
 - Дайте таблицу: сложность, performance, fault tolerance
 - Объясните: почему Raft проще в реальности
-- Follow-up: "Когда использовать Paxos?" (Ответ: если нужна Byzantine tolerance или очень decentralized system)
+- Уточняющий вопрос: "Когда использовать Paxos?" (Ответ: если нужна Byzantine tolerance или очень decentralized system)
 
 ---
 
@@ -2038,7 +2038,7 @@ CockroachDB: SQL database с распределённостью
 └───────────────┴──────────┴───────────────┴────────────┘
 ```
 
-**Performance Characteristics:**
+**Характеристики производительности:**
 
 ```
 etcd:
@@ -2175,7 +2175,7 @@ class PracticalRaftExamples:
 - Объясните: как etcd используется в Kubernetes
 - Дайте примеры трёх разных систем и их use cases
 - Объясните: почему consensus нужен каждой из систем
-- Follow-up: "Может ли Raft быть bottleneck?" (Ответ: да, если много writes; solutions: batching, pipelining)
+- Уточняющий вопрос: "Может ли Raft быть bottleneck?" (Ответ: да, если много writes; solutions: batching, pipelining)
 
 ---
 
@@ -2253,7 +2253,7 @@ All replicas have SAME lock state (consistency!)
 └─────────────────────────────────────────────────────────┘
 ```
 
-**Guarantes и edge cases:**
+**Гарантии и граничные случаи:**
 
 ```
 1. Mutual Exclusion (mutex):
@@ -2419,36 +2419,36 @@ class DistributedLockRaft:
         return None
 ```
 
-**Трудные моменты:**
+**Сложные моменты:**
 
 ```
-1. Leader failure during ACQUIRE:
-   Problem: Client sends ACQUIRE, leader fails before replication
-   Solution:
-     - Client doesn't know if acquired
-     - Must have timeout, retry if no response
-     - Raft guarantees: either fully applied or not at all
+1. Отказ лидера во время ACQUIRE:
+   Проблема: Клиент отправляет ACQUIRE, лидер падает перед репликацией
+   Решение:
+     - Клиент не знает, был ли захвачен lock
+     - Необходимо использовать timeout и retry при отсутствии ответа
+     - Гарантия Raft: либо полностью применено, либо вообще не применено
 
-2. Clock skew in lease timeout:
-   Problem: Different servers have different time
-   Solution:
-     - Use logical timestamps (Raft term + index)
-     - Or synchronize clocks (NTP)
-     - Raft doesn't rely on clock accuracy
+2. Расхождение часов в lease timeout:
+   Проблема: Разные серверы показывают разное время
+   Решение:
+     - Использовать логические timestamps (Raft term + index)
+     - Или синхронизировать часы (NTP)
+     - Raft не зависит от точности часов
 
-3. Thundering herd on lock release:
-   Problem: 1000 clients waiting for lock, all try to acquire
-   Solution:
-     - Ordered queue in Raft log
-     - Next waiter is deterministic
-     - No need for separate queue
+3. Thundering herd при освобождении lock:
+   Проблема: 1000 клиентов ждут lock, все пытаются захватить
+   Решение:
+     - Упорядоченная очередь в Raft log
+     - Следующий ожидающий детерминирован
+     - Не нужна отдельная очередь
 
-4. Revocation for safety:
-   Problem: Holder crashed but lock not expired -> stuck
-   Solution:
-     - Admin can revoke lock via REVOKE command
-     - Or use shorter leases
-     - Or implement heartbeat-based renewal
+4. Отзыв lock для безопасности:
+   Проблема: Владелец упал, но lock ещё не истёк → зависание
+   Решение:
+     - Админ может отозвать lock через команду REVOKE
+     - Или использовать более короткие lease
+     - Или реализовать heartbeat-based renewal
 ```
 
 ### Пример
@@ -2542,7 +2542,7 @@ class DistributedLockDemo:
 - Объясните: State Machine + Raft = distributed lock
 - Нарисуйте: как ACQUIRE проходит через Raft
 - Дайте пример: что если leader падает во время ACQUIRE?
-- Follow-up: "Как избежать thundering herd?" (Ответ: Raft log гарантирует порядок, следующий в очереди берёт lock)
+- Уточняющий вопрос: "Как избежать thundering herd?" (Ответ: Raft log гарантирует порядок, следующий в очереди берёт lock)
 
 ---
 
@@ -2578,7 +2578,7 @@ Raft — это elegant алгоритм consensu**, разработанный 
 - Append-only log + Log Matching = Leader Completeness
 - These three guarantee State Machine Safety
 - Practical, not just theoretical
-- Trade-offs: consistency vs performance vs complexity
+- Компромиссы: consistency vs performance vs complexity
 
 На интервью будьте готовы:
 1. Объяснить complete жизненный цикл запроса

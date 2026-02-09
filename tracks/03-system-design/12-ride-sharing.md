@@ -1000,7 +1000,7 @@ Driver Location Updates:
    │ riders)    │         └──────────────┘
    └────────────┘
 
-Latency breakdown:
+Разбор latency:
 - HTTP POST: 50ms
 - Redis write: 10ms
 - WebSocket broadcast: 20ms
@@ -1642,7 +1642,7 @@ Follow-ups:
 │ Database: PG    │ │ Database: PG │ │ Database: PG │
 │ Cache: Redis    │ │ Cache: Redis │ │ Cache: Redis │
 │ Workers: 100    │ │ Workers: 80  │ │ Workers: 50  │
-│ Max surge: 3.0x │ │ Max surge:3.5│ │ Max surge:2.5│
+│ Max surge: 3.0x │ │ Max surge: 3.5│ │ Max surge: 2.5│
 └─────────────────┘ └──────────────┘ └──────────────┘
 ```
 
@@ -2034,28 +2034,28 @@ Request 2 (retry):
   → Returns cached result from Request 1
   → No double charge!
 
-Key: Store (idempotency_key → response) in database
+Ключ: Сохранить (idempotency_key → response) в базу данных
 ```
 
-**Commission Structure:**
+**Структура комиссии:**
 
 ```
-Different commission rates:
+Разные ставки комиссии:
 
-Ride Type    Base Rate  Peak Rate  Minimum
-─────────────────────────────────────────
-Standard     20%        25%        $1.50
-Premium      15%        20%        $2.00
-XL           10%        15%        $2.50
-Pooled       10%        10%        $1.00
+Тип поездки  Базовая ставка  Пиковая ставка  Минимум
+─────────────────────────────────────────────────────
+Standard     20%             25%             $1.50
+Premium      15%             20%             $2.00
+XL           10%             15%             $2.50
+Pooled       10%             10%             $1.00
 
-Example:
-Ride price: $25.00
-Ride type: Standard
-Is peak: No
+Пример:
+Цена поездки: $25.00
+Тип поездки: Standard
+Пиковое время: Нет
 
-Commission: 25.00 * 0.20 = $5.00
-Driver payout: 25.00 - 5.00 = $20.00
+Комиссия: 25.00 * 0.20 = $5.00
+Выплата водителю: 25.00 - 5.00 = $20.00
 ```
 
 ### Пример.
@@ -3062,7 +3062,7 @@ Follow-ups:
 - Deep dive: Geospatial + matching (собирают 15 мин)
 - Scale it: 1M → 10M (sharding, messaging)
 - HA: 99.99% uptime (failover, degradation)
-- Trade-offs: consistency vs availability, latency vs cost
+- Компромиссы: consistency vs availability, latency vs cost
 
 ---
 

@@ -76,8 +76,8 @@ Partition Tolerance (P):
                      /               \
                     ├─────────────────┤
                    /                   \
-                  /         Must       \
-                 /        Choose        \
+                  /         Must        \
+                 /        Choose         \
                 /                         \
                /                           \
               /                             \
@@ -126,20 +126,20 @@ NB: CA (Consistency + Availability без Partition Tolerance) = impossible в n
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│ Сценарий: Account balance = $1000, network partition       │
+│ Сценарий: Account balance = $1000, network partition    │
 ├─────────────────────────────────────────────────────────┤
 
 Normal state (no partition):
-┌─────────────────┐                ┌─────────────────┐
+┌─────────────────┐                 ┌─────────────────┐
 │  Data Center 1  │◄─ replication ─►│  Data Center 2  │
-│  balance: $1000 │                │  balance: $1000 │
-└─────────────────┘                └─────────────────┘
+│  balance: $1000 │                 │  balance: $1000 │
+└─────────────────┘                 └─────────────────┘
 
 Network partition occurs:
-┌─────────────────┐   PARTITION   ┌─────────────────┐
+┌─────────────────┐   PARTITION     ┌─────────────────┐
 │  Data Center 1  │─────────────────│  Data Center 2  │
-│  balance: $1000 │                │  balance: $1000 │
-└─────────────────┘                └─────────────────┘
+│  balance: $1000 │                 │  balance: $1000 │
+└─────────────────┘                 └─────────────────┘
 
 CP Choice (Consistency + Partition):
 Client tries to withdraw $500 from DC1:
@@ -231,7 +231,7 @@ availability during network partition. If consistency is critical:
 - Нарисуй треугольник CAP и объясни каждую сторону.
 - Приведи примеры реальных систем (MongoDB = CP по умолчанию, Cassandra = AP).
 - Упомяни, что выбор влияет на архитектуру: если CP → quorum writes, если AP → eventual consistency.
-- Follow-up: "How do we handle conflicts in AP systems?" → версионирование, CRDT, last-write-wins.
+- Уточняющий вопрос: "How do we handle conflicts in AP systems?" → версионирование, CRDT, last-write-wins.
 
 ---
 
@@ -249,21 +249,21 @@ availability during network partition. If consistency is critical:
 ┌─────────────────────────────────────────────────────────┐
 │           Consistency Models Spectrum                   │
 ├─────────────────────────────────────────────────────────┤
-│                                                          │
-│ Strong ────────────────────────────────── Weak      │
-│                                                          │
-│ ├─ Linearizability / Strong Consistency                │
-│ ├─ Sequential Consistency                              │
-│ ├─ Causal Consistency                                  │
-│ ├─ Timeline (Session) Consistency                      │
-│ ├─ Read-Your-Writes (RYW)                              │
-│ ├─ Monotonic Read Consistency                          │
-│ └─ Eventual Consistency                                │
-│                                                          │
-│ Tradeoff:                                              │
-│ Stronger → Lower latency ✗, Higher cost ✗              │
-│ Weaker  → Higher latency ✓, Lower cost ✓               │
-│                                                          │
+│                                                         │
+│ Strong ────────────────────────────────── Weak          │
+│                                                         │
+│ ├─ Linearizability / Strong Consistency                 │
+│ ├─ Sequential Consistency                               │
+│ ├─ Causal Consistency                                   │
+│ ├─ Timeline (Session) Consistency                       │
+│ ├─ Read-Your-Writes (RYW)                               │
+│ ├─ Monotonic Read Consistency                           │
+│ └─ Eventual Consistency                                 │
+│                                                         │
+│ Tradeoff:                                               │
+│ Stronger → Lower latency ✗, Higher cost ✗               │
+│ Weaker  → Higher latency ✓, Lower cost ✓                │
+│                                                         │
 └─────────────────────────────────────────────────────────┘
 ```
 
@@ -510,11 +510,11 @@ availability during network partition. If consistency is critical:
    - Use vector clocks to track causality
    - If you see reply, you see parent comment
 
-Trade-off summary:
-- 80% of system: Eventual consistency (scalable)
+Резюме trade-off:
+- 80% системы: Eventual consistency (scalable)
 - 15%: RYW + Monotonic reads (good UX)
 - 5%: Strong consistency (critical operations)
-- Result: highly available system with good user experience"
+- Результат: высокодоступная система с хорошим UX"
 ```
 
 **Типичные ошибки.**
@@ -530,7 +530,7 @@ Trade-off summary:
 - Поясни trade-off: сильнее консистентность → выше latency / ниже availability.
 - Приведи примеры из реальной жизни (банк = strong, соцсеть = eventual).
 - Обсуди per-component выбор: разные части системы могут использовать разные модели.
-- Follow-up: "How do you handle conflicts in eventual consistency?" → versioning, CRDT, last-write-wins.
+- Уточняющий вопрос: "How do you handle conflicts in eventual consistency?" → versioning, CRDT, last-write-wins.
 
 ---
 
@@ -723,7 +723,7 @@ SQL (PostgreSQL, MySQL, Oracle):
 **Decision Tree:**
 
 ```
-Start: Need to store data?
+Начало: Нужно хранить данные?
 │
 ├─ Is it highly relational?
 │  ├─ YES: Users ←→ Orders ←→ Products
@@ -851,7 +851,7 @@ This gives us:
 - Спроси о consistency requirements.
 - Приведи примеры реальных систем: Uber (SQL + NoSQL hybrid), Netflix (Cassandra for speed).
 - Не бойся менять мнение: "Actually, given write QPS is 1M, NoSQL is better..."
-- Follow-up: "How would you denormalize data in NoSQL?" или "How would you shard this in SQL?"
+- Уточняющий вопрос: "How would you denormalize data in NoSQL?" или "How would you shard this in SQL?"
 
 ---
 
@@ -869,37 +869,37 @@ This gives us:
 ┌─────────────────────────────────────────────────────────────┐
 │ Vertical Scaling (Scale Up)                                 │
 ├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│ Before:        After:                                        │
+│                                                             │
+│ Before:        After:                                       │
 │ ┌──────────┐   ┌────────────────┐                           │
 │ │ Server   │   │ Server         │                           │
 │ │ CPU: 4   │   │ CPU: 32        │                           │
 │ │ RAM: 8GB │   │ RAM: 256GB     │                           │
 │ └──────────┘   └────────────────┘                           │
-│                                                              │
+│                                                             │
 │ ✓ Pros:                      ✗ Cons:                        │
-│ - Simple: no code changes     - Expensive (exponential)     │
-│ - No distributed complexity   - Has ceiling (biggest server) │
-│ - No sharding needed          - Single point of failure      │
-│                              - Downtime for upgrade          │
+│ - Simple: no code changes    - Expensive (exponential)      │
+│ - No distributed complexity  - Has ceiling (biggest server) │
+│ - No sharding needed         - Single point of failure      │
+│                              - Downtime for upgrade         │
 └─────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────┐
 │ Horizontal Scaling (Scale Out)                              │
 ├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│ Before:        After:                                        │
+│                                                             │
+│ Before:        After:                                       │
 │ ┌──────────┐   ┌───────┬───────┬───────┐                    │
 │ │ Server   │   │Server │Server │Server │                    │
 │ │ (1x)     │   │ (1x)  │ (1x)  │ (1x)  │                    │
 │ └──────────┘   └───────┴───────┴───────┘                    │
-│                                                              │
+│                                                             │
 │ ✓ Pros:                      ✗ Cons:                        │
 │ - Nearly unlimited scale      - Complex architecture        │
 │ - Cost linear                 - Distributed system issues   │
 │ - No single point of failure  - Sharding strategy needed    │
 │ - Good for cloud              - Debugging harder            │
-│                               - More moving parts            │
+│                               - More moving parts           │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -919,7 +919,7 @@ Limitations:
 3. Downtime: Upgrade requires restart (if single instance)
 4. Availability: Single machine can fail
 
-When to use:
+Когда использовать:
 - Early stage: < 10M QPS
 - Starting point before horizontal scaling
 - Simple applications
@@ -937,33 +937,33 @@ Starting point: 1 server at limit
 ┌──────────────────────────────────────────┐
 │           Load Balancer                  │
 │  (Nginx, HAProxy, cloud LB)              │
-└────┬─────────────┬─────────────┬──────────┘
-     │             │             │
+└────┬────────────┬─────────────┬──────────┘
+     │            │             │
 ┌────▼──┐   ┌─────▼──┐   ┌──────▼──┐
-│Server1│   │Server2 │   │Server N  │
-└───────┘   └────────┘   └──────────┘
+│Server1│   │Server2 │   │Server N │
+└───────┘   └────────┘   └─────────┘
 
-Key insight: stateless servers
-- Each request can go to any server
-- No server-to-server state needed
-- Easy to add/remove servers
+Ключевое правило: stateless серверы
+- Каждый запрос может идти на любой сервер
+- Не требуется состояние между серверами
+- Легко добавлять/удалять серверы
 
-Load balancing strategies:
+Стратегии load balancing:
 1. Round-robin: server1, server2, server1, server2...
 2. Least connections: pick server with fewest active connections
 3. IP hash: same client → same server (sticky sessions)
 4. Weighted: big server gets more traffic
 
-When to use:
-- After hitting vertical scaling limit
-- High availability needed
-- Can make servers stateless
+Когда использовать:
+- После достижения предела вертикального масштабирования
+- Требуется высокая доступность
+- Можно сделать серверы stateless
 ```
 
 **2. Read Replicas (для read-heavy систем):**
 
 ```
-Architecture:
+Архитектура:
 ┌────────────────────────────────────────────┐
 │ Application                                │
 ├────────────────────────────────────────────┤
@@ -972,25 +972,25 @@ Architecture:
 └────┬──────────────────────┬────────────────┘
      │                      │
      │                      │
-┌────▼──────────────┐   ┌───▼─────┬─────────┐
-│  Primary (Write)  │   │ Replica │ Replica │
-│  PostgreSQL       │───►   1   │   2     │
+┌────▼──────────────┐   ┌───▼────┬─────────┐
+│  Primary (Write)  │   │ Replica│ Replica │
+│  PostgreSQL       │───►   1    │   2     │
 └───────────────────┘   └────────┴─────────┘
                          (read-only)
 
-How it works:
+Как это работает:
 1. Write → Primary
 2. Primary → Write-Ahead Log (WAL)
 3. Primary → Stream WAL to replicas (replication lag = 100ms)
 4. Reads → Can go to any replica
 5. If primary fails → Elect new primary from replicas
 
-Benefits:
+Преимущества:
 - Read throughput = replicas × primary_throughput
-- Primary not overloaded with reads
-- Read failover (if one replica fails, others still work)
+- Primary не перегружена читами
+- Read failover (если одна replica упадёт, другие работают)
 
-Drawbacks:
+Недостатки:
 - Replication lag: read might return old data
 - Consistency challenges: reads see different versions
 - Master failure requires election (downtime)
@@ -1000,18 +1000,18 @@ Example:
 - Solution: Add 3 replicas → 300K read capacity
 - Result: Primary at 1K QPS, replicas handle 99K QPS each
 
-Use when:
-- Read-heavy workload (read:write > 10:1)
-- Can tolerate eventual consistency
-- Examples: Twitter (feed reads), YouTube (video plays)
+Использовать когда:
+- Read-heavy рабочая нагрузка (read:write > 10:1)
+- Можно допустить eventual consistency
+- Примеры: Twitter (feed reads), YouTube (video plays)
 ```
 
 **3. Database Sharding (для write-heavy систем):**
 
 ```
-Sharding = Horizontal database partitioning
+Sharding = Горизонтальное партиционирование базы данных
 
-Before (single database bottleneck):
+Before (bottleneck единственной базы данных):
 ┌──────────────────────────────────────┐
 │ All users → Single Database          │
 │ write QPS limit ≈ 10K-50K per server │
@@ -1025,156 +1025,156 @@ After (sharded):
 │ 0  │ 1  │ 2  │ 3  │                                    │
 └─┬──┴─┬──┴─┬──┴─┬──┘                                    │
   │    │    │    │                                       │
-┌─▼─┐┌─▼─┐┌─▼─┐┌─▼─┐                                    │
-│DB0││DB1││DB2││DB3│  Each shard = independent DB       │
-│50K││50K││50K││50K│ QPS  Total: 200K write QPS!      │
-└───┘└───┘└───┘└───┘                                    │
+┌─▼─┐┌─▼─┐┌─▼─┐┌─▼─┐                                     │
+│DB0││DB1││DB2││DB3│  Each shard = independent DB        │
+│50K││50K││50K││50K│ QPS  Total: 200K write QPS!         │
+└───┘└───┘└───┘└───┘                                     │
 
-Sharding key strategies:
+Стратегии выбора sharding key:
 1. Hash-based: hash(user_id) % num_shards
-   - Distributes evenly
-   - Problem: if num_shards changes, need re-hash
+   - Равномерно распределяет
+   - Проблема: если num_shards меняется, нужен re-hash
 
-2. Range-based: user_id ranges
+2. Range-based: диапазоны user_id
    - [0-1M] → shard 0
    - [1M-2M] → shard 1
-   - Problem: can become unbalanced ("hot shard")
+   - Проблема: может стать несбалансированным ("hot shard")
 
-3. Directory-based: lookup table
-   - user_id → shard_id (stored in metadata service)
-   - Flexible: can change assignments
-   - Problem: extra lookup
+3. Directory-based: таблица поиска
+   - user_id → shard_id (хранится в metadata service)
+   - Гибко: можно менять назначения
+   - Проблема: дополнительный lookup
 
-4. Geographic: user region
-   - EU users → EU shard
-   - US users → US shard
-   - Benefit: data residency, latency
+4. Geographic: регион пользователя
+   - EU пользователи → EU shard
+   - US пользователи → US shard
+   - Преимущество: data residency, latency
 
-Challenges of sharding:
-1. Cross-shard queries become hard
-   - "Find user with highest score" = must query all shards
-   - Solution: scatter-gather query
+Трудности sharding:
+1. Кросс-shard запросы становятся сложными
+   - "Найти пользователя с наивысшим баллом" = нужно запросить все shards
+   - Решение: scatter-gather запрос
 
-2. Joins don't work across shards
-   - Solution: denormalize, async resolution
+2. Joins не работают между shards
+   - Решение: denormalize, async resolution
 
-3. Uneven distribution (hot shards)
-   - Solution: re-sharding (expensive), consistent hashing
+3. Неравномерное распределение (hot shards)
+   - Решение: re-sharding (дорого), consistent hashing
 
-4. Transactions across shards
-   - Solution: 2-phase commit (slow) or eventual consistency
+4. Транзакции между shards
+   - Решение: 2-phase commit (медленно) или eventual consistency
 
-Example: Instagram with 1 billion users
-- Impossible on single DB
-- Solution: Shard by user_id, 256 shards
-- Each shard on separate cluster
-- Each cluster itself replicated for HA
+Пример: Instagram с 1 миллиардом пользователей
+- Невозможно на одной БД
+- Решение: Shard по user_id, 256 shards
+- Каждый shard на отдельном кластере
+- Каждый кластер сам реплицирован для HA
 ```
 
 **4. Caching (для горячих данных):**
 
 ```
-Cache placement:
+Размещение cache:
 
-┌──────────────────────────────────────────────────────┐
+┌──────────────────────────────────────────────────┐
 │ Client              Browser Cache                │
 │ (Cache Busting: add ?v=123 to URLs)              │
-└──────────────────────────────────────────────────────┘
+└──────────────────────────────────────────────────┘
                       │
                       ▼
-┌──────────────────────────────────────────────────────┐
-│ CDN Cache           CloudFront, Akamai            │
+┌──────────────────────────────────────────────────┐
+│ CDN Cache           CloudFront, Akamai           │
 │ (Static assets, nearby servers)                  │
-└──────────────────────────────────────────────────────┘
+└──────────────────────────────────────────────────┘
                       │
                       ▼
-┌──────────────────────────────────────────────────────┐
-│ Application Cache   Redis, Memcached              │
+┌──────────────────────────────────────────────────┐
+│ Application Cache   Redis, Memcached             │
 │ (Hot data, nearby app server)                    │
-└──────────────────────────────────────────────────────┘
+└──────────────────────────────────────────────────┘
                       │
                       ▼
-┌──────────────────────────────────────────────────────┐
-│ Database            PostgreSQL (slow)             │
-└──────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────┐
+│ Database            PostgreSQL (slow)            │
+└──────────────────────────────────────────────────┘
 
-Cache key insights:
-- Hit ratio: higher is better
-  - 80% hit ratio: 80% of reads from cache
-  - Means: 80% avoid slow database
-  - 20% hit cache, 80% × speed = 4× faster average
+Ключевые insights кэширования:
+- Hit ratio: выше лучше
+  - 80% hit ratio: 80% reads из cache
+  - Означает: 80% избежали медленной БД
+  - 20% попадают в cache, 80% × скорость = в 4× быстрее в среднем
 
-- Invalidation: when to remove cached data
-  Option 1: TTL (Time-To-Live)
-    cache.set("user:123", data, ttl=3600)  # 1 hour
-    Simple, but might serve stale data
+- Инвалидация: когда удалять cached данные
+  Вариант 1: TTL (Time-To-Live)
+    cache.set("user:123", data, ttl=3600)  # 1 час
+    Просто, но может отдавать stale данные
 
-  Option 2: Event-based
-    When user updates → delete cache
-    Immediately consistent, but complex
+  Вариант 2: Event-based
+    Когда пользователь обновляет → delete cache
+    Сразу консистентно, но сложно
 
-  Option 3: Cache-aside with versioning
+  Вариант 3: Cache-aside с версионированием
     cache.set("user:123:v5", data)
-    Update schema → v6
-    Old version naturally expires from memory
+    Обновляем schema → v6
+    Старая версия естественно expires из памяти
 
-Example: Social Media Profile
-- 1M QPS read requests for profiles
-- Without cache: 1M database queries/second = slow
-- With cache: 95% hit ratio
-  - 950K from cache (fast)
-  - 50K from database
-  - Average latency: 95% × 10ms + 5% × 100ms = 14.5ms
-  - Without cache: 100ms always
-  - Result: 7x faster!
+Пример: Social Media Profile
+- 1M QPS read запросов для профилей
+- Без cache: 1M запросов к БД/секунду = медленно
+- С cache: 95% hit ratio
+  - 950K из cache (быстро)
+  - 50K из database
+  - Средняя latency: 95% × 10ms + 5% × 100ms = 14.5ms
+  - Без cache: 100ms всегда
+  - Результат: в 7 раз быстрее!
 ```
 
 **5. CDN для статического контента:**
 
 ```
-Without CDN:
-User in Australia → request image → server in California
+Без CDN:
+User в Австралии → запрашивает изображение → сервер в Калифорнии
             Network latency = 150ms
-            ← image (150ms later)
+            ← изображение (150ms позже)
 
-With CDN:
-User in Australia → request → CDN edge in Sydney
+С CDN:
+User в Австралии → запрос → CDN edge в Сиднее
             Network latency = 10ms
-            ← image from cache (10ms)
+            ← изображение из cache (10ms)
 
-How it works:
-1. Upload assets to origin server
-2. CDN caches at edge locations worldwide
-3. User requests → routed to nearest edge
-4. Edge has it → serve immediately (cache hit)
-5. Edge doesn't have it → fetch from origin, cache, serve
+Как это работает:
+1. Загружаем assets на origin сервер
+2. CDN кэширует на edge locations по всему миру
+3. User запросы → маршрутизируются на ближайший edge
+4. Edge имеет → служит немедленно (cache hit)
+5. Edge не имеет → fetch с origin, cache, serve
 
-Benefits:
-- Latency: served from nearby server
-- Origin load: 1000x fewer requests to origin
-- Bandwidth: cheaper from CDN
-- Resilience: single origin outage doesn't affect edge caches
+Преимущества:
+- Latency: served из ближайшего сервера
+- Origin нагрузка: в 1000 раз меньше запросов к origin
+- Bandwidth: дешевле с CDN
+- Resilience: outage одного origin не влияет на edge caches
 
-Cache hierarchy:
-Browser cache (you control, etag)
+Иерархия cache:
+Browser cache (контролируешь ты, etag)
    ↑
-CDN (provider controls, usually 24 hours)
+CDN (контролирует провайдер, обычно 24 часа)
    ↑
-Origin (your server)
+Origin (твой сервер)
 
-Example: Netflix
-- Stores 100+ PB of movies globally
-- Uses Open Connect CDN (caches at ISP level)
-- 99% of traffic served from ISP cache
-- Origin rarely hit
-- Result: fast playback, low latency
+Пример: Netflix
+- Хранит 100+ PB фильмов глобально
+- Использует Open Connect CDN (кэширует на уровне ISP)
+- 99% трафика served из ISP cache
+- Origin редко hit
+- Результат: fast playback, низкая latency
 ```
 
 **Complete Scaling Architecture:**
 
 ```
-┌────────────────────────────────────────────────────────────────┐
-│ Clients (Web, Mobile, Desktop)                                 │
+┌──────────────────────────────────────────────────────────────┐
+│ Clients (Web, Mobile, Desktop)                               │
 └────────────────┬─────────────────────────────────────────────┘
                  │
      ┌───────────▼───────────┐
@@ -1183,14 +1183,14 @@ Example: Netflix
      └───────────┬───────────┘
                  │
      ┌───────────▼──────────────┐
-     │  Load Balancer (Nginx)   │  ← Distribute traffic
+     │  Load Balancer (Nginx)   │  ← Распределяем трафик
      └───────────┬──────────────┘
                  │
     ┌────────────┼────────────┐
     │            │            │
 ┌───▼──┐    ┌────▼───┐   ┌────▼───┐
 │App 1 │    │ App 2  │   │ App N  │   ← Horizontal scaling
-│stat- │    │stat-   │   │stat-   │     (stateless servers)
+│stat- │    │stat-   │   │stat-   │     (stateless серверы)
 │less  │    │less    │   │less    │
 └───┬──┘    └────┬───┘   └────┬───┘
     │            │            │
@@ -1201,27 +1201,27 @@ Example: Netflix
      │  (user sessions, popular items)   │
      └───────────┬───────────────────────┘
                  │
-    ┌────────────┼─────────────────┐
-    │            │                 │
-┌───▼──────┐ ┌──▼──────┐    ┌──────▼──┐
-│Primary DB│ │Replica 1│    │Replica 2│  ← Read replicas
-│(write)   │ │ (read)  │    │  (read) │
-└────┬─────┘ └─────────┘    └─────────┘
+    ┌────────────┼──────────────────┐
+    │            │                  │
+┌───▼──────┐ ┌───▼──────┐    ┌──────▼──┐
+│Primary DB│ │Replica 1 │    │Replica 2│  ← Read replicas
+│(write)   │ │ (read)   │    │  (read) │
+└────┬─────┘ └──────────┘    └─────────┘
      │
  [Replication] ← WAL streaming
 
 
-For write-heavy system, add sharding:
+Для write-heavy системы добавьте sharding:
 
-Primary would be split into:
-┌────────────────────────────────────────┐
-│ Shard assignment based on user_id      │
-├──────┬──────┬──────┬──────┐            │
-│Shard0│Shard1│Shard2│Shard3│ each shard│
-│Primary│Primary│Primary│Primary│ has replicas│
-└────┬──┴───┬──┴───┬──┴───┬──┘            │
-     │      │      │      └────────────────┘
-   Replicas for each shard
+Primary будет разделён на:
+┌─────────────────────────────────────────────────┐
+│ Shard assignment based on user_id               │
+├───────┬───────┬───────┬───────┐                 │
+│Shard0 │Shard1 │Shard2 │Shard3 │ каждый shard    │
+│Primary│Primary│Primary│Primary│ имеет replicas  │
+└────┬──┴───┬───┴───┬───┴───┬───┘                 │
+     │      │       │       └─────────────────────┘
+   Replicas для каждого shard
 ```
 
 **Типичные ошибки.**
@@ -1238,7 +1238,7 @@ Primary would be split into:
 - Объясни, как каждый компонент решает определённый bottleneck.
 - Обсуди, когда какой паттерн применяется (vertical → horizontal → read replicas → sharding → cache → CDN).
 - Упомяни trade-offs: сложность operational vs масштабируемость.
-- Follow-up: "What if you shard by user_id but need to query across all users?" → scatter-gather, analytics DB.
+- Уточняющий вопрос: "What if you shard by user_id but need to query across all users?" → scatter-gather, analytics DB.
 
 ---
 
@@ -1271,14 +1271,14 @@ Problem: Add one server
 │ key % 4 = ??? (completely different!)
 │                                  │
 │ key % 3 = 0 → used Server 0      │
-│ key % 4 = 0 → Server 0 (maybe)  │
+│ key % 4 = 0 → Server 0 (maybe)   │
 │ key % 4 = 1 → ??? (98 keys move) │
-│ key % 4 = 2 → ???               │
-│ key % 4 = 3 → ???               │
+│ key % 4 = 2 → ???                │
+│ key % 4 = 3 → ???                │
 │                                  │
 │ Result: 99% cache miss!          │
 │ All keys must be re-hashed       │
-│ Network: 100K keys × network    │
+│ Network: 100K keys × network     │
 │ = massive shuffle, database hits │
 └──────────────────────────────────┘
 ```
@@ -1297,14 +1297,14 @@ Step 1: Hash servers & keys to ring
 │   100:                  |           │
 │                     Key5 (hash=87)  │
 │                                     │
-│   200: Server1_hash                │
+│   200: Server1_hash                 │
 │                          Key3       │
 │                        (hash=180)   │
 │                                     │
 │   300: Key1 (hash=250)              │
 │        |                            │
-│        Server2_hash                │
-│        (hash=320)                  │
+│        Server2_hash                 │
+│        (hash=320)                   │
 │                                     │
 │        Key2 (hash=400)              │
 │                                     │
@@ -1317,10 +1317,10 @@ Rule: Find closest server clockwise from key
 ┌─────────────────────────────────────┐
 │ Key assignments:                    │
 │                                     │
-│ Key5 (hash=87) → Server0 (hash=0)  │
+│ Key5 (hash=87) → Server0 (hash=0)   │
 │ Key3 (hash=180) → Server1 (hash=200)
 │ Key1 (hash=250) → Server2 (hash=320)
-│ Key2 (hash=400) → Server0 (wrap)   │
+│ Key2 (hash=400) → Server0 (wrap)    │
 └─────────────────────────────────────┘
 ```
 
@@ -1343,10 +1343,10 @@ Add Server3 at hash=150
 │ 320: Server2                │
 └─────────────────────────────┘
 
-Impact:
+Воздействие:
 Only keys between 0 and 150 move from Server0 to Server3
 Keys between 150 and 200 move from Server0 to Server3
-Result: Only ~33% of keys rehashed (instead of 99%!)
+Результат: Only ~33% of keys rehashed (instead of 99%!)
 
 Actual: ~1/n of keys rehash when adding 1 new server
 n = number of servers
@@ -1530,7 +1530,7 @@ distribute keys across cache servers?"
    - Old servers → warm new server with data
    - No downtime
 
-Trade-offs:
+Компромиссы:
 - Small complexity in client code
 - vs massive rehashing burden (naive approach)
 - Good investment for scale"
@@ -1549,7 +1549,7 @@ Trade-offs:
 - Нарисуй ring с несколькими серверами и ключами.
 - Покажи, как добавление сервера влияет на распределение.
 - Упомяни virtual nodes для балансировки.
-- Follow-up: "What if we need replication?" → multiple nodes clockwise.
+- Уточняющий вопрос: "What if we need replication?" → multiple nodes clockwise.
 
 ---
 

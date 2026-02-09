@@ -59,14 +59,14 @@
 │   вать)     │
 └──────┬──────┘
        │
-   ┌───▼───────────────────────────────────┐
-   │ API Gateway + Rate Limiter (лучше!)   │
-   │ - Перехватывает запрос до backend      │
-   │ - Экономит ресурсы приложения         │
-   │ - Единая точка контроля               │
-   │ - Легко масштабируется                │
-   └───┬────────┬────────┬────────┬────────┘
-       │        │        │        │
+   ┌───▼──────────────────────────────────┐
+   │ API Gateway + Rate Limiter (лучше!)  │
+   │ - Перехватывает запрос до backend    │
+   │ - Экономит ресурсы приложения        │
+   │ - Единая точка контроля              │
+   │ - Легко масштабируется               │
+   └───┬───────┬────────┬────────┬────────┘
+       │       │        │        │
    ┌───▼──┐ ┌──▼───┐ ┌──▼───┐ ┌──▼───┐
    │App1  │ │App2  │ │App3  │ │App4  │
    └──────┘ └──────┘ └──────┘ └──────┘
@@ -205,7 +205,7 @@ def rate_limit_handler(e):
 **На интервью.**
 - Объясни, почему API Gateway лучше, чем middleware.
 - Упомяни о graceful degradation.
-- Follow-up: «Как обрабатывать burst traffic?» — token bucket с большей capacity.
+- Уточняющий вопрос: «Как обрабатывать burst traffic?» — token bucket с большей capacity.
 - «Как интегрировать разные лимиты для разных user tiers?» — rules engine с конфигом в Redis.
 
 ---
@@ -440,7 +440,7 @@ else:
 **На интервью.**
 - Объясни, как capacity и refill_rate влияют на поведение.
 - Покажи Lua скрипт для атомизации в Redis.
-- Follow-up: «Как обрабатывать variable token costs?» — разные операции требуют разное количество токенов.
+- Уточняющий вопрос: «Как обрабатывать variable token costs?» — разные операции требуют разное количество токенов.
 
 ---
 
@@ -459,7 +459,7 @@ else:
             │
             ▼
       ┌──────────────┐
-      │ ● ● ● ●     │ Queue (fixed size = 4)
+      │ ● ● ● ●      │ Queue (fixed size = 4)
       │              │
       │ Processing   │
       │ at fixed rate│
@@ -659,7 +659,7 @@ class DistributedLeakyBucket:
 **На интервью.**
 - Объясни отличие от Token Bucket: фиксированный output rate вместо burst.
 - Упомяни случаи использования: платежи, smooth processing.
-- Follow-up: «Что если leak_rate >= arrival rate?» — очередь не растёт, обработка в реальном времени.
+- Уточняющий вопрос: «Что если leak_rate >= arrival rate?» — очередь не растёт, обработка в реальном времени.
 
 ---
 
@@ -675,10 +675,10 @@ class DistributedLeakyBucket:
 
 ```
 Window 1: 00:00-01:00      Window 2: 01:00-02:00
-┌──────────────────────┐   ┌──────────────────────┐
-│ 100 requests (full)  │   │ 100 requests (full)  │
+┌──────────────────────┐   ┌───────────────────────┐
+│ 100 requests (full)  │   │ 100 requests (full)   │
 │ Last 10 sec: /////// │   │ First 10 sec: /////// │
-└──────────────────────┘   └──────────────────────┘
+└──────────────────────┘   └───────────────────────┘
                   ▲
                   │
          Boundary spike:
@@ -696,9 +696,9 @@ Window index = int(12:34:56 / 60) = 754
 
 Reset logic:
 if window_index != prev_window_index:
-    counter = 0  # New window, reset counter
+    counter = 0  # Новое окно, сбросить счётчик
 
-Check:
+Проверка:
 if counter < limit:
     counter += 1
     allowed = true
@@ -838,13 +838,13 @@ print("Use case: Loose rate limiting, high-traffic APIs")
 ```
 Perfect scenario:
 00:00 ──────────────────── 01:00 ──────────────────── 02:00
-      │ 10 requests/min │   │ 10 requests/min │
+      │ 10 requests/min │        │ 10 requests/min │
       ✓ Balanced
 
 Boundary spike scenario:
 00:00 ──────────────────── 01:00 ──────────────────── 02:00
-      │ 9 req      1 req│   │9 req      1 req │
-      └─────── 2 requests in 2 seconds ────────┘
+      │ 9 req      1 req│        │9 req      1 req │
+      └─────── 2 requests in 2 seconds ────────────┘
       = 60 req/min equivalent at boundary!
 ```
 
@@ -856,7 +856,7 @@ Boundary spike scenario:
 **На интервью.**
 - Объясни, как работает и в чём проблема.
 - Нарисуй диаграмму boundary spike.
-- Follow-up: «Как исправить boundary spike?» → Sliding Window Log или Counter.
+- Уточняющий вопрос: «Как исправить boundary spike?» → Sliding Window Log или Counter.
 
 ---
 
@@ -912,7 +912,7 @@ class SlidingWindowLog:
     Sliding window log rate limiter.
 
     Exact algorithm, no boundary spike.
-    Trade-off: uses O(rate * window) memory per client.
+    Компромисс: uses O(rate * window) memory per client.
 
     Args:
         limit: max requests per window
@@ -1072,7 +1072,7 @@ print("- Tight memory constraints")
 **На интервью.**
 - Объясни trade-off: perfect accuracy за memory cost.
 - Упомяни Sorted Set implementation в Redis.
-- Follow-up: «Как оптимизировать память?» → Sliding Window Counter.
+- Уточняющий вопрос: «Как оптимизировать память?» → Sliding Window Counter.
 
 ---
 
@@ -1276,7 +1276,7 @@ def distributed_sliding_window_counter(
 **На интервью.**
 - Выведи формулу на доске с диаграммой.
 - Объясни, почему это лучше Fixed Window.
-- Follow-up: «Как реализовать в Redis?» → Lua скрипт для атомизации.
+- Уточняющий вопрос: «Как реализовать в Redis?» → Lua скрипт для атомизации.
 
 ---
 
@@ -1312,12 +1312,12 @@ Total: 102 requests allowed when limit = 100! ✗
 │Server 1 │─┐   │ Server 2 │─┐   │Server 3 │─┐
 └─────────┘ │   └──────────┘ │   └─────────┘ │
             │                │               │
-            └────────┬────────┴───────┬───────┘
+            └────────┬───────┴───────┬───────┘
                      │               │
                 ┌────▼───────────────▼────┐
-                │  Redis                   │
-                │  rate_limit:user123: 75  │
-                └──────────────────────────┘
+                │  Redis                  │
+                │  rate_limit:user123: 75 │
+                └─────────────────────────┘
 
 Advantages:
 ✓ Single source of truth
@@ -1611,10 +1611,10 @@ end
 ┌──┴──────────────────────────────────────────┐
 │  API Gateway Load Balancer                  │
 │  (Kong, AWS ALB, etc)                       │
-├──┬──────┬──────┬──────────────────────────┤
-│  │      │      │                          │
-│  ▼      ▼      ▼                          ▼
-│ Svc1   Svc2   Svc3    ... (N servers)
+├──┬──────┬──────┬────────────────────────────┤
+│  │      │      │                            │
+│  ▼      ▼      ▼                            ▼
+│ Svc1   Svc2   Svc3            ... (N servers)
 │
 │ All query same Redis Cluster
 │ Consistent rate limiting
@@ -1630,7 +1630,7 @@ end
 **На интервью.**
 - Объясни trade-offs между сentralized, sharded, local.
 - Упомяни Lua scripts для атомизации.
-- Follow-up: «Что если Redis недоступен?» → Graceful degradation (fail open или local fallback).
+- Уточняющий вопрос: «Что если Redis недоступен?» → Graceful degradation (fail open или local fallback).
 
 ---
 
@@ -1675,7 +1675,7 @@ ZCOUNT                 O(log N)          Count in range
 HMGET/HMSET            O(N)              N = fields
 ```
 
-**Best practices:**
+**Лучшая практикаs:**
 
 ```
 1. Use Lua scripts for atomic multi-step operations
@@ -2003,13 +2003,13 @@ print(f"Memory usage: {info['used_memory_human']}")
 **На интервью.**
 - Объясни, почему Lua scripts нужны.
 - Покажи разные data structures для разных алгоритмов.
-- Follow-up: «Как масштабировать Redis?» → Clustering, replication.
+- Уточняющий вопрос: «Как масштабировать Redis?» → Clustering, replication.
 
 ---
 
 ### 9. Какие HTTP заголовки использовать для rate limiting?
 
-**Зачем спрашивают.** HTTP headers — стандартный способ сообщить клиенту о rate limiting status. Интервьюер проверяет знание RFC 6585, RateLimit-Info draft и best practices.
+**Зачем спрашивают.** HTTP headers — стандартный способ сообщить клиенту о rate limiting status. Интервьюер проверяет знание RFC 6585, RateLimit-Info draft и лучшая практикаs.
 
 **Короткий ответ.** Основные headers: `X-RateLimit-Limit` (лимит), `X-RateLimit-Remaining` (осталось), `X-RateLimit-Reset` (timestamp сброса). При превышении: `429 Too Many Requests` с `Retry-After` header. Поддержка этих headers позволяет клиентам делать smart decisions.
 
@@ -2313,7 +2313,7 @@ Recommendation: Follow GitHub style (де-факто стандарт)
 или IETF draft (будущее)
 ```
 
-**Best practices:**
+**Лучшая практикаs:**
 
 ```python
 # 1. Всегда отправляй rate limit headers, даже если не лимитирован
@@ -2362,7 +2362,7 @@ logger.warning(f"Client {client_id} rate limited", extra={
 **На интервью.**
 - Объясни, какие headers отправлять и в каких случаях.
 - Покажи, как клиент может использовать headers для backoff.
-- Follow-up: «Почему unix timestamp лучше, чем relative time?» → Не зависит от clock skew.
+- Уточняющий вопрос: «Почему unix timestamp лучше, чем relative time?» → Не зависит от clock skew.
 
 ---
 
@@ -2446,8 +2446,8 @@ def check_limits_batch(client_ids):
 Before (single point of failure):
 ┌──────────────────────────────────┐
 │  Redis Master                    │
-│  rl:user123, rl:user456, ...    │
-│  1000 ops/sec → BOTTLENECK      │
+│  rl:user123, rl:user456, ...     │
+│  1000 ops/sec → BOTTLENECK       │
 └──────────────────────────────────┘
 
 After (sharded cluster):
@@ -2521,7 +2521,7 @@ Solution: Multi-level caching + eventual consistency
 ┌──────▼──────────────────────┐
 │ Redis (global state)        │
 │ rl:user123:synced: 500      │
-└──────┬───────────────────────┘
+└──────┬──────────────────────┘
        │ (periodic aggregation)
        ▼
 ```
@@ -2737,7 +2737,7 @@ class ScalableRateLimiter:
 **На интервью.**
 - Нарисуй scalability graph: req/sec vs latency vs cost.
 - Объясни, когда переходить с одной стратегии на другую.
-- Follow-up: «Как мониторить rate limiter?» → Metrics, latency, error rate.
+- Уточняющий вопрос: «Как мониторить rate limiter?» → Metrics, latency, error rate.
 
 ---
 

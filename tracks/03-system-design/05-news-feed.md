@@ -280,8 +280,8 @@ class FeedSystem:
 **На интервью.**
 - Нарисуй архитектуру сверху вниз: API Gateway → Services → Databases
 - Объясни гибридный подход: почему celebrities требуют pull
-- Follow-up: «Как обработать, если пользователь становится celebrity?» — перемиграция feed старых постов в timeline
-- Follow-up: «Как реализовать soft delete постов?» — mark as deleted, скрывать из feeds
+- Уточняющий вопрос: «Как обработать, если пользователь становится celebrity?» — перемиграция feed старых постов в timeline
+- Уточняющий вопрос: «Как реализовать soft delete постов?» — mark as deleted, скрывать из feeds
 
 ---
 
@@ -513,8 +513,8 @@ Publisher          Fanout Queue       Worker Pool        Timeline DB
 **На интервью.**
 - Нарисуй timeline обеих моделей: что происходит при publish, что при read
 - Объясни, почему hybrid лучше: push для большинства, pull для редких случаев
-- Follow-up: «Как определить threshold для celebrity?» — эмпирически: 10K—100K в зависимости от нагрузки
-- Follow-up: «Как переделать обычного пользователя в celebrity?» — переписать старые посты из feed в posts DB, включить pull-режим
+- Уточняющий вопрос: «Как определить threshold для celebrity?» — эмпирически: 10K—100K в зависимости от нагрузки
+- Уточняющий вопрос: «Как переделать обычного пользователя в celebrity?» — переписать старые посты из feed в posts DB, включить pull-режим
 
 ---
 
@@ -742,8 +742,8 @@ class MLRanker:
 **На интервью.**
 - Объясни каждый компонент формулы и почему он нужен
 - Упомяни time decay логику: старые посты не должны исчезать мгновенно
-- Follow-up: «Как обнаружить и изолировать spam?» — отдельный classifier, низкий affinity score
-- Follow-up: «Как персонализировать ranking?» — ML модель, обучена на click data пользователя
+- Уточняющий вопрос: «Как обнаружить и изолировать spam?» — отдельный classifier, низкий affinity score
+- Уточняющий вопрос: «Как персонализировать ranking?» — ML модель, обучена на click data пользователя
 
 ---
 
@@ -1081,8 +1081,8 @@ class CacheWarmer:
 **На интервью.**
 - Объясни 3-layer caching: feed, posts, graph
 - Почему 5 мин TTL для feed cache? — баланс между свежестью и производительностью
-- Follow-up: «Что если feed cache теряется?» — graceful degradation: пересчитать на лету, вернуть в 500ms
-- Follow-up: «Как кэшировать для celebrities?» — не кэшировать их посты, pull на read
+- Уточняющий вопрос: «Что если feed cache теряется?» — graceful degradation: пересчитать на лету, вернуть в 500ms
+- Уточняющий вопрос: «Как кэшировать для celebrities?» — не кэшировать их посты, pull на read
 
 ---
 
@@ -1353,8 +1353,8 @@ async def hydrate_posts_batched(self, post_ids: list) -> list:
 **На интервью.**
 - Объясни почему offset плохо: O(N) скан, race conditions
 - Покажи как encode/decode cursor
-- Follow-up: «Что если пост удалён?» — handle gracefully, skip to next
-- Follow-up: «Как prefetch следующую страницу?» — background fetch, store with short TTL
+- Уточняющий вопрос: «Что если пост удалён?» — handle gracefully, skip to next
+- Уточняющий вопрос: «Как prefetch следующую страницу?» — background fetch, store with short TTL
 
 ---
 
@@ -1646,8 +1646,8 @@ class HotspotMonitor:
 **На интервью.**
 - Объясни почему push-модель плохо для celebrities
 - Покажи как спроектировать hybrid
-- Follow-up: «Как обрабатывать когда popular user becomes celebrity?» — async migration job
-- Follow-up: «Как sharding работает для комментариев?» — аналогично likes
+- Уточняющий вопрос: «Как обрабатывать когда popular user becomes celebrity?» — async migration job
+- Уточняющий вопрос: «Как sharding работает для комментариев?» — аналогично likes
 
 ---
 
@@ -1985,8 +1985,8 @@ class ShardedStorage:
 **На интервью.**
 - Объясни выбор PostgreSQL vs Cassandra vs Neo4j
 - Покажи индексы для common queries
-- Follow-up: «Как денормализовать likes_count?» — cache layer, async batch updates
-- Follow-up: «Как шардировать?» — consistent hash по author_id или post_id
+- Уточняющий вопрос: «Как денормализовать likes_count?» — cache layer, async batch updates
+- Уточняющий вопрос: «Как шардировать?» — consistent hash по author_id или post_id
 
 ---
 
@@ -2368,8 +2368,8 @@ class ScalableWebSocketServer:
 **На интервью.**
 - Объясни архитектуру: WebSocket + Redis Pub/Sub
 - Как масштабировать 500M DAU? — Redis, multiple servers, sticky sessions
-- Follow-up: «Как обеспечить delivery guarantee?» — Redis Streams + consumer groups
-- Follow-up: «Как retry при connection loss?» — exponential backoff, queue messages locally
+- Уточняющий вопрос: «Как обеспечить delivery guarantee?» — Redis Streams + consumer groups
+- Уточняющий вопрос: «Как retry при connection loss?» — exponential backoff, queue messages locally
 
 ---
 
@@ -2716,8 +2716,8 @@ class InterestFiltering:
 **На интервью.**
 - Объясни 4-уровневый pipeline: hard filters → soft filters → ranking → ML
 - Как A/B test новый ranking model? — bucketing, logging metrics
-- Follow-up: «Как обнаружить bias в ML модели?» — fairness metrics, cross-demographic analysis
-- Follow-up: «Как позволить user'у контролировать фильтрацию?» — preferences UI, explicit interests
+- Уточняющий вопрос: «Как обнаружить bias в ML модели?» — fairness metrics, cross-demographic analysis
+- Уточняющий вопрос: «Как позволить user'у контролировать фильтрацию?» — preferences UI, explicit interests
 
 ---
 
@@ -3003,8 +3003,8 @@ Monitoring alerts:
 **На интервью.**
 - Нарисуй scaling путь: 1K DAU → 1M DAU → 1B DAU
 - Объясни как масштабировать каждый слой
-- Follow-up: «Как обнаружить bottleneck?» — metrics, profiling, load testing
-- Follow-up: «Какой максимум DAU за одним шардом?» — зависит от write pattern, обычно 50-100M
+- Уточняющий вопрос: «Как обнаружить bottleneck?» — metrics, profiling, load testing
+- Уточняющий вопрос: «Какой максимум DAU за одним шардом?» — зависит от write pattern, обычно 50-100M
 
 ---
 

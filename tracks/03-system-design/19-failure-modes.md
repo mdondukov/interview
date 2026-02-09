@@ -2418,81 +2418,81 @@ FaultTolerantSystemChecklist.print_checklist()
 ```
 
 ### Типичные ошибки
-1. **Design by committee** — too many layers, complexity
-2. **Over-engineering** — дорогое усложнение для rare scenarios
-3. **Lack of testing** — не знаем, работает ли recovery
-4. **Ignored failure modes** — есть неизвестные unknowns
-5. **No monitoring** — слепые полёты
+1. **Проектирование по комитету** — слишком много слоёв, усложнение
+2. **Избыточное проектирование** — дорогое усложнение для редких сценариев
+3. **Отсутствие тестирования** — не знаем, работает ли recovery
+4. **Игнорирование failure modes** — есть неизвестные unknown factors
+5. **Отсутствие мониторинга** — слепые полёты
 
 ### На интервью
 **Как отвечать:**
-- Начните с принципов Design for Failure
+- Начните с принципов Design for Failure (проектирование на отказ)
 - Перейдите к чеклисту (архитектура, данные, сеть и т.д.)
 - Дайте реальный пример системы
-- Упомяните как вы тестируете (chaos, game days)
+- Упомяните как вы тестируете (chaos engineering, game days)
 
-**Follow-ups:**
+**Follow-up вопросы:**
 - "Как приоритизировать что фиксировать?" → risk = impact × probability
 - "Какой SLA реалистичен?" → 99.9% нужна 43.2 мин downtime/year
-- "Как организовать опс?" → on-call, runbooks, automation
-- "Что о cost?" → redundancy дорого, нужен balance с требованиями
+- "Как организовать операции?" → on-call rotation, runbooks, automation
+- "Что с затратами?" → redundancy дорого, нужен balance с требованиями
 
 ---
 
-## Реальные Инциденты и Lessons Learned
+## Реальные Инциденты и Извлечённые Уроки
 
 ### AWS US-EAST-1 Outage (2011)
 
 **Что произошло:**
-- Lightning strike попала в cooling system в data center
-- Temperature в одной rack группе выросла
-- Несколько узлов Network topology контроллера перегрелись и упали
-- Вся система поиска IP addresses в том регионе collapsed
+- Молния попала в систему охлаждения в data center
+- Температура в одной группе серверных стоек возросла
+- Несколько узлов контроллера Network topology перегрелись и упали
+- Вся система поиска IP-адресов в том регионе вышла из строя
 
-**Lessons:**
-- Даже cloud провайдеры не immune к physical failures
-- Необходима geographical redundancy
-- Cascading failures были недостаточно контролируемы
+**Извлечённые уроки:**
+- Даже облачные провайдеры не защищены от физических отказов
+- Необходима географическая redundancy (резервирование)
+- Каскадные отказы были недостаточно контролируемы
 
 **Как это предотвратить:**
-- Multi-region deployment
-- Graceful degradation (continue with reduced capacity)
-- Better circuit breaker patterns
+- Развёртывание в нескольких регионах (multi-region deployment)
+- Graceful degradation (продолжение работы с сниженной производительностью)
+- Лучшие паттерны circuit breaker
 
 ### GitHub Outage (2012) — Split Brain
 
 **Что произошло:**
-- MySQL master-slave реplication отстала
+- MySQL master-slave репликация отстала
 - Network partition между master и slave
-- Оба начали принимать writes
-- Data inconsistency и потеря committed transactions
+- Оба начали принимать записи (writes)
+- Data inconsistency и потеря committed транзакций
 
-**Lessons:**
-- Split-brain в databases очень опасен
-- Нужен quorum для выборов лидера
-- Нельзя полагаться только на replication lag detection
+**Извлечённые уроки:**
+- Split-brain в базах данных очень опасен
+- Нужен quorum (большинство) для выборов лидера
+- Нельзя полагаться только на обнаружение replication lag
 
 **Как это предотвратить:**
 - Использовать consensus алгоритмы (Paxos, Raft)
-- Quorum-based leader election
-- Synchronous replication для critical data
+- Quorum-based выбор лидера
+- Синхронная репликация для критичных данных
 
 ### Facebook Data Center Failure (2013)
 
 **Что произошло:**
-- Cooling system failure в одном data center
-- Cascading failure: когда один DC упал, traffic перенаправился на другие
-- Те другие тоже overloaded и упали
+- Отказ системы охлаждения в одном data center
+- Каскадный отказ: когда один DC упал, traffic перенаправился на другие
+- Те другие тоже стали перегружены и упали
 
-**Lessons:**
-- Load balancing must account for capacity loss
-- Graceful degradation важна на каждом уровне
-- Circuit breakers нужны чтобы reject excess load
+**Извлечённые уроки:**
+- Load balancing должен учитывать потерю мощности
+- Graceful degradation критична на каждом уровне
+- Circuit breakers нужны чтобы отклонять избыточную нагрузку
 
 **Как это предотвратить:**
-- Health-aware load balancing
-- Overload protection (load shedding)
-- Graceful shutdown procedures
+- Health-aware load balancing (с учётом здоровья)
+- Защита от перегрузки (load shedding)
+- Graceful shutdown процедуры
 
 ---
 

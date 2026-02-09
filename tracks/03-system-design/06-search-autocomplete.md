@@ -91,25 +91,25 @@
                            └──────────────────┘
 ```
 
-**Capacity estimation:**
+**Оценка пропускной способности:**
 ```
-Input: 10B search queries/day
-- ~5 characters typed per query on average
-- 10B × 5 = 50B autocomplete requests/day
-- QPS = 50B / 86400 ≈ 580,000 QPS (average)
-- Peak: 1.5M QPS (3x average)
+Входные данные: 10B запросов в день
+- ~5 символов на запрос в среднем
+- 10B × 5 = 50B запросов autocomplete в день
+- QPS = 50B / 86400 ≈ 580,000 QPS (среднее)
+- Пик: 1.5M QPS (в 3 раза выше среднего)
 
-Storage:
-- 5M unique search terms
-- Average term: 20 characters = 20 bytes
-- With metadata (score, frequency): ~100 bytes per term
-- Total: 5M × 100B = 500MB (fits in memory of single server!)
-- With replication (3x): 1.5GB per shard
+Хранилище:
+- 5M уникальных поисковых терминов
+- Средний терм: 20 символов = 20 байт
+- С метаданными (score, frequency): ~100 байт на терм
+- Всего: 5M × 100B = 500MB (влезает в памяти одного сервера!)
+- С репликацией (3x): 1.5GB на shard
 
-Bandwidth:
-- Response: ~1KB (10 suggestions × 100 bytes each)
-- 580K QPS × 1KB = 580MB/s outbound
-- Need 5-10 Gbps network capacity (accounting for peak and redundancy)
+Пропускная способность:
+- Ответ: ~1KB (10 suggestions × 100 байт каждое)
+- 580K QPS × 1KB = 580MB/s исходящих данных
+- Нужна пропускная способность 5-10 Gbps (учитывая пики и резервирование)
 ```
 
 **Ключевые компоненты:**
@@ -122,10 +122,10 @@ Bandwidth:
 
 **Пример.**
 ```python
-# High-level API
+# API высокого уровня
 GET /api/v1/autocomplete?q=python&limit=10&user_id=user123
 
-Response:
+Ответ:
 {
     "suggestions": [
         {"text": "python tutorial", "score": 95000},
@@ -136,13 +136,13 @@ Response:
     "is_personalized": true
 }
 
-# Batch pipeline (hourly)
-1. Read logs from Kafka
-2. Group by query
-3. Calculate frequency and unique user count
+# Batch pipeline (каждый час)
+1. Читаем логи из Kafka
+2. Группируем по запросу
+3. Считаем frequency и количество уникальных пользователей
 4. Score = frequency * 0.7 + unique_users * 0.3
-5. Build Trie with top-10 per prefix
-6. Push to Redis (atomic update)
+5. Строим Trie с топ-10 для каждого префикса
+6. Отправляем в Redis (atomic update)
 ```
 
 **Типичные ошибки.**
@@ -155,8 +155,8 @@ Response:
 **На интервью.**
 - Объясни capacity estimation и почему data fits in memory.
 - Упомяни, что Trie с precomputed top-K даёт O(1) lookup для каждого prefix.
-- Follow-up: «Как обновить suggestions без downtime?» — double buffering или consistent hashing.
-- Follow-up: «Как обработать распределённую систему?» — sharding by first character.
+- Уточняющий вопрос: «Как обновить suggestions без downtime?» — double buffering или consistent hashing.
+- Уточняющий вопрос: «Как обработать распределённую систему?» — sharding by first character.
 
 ---
 
@@ -193,10 +193,10 @@ Response:
 На каждом узле (node):
 - node.children: dict[char] -> TrieNode
 - node.is_end: bool (это конец слова?)
-- node.top_suggestions: list[(score, word)] (top-K suggestions)
+- node.top_suggestions: list[(score, word)] (топ-K suggestions)
 ```
 
-**Precomputed top-K approach:**
+**Подход предварительно вычисленного top-K:**
 ```
 При insertion "python" с score=95000:
 root.children['p'].top_suggestions = [("python", 95000)]
@@ -323,8 +323,8 @@ suggestions = trie.search("python", limit=10)
 **На интервью.**
 - Нарисуй структуру для нескольких слов и покажи, как работает поиск.
 - Объясни, почему O(p + K) лучше, чем O(n log n) для каждого запроса.
-- Follow-up: «Как обновить Trie без перестроения всего?» — incremental updates с merge операциями.
-- Follow-up: «Что если Trie не влезает в памяти?» — sharding по prefixes, lazy loading, compression.
+- Уточняющий вопрос: «Как обновить Trie без перестроения всего?» — incremental updates с merge операциями.
+- Уточняющий вопрос: «Что если Trie не влезает в памяти?» — sharding по prefixes, lazy loading, compression.
 
 ---
 
@@ -379,24 +379,24 @@ Redis:
 
 **Pipeline обновления scores:**
 ```
-Hourly batch job:
-┌──────────────────┐
-│ Raw query logs   │
-└────────┬─────────┘
+Batch job каждый час:
+┌──────────────────────────┐
+│ Исходные логи запросов   │
+└────────┬─────────────────┘
          │
-┌────────▼──────────────┐
-│ Aggregation layer     │
-│ - Count frequency     │
-│ - Distinct users      │
-│ - Temporal decay      │
-└────────┬──────────────┘
+┌────────▼──────────────────────┐
+│ Слой агрегации                │
+│ - Считаем frequency           │
+│ - Уникальные пользователи     │
+│ - Decay во времени            │
+└────────┬──────────────────────┘
          │
-┌────────▼──────────────┐
-│ Scoring computation   │
-│ - Apply weights       │
-│ - Boost trending      │
-│ - Cache results       │
-└────────┬──────────────┘
+┌────────▼──────────────────────┐
+│ Вычисление scores             │
+│ - Применяем веса              │
+│ - Boost trending              │
+│ - Кэшируем результаты         │
+└────────┬──────────────────────┘
          │
 ┌────────▼──────────────┐
 │ Redis update          │
@@ -535,8 +535,8 @@ def get_personalized_suggestions(prefix: str, user_id: str, context: dict):
 **На интервью.**
 - Объясни, почему multiplicative model лучше, чем additive.
 - Упомяни temporal decay и как его реализовать.
-- Follow-up: «Как A/B тестировать разные weights?» — shadow ranking с метриками CTR/conversion.
-- Follow-up: «Как быстро адаптировать к новым трендам?» — real-time scoring для trending queries.
+- Уточняющий вопрос: «Как A/B тестировать разные weights?» — shadow ranking с метриками CTR/conversion.
+- Уточняющий вопрос: «Как быстро адаптировать к новым трендам?» — real-time scoring для trending queries.
 
 ---
 
@@ -771,8 +771,8 @@ aggregator.update_redis_trie(trie)
 **На интервью.**
 - Объясни, почему sampling важен и как выбрать rates.
 - Упомяни, как обработать trending queries в real-time (separate pipeline).
-- Follow-up: «Как обнаружить spam/abuse в queries?» — anomaly detection на frequency spike.
-- Follow-up: «Как обновлять Trie без downtime?» — consistent hashing + double buffering.
+- Уточняющий вопрос: «Как обнаружить spam/abuse в queries?» — anomaly detection на frequency spike.
+- Уточняющий вопрос: «Как обновлять Trie без downtime?» — consistent hashing + double buffering.
 
 ---
 
@@ -797,46 +797,46 @@ Tier 2: Trending (Real-time) — 1% traffic (emerging queries)
 ├── Kafka stream detects spikes
 ├── Anomaly detection: frequency > 3σ from mean
 ├── Stores in separate "trending:24h" sorted set
-├── Mérged at query time (highest priority)
-└── TTL: 24 hours (auto-expire)
+├── Мергируется при запросе (наивысший приоритет)
+└── TTL: 24 часа (автоматическое истечение)
 
-Example:
-Normal query: "python tutorial" (score 95000)
-Trending query: "why is stock market down" (spike detected, score 50000 + trending_boost)
-Final rank: trending query may rank higher if boost sufficient
+Пример:
+Обычный запрос: "python tutorial" (score 95000)
+Trending запрос: "why is stock market down" (обнаружен spike, score 50000 + trending_boost)
+Финальный рейтинг: trending запрос может быть выше, если boost достаточен
 ```
 
-**Real-time trending detection:**
+**Обнаружение trending в реальном времени:**
 ```
 Kafka stream processing (Flink):
 
-Window: tumbling 1-minute windows
+Окно: tumbling 1-минутные окна
 
-For each query in window:
-  1. Calculate current frequency
-  2. Compare with baseline (average of past 7 days)
-  3. If frequency > baseline * 3 (3σ): anomaly!
-  4. Calculate trend_score = (current - baseline) / baseline
-  5. If trend_score > threshold (e.g., 2.0): emit as trending
+Для каждого запроса в окне:
+  1. Считаем текущую frequency
+  2. Сравниваем с baseline (среднее за прошлые 7 дней)
+  3. Если frequency > baseline * 3 (3σ): аномалия!
+  4. Вычисляем trend_score = (current - baseline) / baseline
+  5. Если trend_score > threshold (например, 2.0): emitим как trending
 
-Trending queries are stored separately:
+Trending запросы хранятся отдельно:
   ZADD trending:queries:24h {trend_score} "why is stock market down"
   EXPIRE trending:queries:24h 86400
 ```
 
-**Architecture для real-time updates:**
+**Архитектура для real-time обновлений:**
 ```
-┌──────────────────────────────┐
-│ Kafka search stream          │
-│ (all queries in real-time)   │
-└────────────┬─────────────────┘
+┌──────────────────────────────────┐
+│ Kafka поисковый stream           │
+│ (все запросы в реальном времени)  │
+└────────────┬─────────────────────┘
              │
       ┌──────┴──────────────────────┐
       │                             │
-   ┌──▼─────────────┐     ┌────────▼────────┐
-   │ Aggregation    │     │ Anomaly         │
-   │ (hourly)       │     │ Detection       │
-   │ - Normal       │     │ (real-time)     │
+   ┌──▼─────────────────┐  ┌────────▼────────────┐
+   │ Агрегация         │  │ Обнаружение        │
+   │ (каждый час)      │  │ аномалий           │
+   │ - Обычные         │  │ (реальное время)   │
    │   updates      │     │ - Trending      │
    │               │     │   queries       │
    └──┬────────────┘     └────────┬────────┘
@@ -1068,8 +1068,8 @@ class TrendingDetector:
 **На интервью.**
 - Объясни, почему two-tier approach лучше, чем real-time for all.
 - Упомяни, как дефектировать trending с confidence (3σ rule).
-- Follow-up: «Как обработать spam в trending?» — rate limiting per query, manual review, ML filtering.
-- Follow-up: «Как быстро реагировать на очень актуальные события?» — separate "breaking news" pipeline с даже shorter TTL.
+- Уточняющий вопрос: «Как обработать spam в trending?» — rate limiting per query, manual review, ML filtering.
+- Уточняющий вопрос: «Как быстро реагировать на очень актуальные события?» — separate "breaking news" pipeline с даже shorter TTL.
 
 ---
 
@@ -1147,22 +1147,22 @@ Redis data structure:
 
 user:123:history (sorted set)
   score = timestamp (Unix)
-  member = query text
+  member = текст запроса
 
-Example:
+Пример:
 ZADD user:123:history 1705339200 "python tutorial"
 ZADD user:123:history 1705339300 "python django"
 ZADD user:123:history 1705339400 "machine learning"
 
-Reverse rank (most recent first):
+Обратный ранг (самое свежее первым):
 ZREVRANGE user:123:history 0 -1
-  1. "machine learning" (most recent)
+  1. "machine learning" (самое свежее)
   2. "python django"
   3. "python tutorial"
 
-Maintenance:
-- EXPIRE user:123:history 7776000 (90 days TTL)
-- Keep only last 100 queries (ZREMRANGEBYRANK ... -101 -1)
+Обслуживание:
+- EXPIRE user:123:history 7776000 (90 дней TTL)
+- Хранить только последние 100 запросов (ZREMRANGEBYRANK ... -101 -1)
 ```
 
 **Персонализированное ранжирование:**
@@ -1358,25 +1358,25 @@ class CollaborativeFiltering:
 
 **Caching personalization:**
 ```
-Problem: Computing personalization for every user is expensive.
-         If 1M concurrent users, querying Redis 1M times = slow.
+Проблема: Вычисление personalization для каждого пользователя дорого.
+          Если 1M одновременных пользователей, запрашивать Redis 1M раз = медленно.
 
-Solution: Client-side cache + TTL
+Решение: Client-side cache + TTL
 
-1. Client caches suggestions for prefix for 1 minute
-2. Even if user searches same prefix multiple times
-3. Personalization doesn't change much in 1 minute
+1. Клиент кэширует suggestions для префикса на 1 минуту
+2. Даже если пользователь ищет тот же префикс несколько раз
+3. Personalization не меняется сильно за 1 минуту
 
-Example:
-User types "python"
-  - Request sent, personalization applied
-  - Results cached locally for 60 seconds
-User types "python " (with space)
-  - Check if "python" in cache and <60 sec old
-  - If yes, use cached suggestions + apply new boosting
-  - If no, make new request
+Пример:
+Пользователь вводит "python"
+  - Запрос отправлен, personalization применена
+  - Результаты закэшированы локально на 60 секунд
+Пользователь вводит "python " (с пробелом)
+  - Проверяем, есть ли "python" в кэше и <60 сек старость
+  - Если да, используем закэшированные suggestions + применяем новый boost
+  - Если нет, делаем новый запрос
 
-In browser:
+В браузере:
 localStorage: {
   "cache:python": {
     "suggestions": [...],
@@ -1396,8 +1396,8 @@ localStorage: {
 **На интервью.**
 - Объясни, почему client-side cache лучше для personalization.
 - Упомяни privacy concerns и как их адресовать (anonymization, opt-in).
-- Follow-up: «Как найти similar users на масштабе?» — LSH (Locality-Sensitive Hashing) или approximate nearest neighbors.
-- Follow-up: «Как обработать cold start (новый пользователь)?» — use demographic или content-based filtering.
+- Уточняющий вопрос: «Как найти similar users на масштабе?» — LSH (Locality-Sensitive Hashing) или approximate nearest neighbors.
+- Уточняющий вопрос: «Как обработать cold start (новый пользователь)?» — use demographic или content-based filtering.
 
 ---
 
@@ -1411,13 +1411,13 @@ localStorage: {
 
 **Разбор latency бюджета:**
 ```
-Target: <100ms end-to-end
+Цель: <100ms end-to-end
 
-Network latency (US):
-  - Client to nearest PoP: ~10-20ms (varies by location)
-  - PoP to origin: ~20-50ms (depends on distance)
+Сетевая latency (US):
+  - Клиент к ближайшему PoP: ~10-20ms (зависит от локации)
+  - PoP к origin: ~20-50ms (зависит от расстояния)
 
-Server processing:
+Обработка на сервере:
   - Load balancing: ~1-2ms
   - Trie lookup: <1ms
   - Personalization: ~5-10ms
@@ -1425,12 +1425,12 @@ Server processing:
   - Redis roundtrips: ~1-2ms
   - Serialization: <1ms
 
-Network (return):
-  - Response to client: ~10-20ms
+Сеть (возврат):
+  - Ответ клиенту: ~10-20ms
 
-Total: ~50-90ms (if well optimized)
+Всего: ~50-90ms (если хорошо оптимизировано)
 
-If any component >20ms, we blow budget.
+Если любой компонент >20ms, мы превышаем budget.
 ```
 
 **Архитектура low-latency:**
@@ -1508,23 +1508,23 @@ Level 4: In-memory Trie (complete)
 
 **Параллелизм:**
 ```
-Sequential approach (slow):
-  1. Check cache: 5ms
-  2. Personalize: 8ms
-  3. Rank: 3ms
-  4. Serialize: 1ms
-  Total: 17ms
+Последовательный подход (медленно):
+  1. Проверка кэша: 5ms
+  2. Персонализация: 8ms
+  3. Ранжирование: 3ms
+  4. Сериализация: 1ms
+  Всего: 17ms
 
-Parallel approach (faster):
-  1. Check cache: 5ms
-  2. [Parallel] Personalize: 8ms, Rank: 3ms, Others
-  3. Merge results: 1ms
-  Total: ~10ms (limited by slowest task)
+Параллельный подход (быстрее):
+  1. Проверка кэша: 5ms
+  2. [Параллель] Персонализация: 8ms, Ранжирование: 3ms, Другое
+  3. Слияние результатов: 1ms
+  Всего: ~10ms (ограничено самой медленной задачей)
 
-Implementation:
-  - Spawn goroutines for independent tasks
-  - Use channels for fan-in
-  - Timeout if any task slow
+Реализация:
+  - Запускаем goroutines для независимых задач
+  - Используем channels для fan-in
+  - Timeout если любая задача медленная
 ```
 
 **Client-side optimizations:**
@@ -1662,8 +1662,8 @@ func (s *AutocompleteServer) buildResponse(
 **На интервью.**
 - Нарисуй latency бюджет и покажи, где находятся bottlenecks.
 - Упомяни, что параллелизм (Go goroutines) критичен.
-- Follow-up: «Как мониторить latency в production?» — P50/P99 latencies, SLI/SLO.
-- Follow-up: «Как справиться с tail latency (P99)?» — request hedging, response caching, fast fail.
+- Уточняющий вопрос: «Как мониторить latency в production?» — P50/P99 latencies, SLI/SLO.
+- Уточняющий вопрос: «Как справиться с tail latency (P99)?» — request hedging, response caching, fast fail.
 
 ---
 
@@ -1749,9 +1749,9 @@ func (s *AutocompleteServer) buildResponse(
 
 **Consistent hashing для load balancing:**
 ```
-Problem: Если добавить новый Shard, нужно перехешировать всё.
+Проблема: Если добавить новый Shard, нужно перехешировать всё.
 
-Solution: Consistent hashing (ring)
+Решение: Consistent hashing (ring)
 
                     0 (a)
                    /     \
@@ -1764,14 +1764,14 @@ Solution: Consistent hashing (ring)
          |                       |
        . (1200)              r (800)
 
-Request "python":
-  hash("python") = position on ring
-  Find next clockwise shard
-  -> route to that shard
+Запрос "python":
+  hash("python") = позиция на ring
+  Найти следующий shard по часовой стрелке
+  -> маршрутизация на этот shard
 
-Adding new shard:
-  - Only keys between old shard and new shard move
-  - Not all keys rehashed!
+Добавление нового shard:
+  - Только ключи между старым и новым shard движутся
+  - Не все ключи перехешируются!
 ```
 
 **Replication и failover:**
@@ -1779,7 +1779,7 @@ Adding new shard:
 Primary-Replica setup для каждого shard:
 
          Load Balancer
-         (prefer Primary)
+         (предпочитаем Primary)
               │
       ┌───────┼───────┐
       │               │
@@ -1802,11 +1802,11 @@ Primary-Replica setup для каждого shard:
    └─────────────────┘
 
 Failover:
-  1. Primary A fails
-  2. Heartbeat fails, detected in 5 seconds
-  3. Promote B to primary
-  4. Route new requests to B
-  5. Clients retry failed requests
+  1. Primary A падает
+  2. Heartbeat падает, обнаружено за 5 сек
+  3. Повышаем B до primary
+  4. Маршрутизируем новые запросы на B
+  5. Клиенты повторяют failed запросы
 ```
 
 **Пример реализации:**
@@ -1898,25 +1898,25 @@ suggestions = service.get_suggestions("apple")
 
 **Data migration при добавлении shard:**
 ```
-Current: 5 shards
-Add new: Shard 5 (for some redistribution)
+Текущие: 5 shards
+Добавляем: Shard 5 (для перераспределения)
 
-Migration plan:
-1. Build new Trie on Shard 5 (from scratch or copy)
-2. Update routing: some ranges move to Shard 5
-   Before: m-r -> Shard 2
-   After: m-p -> Shard 2, q-r -> Shard 5
+План миграции:
+1. Строим новый Trie на Shard 5 (с нуля или копируем)
+2. Обновляем routing: некоторые ranges движутся на Shard 5
+   Было: m-r -> Shard 2
+   Стало: m-p -> Shard 2, q-r -> Shard 5
 
-3. Data movement (offline safe):
-   - Read from Shard 2
-   - Write to Shard 5
-   - Verify consistency
+3. Движение данных (offline safe):
+   - Читаем из Shard 2
+   - Пишем в Shard 5
+   - Проверяем консистентность
    - Cut over (atomic)
 
-4. Monitoring:
-   - Check latency doesn't increase
-   - Monitor success rates
-   - Rollback if needed
+4. Мониторинг:
+   - Проверяем latency не растёт
+   - Мониторим success rates
+   - Rollback если нужно
 ```
 
 **Типичные ошибки.**
@@ -1929,8 +1929,8 @@ Migration plan:
 **На интервью.**
 - Объясни выбор range-based sharding vs hash-based.
 - Упомяни replication и failover стратегию.
-- Follow-up: «Как перебалансировать при росте?» — consistent hashing или двойная запись во время migration.
-- Follow-up: «Как обработать очень популярный shard?» — read replicas, caching, splitting диапазона.
+- Уточняющий вопрос: «Как перебалансировать при росте?» — consistent hashing или двойная запись во время migration.
+- Уточняющий вопрос: «Как обработать очень популярный shard?» — read replicas, caching, splitting диапазона.
 
 ---
 
@@ -2027,10 +2027,10 @@ Check each in Trie:
   For each variation, check if word exists
   If yes, and in top suggestions, return it
 
-Problem: Too many variations for large edit distance!
+Проблема: Слишком много вариаций при большом edit distance!
 
-Solution: Only do distance 1 for fast path
-         Distance 2 only if distance 1 finds nothing
+Решение: Делаем distance 1 для fast path
+         Distance 2 только если distance 1 ничего не нашёл
 ```
 
 **Пример реализации:**
@@ -2042,16 +2042,16 @@ class SpellCorrector:
 
     def correct(self, prefix: str, limit: int = 10) -> list:
         """
-        Find suggestions for potentially misspelled prefix.
-        Returns: [(suggestion, is_corrected), ...]
+        Найти suggestions для потенциально неправильно написанного префикса.
+        Возвращает: [(suggestion, is_corrected), ...]
         """
 
-        # First, try exact match
+        # Сначала пытаемся точное совпадение
         suggestions = self.trie.search(prefix, limit)
         if suggestions:
             return [(s, False) for s in suggestions]
 
-        # No exact match, try corrections
+        # Нет точного совпадения, пытаемся corrections
         corrections = self.find_corrections(prefix, limit, max_dist=1)
 
         if corrections:
@@ -2231,8 +2231,8 @@ class FastSpellChecker:
 **На интервью.**
 - Объясни, почему distance 1-2 достаточно для most typos.
 - Упомяни, как использовать Bloom filter для быстрого rejection.
-- Follow-up: «Как обрабатывать frequent misspellings?» — precomputed corrections в Trie.
-- Follow-up: «Как адаптироваться к user's typing patterns?» — ML model на top of corrections.
+- Уточняющий вопрос: «Как обрабатывать frequent misspellings?» — precomputed corrections в Trie.
+- Уточняющий вопрос: «Как адаптироваться к user's typing patterns?» — ML model на top of corrections.
 
 ---
 
@@ -2252,18 +2252,19 @@ Stage 1: 10K QPS (MVP)
 │ Instance │
 │ + Redis  │
 └──────────┘
-Limits: CPU/memory of one machine
-Action: Upgrade hardware if needed
+Ограничения: CPU/память одной машины
+Действие: Обновить hardware если нужно
 
 Stage 2: 50K-100K QPS
 ┌──────────────────────────┐
-│ Multiple instances        │
-│ behind LB                │
+│ Множество инстансов      │
+│ за LB                    │
 │ + Redis cluster          │
-│ + CDN for top prefixes   │
+│ + CDN для популярных      │
+│   префиксов              │
 └──────────────────────────┘
-Limits: Network bandwidth, Redis memory
-Action: Add more instances, sharding
+Ограничения: Network bandwidth, Redis memory
+Действие: Добавить инстансы, sharding
 
 Stage 3: 500K-1M QPS
 ┌───────────────────────────────────┐
@@ -2272,29 +2273,29 @@ Stage 3: 500K-1M QPS
 │ - Europe                          │
 │ - Asia                            │
 │                                   │
-│ Each region:                      │
+│ Каждый region:                    │
 │ - 5 shards                        │
 │ - 3x replication                  │
 │ - CDN cache                       │
 │ - Hot prefix caching              │
 └───────────────────────────────────┘
-Limits: Cost, operational complexity
-Action: Optimize per-region, edge caching
+Ограничения: Cost, operational complexity
+Действие: Оптимизировать per-region, edge caching
 
 Stage 4: 10M+ QPS (Global)
 ┌────────────────────────────────────┐
 │ Edge computing (CDN nodes)         │
 │ - Compute at edge PoP              │
 │ - Local Trie (compressed)          │
-│ - 1-minute update sync              │
+│ - 1-минутная sync обновлений       │
 │ - Sub-5ms latency                  │
 │                                    │
 │ Origin:                            │
 │ - Coordination                     │
 │ - Analytics                        │
-│ - Trie updates (hourly)            │
+│ - Trie updates (каждый час)        │
 └────────────────────────────────────┘
-Limits: Consistency, operational overhead
+Ограничения: Consistency, operational overhead
 ```
 
 **Bottleneck analysis и solutions:**
@@ -2484,34 +2485,34 @@ def get_suggestions(q: str, user_id: str):
 
 **Capacity planning:**
 ```
-Goal: Support 1M QPS
+Цель: Поддержать 1M QPS
 
-Calculation:
-- 1M QPS = 1,000,000 queries/second
-- Average query size: 20 bytes
-- Inbound bandwidth: 1M × 20 bytes = 20 MB/s
+Расчёт:
+- 1M QPS = 1,000,000 запросов/сек
+- Средний размер запроса: 20 байт
+- Входящая пропускная способность: 1M × 20 байт = 20 MB/s
 
-- Average response: 1 KB (10 suggestions)
-- Outbound bandwidth: 1M × 1 KB = 1 GB/s
-- Requires: 10 Gbps network links (with safety margin)
+- Средний ответ: 1 KB (10 suggestions)
+- Исходящая пропускная способность: 1M × 1 KB = 1 GB/s
+- Требуется: 10 Gbps network links (с margin безопасности)
 
-Server capacity:
-- 1 server handles ~100K QPS
-- Need: 1M / 100K = 10 servers per shard
-- 5 shards × 10 servers = 50 servers
-- With replication (3x): 150 servers total
+Пропускная способность сервера:
+- 1 сервер обрабатывает ~100K QPS
+- Нужно: 1M / 100K = 10 серверов на shard
+- 5 shards × 10 серверов = 50 серверов
+- С репликацией (3x): 150 серверов всего
 
-Memory:
+Память:
 - Trie: 10 GB
 - Redis cache: 10 GB
 - Per server: 20 GB RAM
-- Total: 150 × 20 GB = 3 TB RAM
+- Всего: 150 × 20 GB = 3 TB RAM
 
-Cost estimate (AWS):
-- EC2 instances: ~$100/month each × 150 = $15K/month
-- Networking: ~$50K/month (10 Gbps inter-region)
-- RDS/Cassandra: ~$30K/month (analytics)
-- Total: ~$100K/month for infrastructure
+Оценка стоимости (AWS):
+- EC2 instances: ~$100/месяц каждый × 150 = $15K/месяц
+- Networking: ~$50K/месяц (10 Gbps inter-region)
+- RDS/Cassandra: ~$30K/месяц (analytics)
+- Всего: ~$100K/месяц для инфраструктуры
 ```
 
 **Типичные ошибки.**
@@ -2524,8 +2525,8 @@ Cost estimate (AWS):
 **На интервью.**
 - Покажи, как масштабировать от 10K до 1M QPS step-by-step.
 - Упомяни key bottlenecks на каждом stage.
-- Follow-up: «Как обнаружить и зафиксить bottleneck в production?» — load testing, profiling, monitoring.
-- Follow-up: «Как справиться с uneven load distribution?» — consistent hashing, traffic shaping, request hedging.
+- Уточняющий вопрос: «Как обнаружить и зафиксить bottleneck в production?» — load testing, profiling, monitoring.
+- Уточняющий вопрос: «Как справиться с uneven load distribution?» — consistent hashing, traffic shaping, request hedging.
 
 ---
 
@@ -2563,96 +2564,96 @@ Use hybrid:
 
 **Trade-off 2: Precision vs Recall**
 ```
-Scenario: User searches "python"
-         We have 10,000 queries starting with "python"
+Сценарий: Пользователь ищет "python"
+          У нас 10,000 запросов начинающихся с "python"
 
-Option 1: Return top-10 only
-+ Fast: O(K) lookup where K=10
-+ Memory efficient: store only 10 per node
-- Might miss relevant suggestions (recall = 10/10000)
+Опция 1: Вернуть только топ-10
++ Быстро: O(K) lookup где K=10
++ Память efficient: хранить только 10 на узле
+- Может пропустить relевантные suggestions (recall = 10/10000)
 
-Option 2: Return top-100
-+ Better recall: 100/10000
-- Slower: need to rank and sort
-- Memory: 10x more
+Опция 2: Вернуть топ-100
++ Лучше recall: 100/10000
+- Медленнее: нужно ранжировать и сортировать
+- Память: в 10 раз больше
 
-Option 3: Return all 10,000
+Опция 3: Вернуть все 10,000
 + Perfect recall
-- Impossibly slow for client
-- Too much data
+- Невозможно медленно для клиента
+- Слишком много данных
 
-RECOMMENDATION:
-Return top-100 from server, client shows top-10
+РЕКОМЕНДАЦИЯ:
+Вернуть топ-100 с сервера, клиент показывает топ-10
 - Recall: 100/10000 = 1%
-- Precision: if user sees top-10, mostly good
-- Trade: slight latency increase, better UX
+- Precision: если пользователь видит топ-10, в основном хорошо
+- Trade: небольшое увеличение latency, лучший UX
 ```
 
 **Trade-off 3: Accuracy vs Latency**
 ```
-Scenario: Ranking suggestions with personalization
+Сценарий: Ранжирование suggestions с personalization
 
-Precise ranking (50ms):
+Точное ранжирование (50ms):
 - Multiple boosts: personal + trending + context
 - Complex calculations
-- Good quality
-- Risk: might timeout on slow network
+- Хорошее качество
+- Risk: может timeout на медленной сети
 
-Fast ranking (5ms):
+Быстрое ранжирование (5ms):
 - Simple heuristics: frequency only
-- No personalization
-- Fast but less relevant
-- Always succeeds
+- Нет personalization
+- Быстро но менее relевантно
+- Всегда успешно
 
-RECOMMENDATION:
-Tiered approach:
-- Try precise ranking with 50ms timeout
-- If timeout, fallback to fast ranking
-- Log slow cases for optimization
+РЕКОМЕНДАЦИЯ:
+Tiered подход:
+- Пытаемся точное ранжирование с 50ms timeout
+- Если timeout, fallback к быстрому ранжированию
+- Log медленные случаи для оптимизации
 - Best of both worlds
 ```
 
 **Trade-off 4: Consistency vs Availability**
 ```
-Scenario: Update suggestions in distributed shards
+Сценарий: Обновление suggestions в distributed shards
 
 Strong consistency:
-- Synchronous replication to all 3 replicas
-- Wait for all to acknowledge
-- Guarantees: all readers see same data
-- Risk: if 1 replica slow, all blocked
+- Synchronous replication на все 3 replicas
+- Ждём всех acknowledge
+- Гарантии: все readers видят один и тот же data
+- Risk: если 1 replica медленная, все blocked
 
 Eventual consistency:
 - Async replication
 - Return immediately
-- Risk: stale reads for few seconds
-- Benefit: always available, fast
+- Risk: stale reads на несколько секунд
+- Benefit: всегда доступна, быстрая
 
-RECOMMENDATION:
-Use eventual consistency + batch versioning:
-- New Trie built hourly
-- All shards get new version within 1 minute
-- Worst case: user sees 1-hour-old suggestions
-- Acceptable: suggestions don't change much hour-to-hour
+РЕКОМЕНДАЦИЯ:
+Используем eventual consistency + batch versioning:
+- Новый Trie строится каждый час
+- Все shards получают новую версию в течение 1 минуты
+- Worst case: пользователь видит suggestions на 1 час старее
+- Acceptable: suggestions не меняются сильно час от часа
 ```
 
 **Trade-off 5: Cost vs Quality**
 ```
-Scenario: Caching strategy
+Сценарий: Стратегия caching
 
-CDN cache all prefixes:
+CDN кэшировать все префиксы:
 + Perfect hit rate
 + Lowest latency
-- Cost: $100K+/month (expensive)
-- Overkill: many prefixes rarely queried
+- Cost: $100K+/месяц (дорого)
+- Overkill: много префиксов редко запрашивается
 
-CDN cache top-1000 only:
+CDN кэшировать только топ-1000:
 - Hit rate: ~80%
-- Cost: $20K/month
-- Trade: 20% of requests go to origin
+- Cost: $20K/месяц
+- Trade: 20% запросов идут к origin
 
-Client-side cache only:
-- Hit rate: ~70% (many users)
+Только client-side cache:
+- Hit rate: ~70% (много пользователей)
 - Cost: $0
 - Trade: more origin requests
 
@@ -2704,8 +2705,8 @@ CHOOSE Hybrid IF:
 **На интервью.**
 - Упомяни trade-offs явно: "We chose X over Y because...".
 - Покажи, как измерить impact каждого trade-off.
-- Follow-up: «Как бы ты изменил дизайн если...» — freshness requirement doubled, users in 10 countries, budget tripled?
-- Follow-up: «Как A/B тестировать разные strategies?» — segment traffic, measure metrics, decide.
+- Уточняющий вопрос: «Как бы ты изменил дизайн если...» — freshness requirement doubled, users in 10 countries, budget tripled?
+- Уточняющий вопрос: «Как A/B тестировать разные strategies?» — segment traffic, measure metrics, decide.
 
 ---
 
@@ -2722,27 +2723,27 @@ CHOOSE Hybrid IF:
 S — Scope: Уточни требования
 N — Numbers: Capacity estimation
 A — Architecture: High-level design
-K — Key components: Deep dive on critical parts
-E — Edge cases: How to handle failures
+K — Key components: Глубокий анализ критических частей
+E — Edge cases: Как обрабатывать failures
 
-Example:
-Interviewer: "Design autocomplete for Google search."
+Пример:
+Интервьюер: "Спроектируй autocomplete для Google search."
 
 1. SCOPE (clarify)
-   "10B queries/day, 100ms latency, 99.99% uptime?
+   "10B запросов/день, 100ms latency, 99.99% uptime?
     Multi-language? Typo correction? Personalization?
-    I'll assume English, with trending topics, no typo handling."
+    Я буду предполагать English, с trending topics, без typo handling."
 
 2. NUMBERS (estimate)
-   "10B queries/day = 580K QPS, Peak 1.5M QPS
-    Data: 5M unique terms, ~500MB in memory
-    Bandwidth: 1GB/s outbound"
+   "10B запросов/день = 580K QPS, Peak 1.5M QPS
+    Data: 5M unique terms, ~500MB в памяти
+    Bandwidth: 1GB/s исходящих данных"
 
 3. ARCHITECTURE (diagram)
    "Client -> CDN -> LB -> Autocomplete Service -> Trie/Redis"
 
 4. KEY COMPONENTS
-   "Trie for O(K) lookup, Redis for caching, Kafka for logging"
+   "Trie для O(K) lookup, Redis для caching, Kafka для логирования"
 
 5. EDGE CASES
    "Failures: replica failover, cache invalidation, backpressure"
@@ -2751,16 +2752,16 @@ Interviewer: "Design autocomplete for Google search."
 **Типичные follow-up questions и как ответить:**
 
 ```
-Follow-up 1: "How would you handle a 10x traffic spike?"
+Follow-up 1: "Как бы ты обработал spike трафика в 10x?"
 
 Плохой ответ:
-"Um... add more servers?"
+"Um... добавить больше серверов?"
 
 Хороший ответ:
-"First, I'd check where spike is coming from:
-1. Geographic (one region overloaded)?
-   → Route traffic to other regions via GeoDNS
-2. Prefix-specific (e.g., trending topic)?
+"Сначала, проверю откуда spike:
+1. Geographic (одна region перегружена)?
+   → Route traffic к другим regions через GeoDNS
+2. Prefix-specific (например, trending topic)?
    → Increase trending detection sensitivity
 3. Bot traffic (spam)?
    → Rate limit by IP, CAPTCHAs
@@ -2806,31 +2807,31 @@ Follow-up 3: "What if Trie doesn't fit in memory?"
 "Just use a database?"
 
 Хороший ответ:
-"If Trie exceeds available memory:
+"Если Trie превышает доступную память:
 
-Option 1: Compression
-- PATRICIA tree (30% savings)
-- Prune rare terms (<100/day)
-- Result: 70% -> 50% memory
+Опция 1: Compression
+- PATRICIA tree (30% экономия)
+- Прорежать редкие термины (<100/день)
+- Результат: 70% -> 50% памяти
 
-Option 2: Sharding
-- By first character (5 shards)
-- Each shard: 10GB / 5 = 2GB
-- Manageable on modern hardware
+Опция 2: Sharding
+- По первому символу (5 shards)
+- Каждый shard: 10GB / 5 = 2GB
+- Управляемо на современном оборудовании
 
-Option 3: Tiered storage
-- Hot prefixes (top 10K) in RAM
-- Cold prefixes in Redis
-- Very cold in Cassandra
-- Lazy loading with LRU cache
+Опция 3: Tiered storage
+- Hot prefixes (топ 10K) в RAM
+- Cold prefixes в Redis
+- Very cold в Cassandra
+- Lazy loading с LRU cache
 
-Option 4: External storage
-- Elasticsearch for full search
+Опция 4: External storage
+- Elasticsearch для full search
 - Trade: 50-100ms vs <1ms latency
 - Gain: unlimited size, fuzzy matching
 
-I'd try Options 1 + 2 first (compression + sharding).
-If still doesn't fit, add Option 3 (tiered storage)."
+Я бы попробовал Опции 1 + 2 первыми (compression + sharding).
+Если всё ещё не помещается, добавляю Опцию 3 (tiered storage)."
 
 Follow-up 4: "How would you optimize for mobile users?"
 
@@ -2844,35 +2845,35 @@ Follow-up 4: "How would you optimize for mobile users?"
 - Battery sensitive
 - Screen smaller (fewer suggestions visible)
 
-Optimizations:
+Оптимизации:
 1. Network
-   - Higher debounce (200ms vs 100ms) to reduce requests
+   - Выше debounce (200ms vs 100ms) чтобы уменьшить запросы
    - Compression (gzip responses)
-   - Smaller suggestions (5 vs 10)
+   - Меньше suggestions (5 vs 10)
    - Prefetch next likely queries
 
 2. Battery
-   - Batch requests (coalesce with other API calls)
-   - Reduce frequency of updates
+   - Batch requests (coalesce с другими API calls)
+   - Reduce frequency updates
    - Cache aggressively (5min vs 1min)
 
 3. Storage
    - Compressed local cache (1MB vs 10MB)
-   - SQLite instead of in-memory map
+   - SQLite вместо in-memory map
    - Lazy initialization
 
 4. Metrics
-   - Monitor mobile p99 latency separately
-   - Set higher SLO (150ms vs 100ms) for mobile
-   - A/B test different settings"
+   - Monitor mobile p99 latency отдельно
+   - Set выше SLO (150ms vs 100ms) для mobile
+   - A/B test разные settings"
 
-Follow-up 5: "Security concerns?"
+Follow-up 5: "Проблемы безопасности?"
 
 Плохой ответ:
-"Never thought about it."
+"Никогда не думал об этом."
 
 Хороший ответ:
-"Several security vectors:
+"Несколько security vectors:
 
 1. Abuse
    - Rate limit by IP (100 requests/second)
@@ -2880,8 +2881,8 @@ Follow-up 5: "Security concerns?"
    - Pattern detection (unusual query sequences)
 
 2. Privacy
-   - Encrypt logs (PII in queries)
-   - Anonymize user IDs in analytics
+   - Encrypt logs (PII в queries)
+   - Anonymize user IDs в analytics
    - GDPR compliance (right to deletion)
    - Don't correlate with identity
 

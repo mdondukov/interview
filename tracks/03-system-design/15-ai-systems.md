@@ -100,22 +100,22 @@ Daily volume:
 - Avg tokens/message: 500 input + 200 output = 700
 - Total tokens: 700M/day
 
-Cost (GPT-4o: $3/$15 per 1M tokens):
+Стоимость (GPT-4o: $3/$15 per 1M tokens):
 - Input: 500M × $3/1M = $1500
 - Output: 200M × $15/1M = $3000
 - Total: $4500/day = $1.64M/year
 
-Latency impact:
+Влияние на latency:
 - Inference: 2-5 seconds per message
 - Peak RPS: 1M / 86400 × 3 = ~35 RPS
 - Must support streaming for UX (TTFT < 200ms)
 
-Rate limits:
+Лимиты провайдера:
 - 700M tokens/day = 486K tokens/min average
 - OpenAI limit: 2M TPM (plenty room)
 - But at peak: 1.5M tokens/min possible → near limit
 
-Quality tracking:
+Отслеживание качества:
 - Can't test deterministically
 - Need user feedback (thumbs up/down)
 - Monitor: hallucination rate, accuracy, cost per successful query
@@ -133,7 +133,7 @@ Quality tracking:
 - Объясни, почему AI system expensive и how это отличается от traditional backend.
 - Упомяни streaming и speculative UI как necessary для хорошего UX.
 - Говори о cost optimization раньше, чем о архитектуре — это показывает приоритизацию.
-- Follow-up: «Какие метрики ты бы трекил?» — не только latency/errors, но и cost/token, hallucination rate.
+- Уточняющий вопрос: «Какие метрики ты бы трекил?» — не только latency/errors, но и cost/token, hallucination rate.
 
 ---
 
@@ -214,7 +214,7 @@ Quality tracking:
 └──────────┘      └─────────────┘
 ```
 
-Capacity estimation:
+Оценка ёмкости:
 
 ```
 Input: 100K DAU, 10 messages/day, 5 turn-conversations
@@ -223,22 +223,22 @@ Input: 100K DAU, 10 messages/day, 5 turn-conversations
 - Avg latency to first token (streaming): 200ms
 - Full latency (complete response): 2-5 seconds
 
-Storage:
+Хранилище:
 - Message: ~2KB (text + metadata)
 - 1M × 2KB = 2GB/day
 - 1 year: 730GB
 - Assume 30-day retention: 60GB hot storage
 
-Cost:
+Стоимость:
 - Input tokens: 1M × 500 = 500M/day × $3/1M = $1500/day
 - Output tokens: 1M × 200 = 200M/day × $15/1M = $3000/day
 - Total: $4500/day ≈ $1.6M/year
 ```
 
-API design:
+Дизайн API:
 
 ```yaml
-# Create/continue conversation
+# Создать/продолжить беседу
 POST /v1/chat/completions
 {
   "conversation_id": "uuid or null for new",
@@ -250,24 +250,24 @@ POST /v1/chat/completions
   "max_tokens": 2000
 }
 
-# Streaming response format
+# Формат потокового ответа
 data: {"type": "start", "message_id": "uuid", "conversation_id": "uuid"}
-data: {"type": "content", "delta": "Hello"}
-data: {"type": "content", "delta": " world"}
+data: {"type": "content", "delta": "Привет"}
+data: {"type": "content", "delta": " мир"}
 data: {"type": "tool_call", "name": "search", "args": {"query": "..."}}
 data: {"type": "tool_result", "result": {...}}
 data: {"type": "done", "usage": {"prompt_tokens": 100, "completion_tokens": 50}}
 
-# Get conversation
+# Получить беседу
 GET /v1/conversations/{id}
 
-# List conversations
+# Список бесед
 GET /v1/conversations?limit=20&offset=0
 
-# Delete conversation
+# Удалить беседу
 DELETE /v1/conversations/{id}
 
-# File upload for analysis
+# Загрузка файла для анализа
 POST /v1/files
 {
   "file": "base64...",
@@ -275,7 +275,7 @@ POST /v1/files
 }
 ```
 
-Data model:
+Модель данных:
 
 ```sql
 -- Conversations (indexed by user_id for listing)
@@ -327,25 +327,25 @@ CREATE INDEX idx_token_usage_user_date ON token_usage(
 Context window management:
 
 ```
-Problem: LLM context window limited (128K tokens for GPT-4o)
-Long conversations → overflow → errors or context cutoff
+Проблема: контекстное окно LLM ограничено (128K токенов для GPT-4o)
+Длинные разговоры → переполнение → ошибки или обрезание контекста
 
-Strategy comparison:
+Сравнение стратегий:
 
-1. SLIDING WINDOW (simplest)
+1. СКОЛЬЗЯЩЕЕ ОКНО (самое простое)
    ┌─────────────────────────────────┐
-   │ [System] [Last 10 msgs] [Current]│
+   │ [Система] [Последних 10 сообщ] [Текущ]│
    └─────────────────────────────────┘
-   ✓ Predictable, simple implementation
-   ✗ Loses early context, topic might get confused
+   ✓ Предсказуемо, простая реализация
+   ✗ Теряет ранний контекст, тема может запутаться
 
-2. SUMMARIZATION (quality)
+2. СУММАРИЗАЦИЯ (качество)
    ┌──────────────────────────────────────┐
-   │ [System] [Summary] [Last 5] [Current]│
+   │ [Система] [Краткое] [Последних 5] [Текущ]│
    └──────────────────────────────────────┘
-   ✓ Preserves key info across conversation
-   ✗ Extra LLM call (cost + latency)
-   └─ Call LLM to summarize every 50 messages
+   ✓ Сохраняет ключевую информацию в разговоре
+   ✗ Дополнительный вызов LLM (стоимость + latency)
+   └─ Вызвать LLM для суммаризации каждые 50 сообщений
 
 3. HYBRID (recommended)
    Always include:
@@ -425,8 +425,8 @@ Tool calling flow:
 - Объясни, почему streaming необходим для chatbot UX.
 - Speak about context management strategies and tradeoffs.
 - Упомяни multi-provider failover для resilience.
-- Follow-up: «How would you cost-optimize this?» → model routing, caching, smaller models for simple queries.
-- Follow-up: «How would you handle 10M DAU?» → horizontal scaling of chat service, vector DB for context retrieval, more aggressive caching.
+- Уточняющий вопрос: «How would you cost-optimize this?» → model routing, caching, smaller models for simple queries.
+- Уточняющий вопрос: «How would you handle 10M DAU?» → horizontal scaling of chat service, vector DB for context retrieval, more aggressive caching.
 
 ---
 
@@ -540,33 +540,33 @@ RAG Pipeline:
 └──────────────────────────────────────────────────────────────────────┘
 ```
 
-Capacity estimation:
+Оценка пропускной способности:
 
 ```
-Documents: 1M total, 100 new/day
-Avg document: 10 pages × 500 words = 5K words
+Документы: 1M всего, 100 новых/день
+Средний документ: 10 страниц × 500 слов = 5K слов
 
-Chunking:
-- Strategy: Recursive split with 10% overlap
-- Chunk size: ~500 tokens
-- Chunks per doc: ~10
-- Total chunks: 10M
+Разбиение на чанки:
+- Стратегия: рекурсивное разбиение с перекрытием 10%
+- Размер чанка: ~500 токенов
+- Чанков на документ: ~10
+- Всего чанков: 10M
 
 Embeddings (OpenAI text-embedding-3-large):
-- Dimensions: 1536 (float32)
-- Storage: 10M × 1536 × 4 bytes = 60GB
-- Ingestion: 100 docs/day × 10 chunks × embedding call
-  = 1000 embeddings/day
-  = ~$0.02/day for embeddings
+- Размер: 1536 (float32)
+- Хранилище: 10M × 1536 × 4 байта = 60GB
+- Ingestion: 100 docs/день × 10 chunks × embedding call
+  = 1000 embeddings/день
+  = ~$0.02/день на embeddings
 
-Query traffic:
-- 10K queries/day = 0.1 RPS average
-- Peak: 1 RPS
-- Each query: 1 embedding + search + rerank + LLM
+Трафик запросов:
+- 10K запросов/день = 0.1 RPS в среднем
+- Пик: 1 RPS
+- Каждый запрос: 1 embedding + search + rerank + LLM
   Total latency: 100ms (embed) + 50ms (search) + 50ms (rerank)
-                + 2000ms (LLM) = ~2.2 seconds
+                + 2000ms (LLM) = ~2.2 сек
 
-Cost:
+Стоимость:
 - Embeddings (ingestion): ~$6/month
 - Embeddings (queries): ~$1.5/month
 - LLM calls: 10K × $0.02 (avg) = $200/month
@@ -772,8 +772,8 @@ Metric tracking:
 - Discuss chunking strategies and tradeoffs.
 - Explain why hybrid search (vector + keyword) beats pure vector search.
 - Упомяни reranking как critical для accuracy.
-- Follow-up: «How would you improve accuracy?» → better chunking, query expansion, fact verification.
-- Follow-up: «How would you scale to 100M documents?» → sharding vector DB, batch embeddings, multi-region.
+- Уточняющий вопрос: «How would you improve accuracy?» → better chunking, query expansion, fact verification.
+- Уточняющий вопрос: «How would you scale to 100M documents?» → sharding vector DB, batch embeddings, multi-region.
 
 ---
 
@@ -809,7 +809,7 @@ MODEL COMPARISON (2024)
 │                  │      │            │         │          │
 └──────────────────────────────────────────────────────────┘
 
-Trade-offs:
+Компромиссы:
 - Dimensionality: higher = better quality but more storage/memory
 - Cost: API models (OpenAI, Cohere) vs free local (BGE, MiniLM)
 - Latency: local models fast, API models have network latency
@@ -1036,8 +1036,8 @@ Total: ~$20k/month (dominated by LLM cost)
 - Discuss embedding model selection based on quality/cost/latency.
 - Explain why vector DB needed vs regular SQL for k-NN search.
 - Discuss tradeoffs: Qdrant (open-source) vs Pinecone (managed).
-- Follow-up: «How to optimize for cost?» → batch embeddings, reuse embeddings, smaller models.
-- Follow-up: «How to handle private data?» → self-hosted embeddings model + local VDB.
+- Уточняющий вопрос: «How to optimize for cost?» → batch embeddings, reuse embeddings, smaller models.
+- Уточняющий вопрос: «How to handle private data?» → self-hosted embeddings model + local VDB.
 
 ---
 
@@ -1089,38 +1089,38 @@ LLM Serving Architecture:
                     └────────────────────────┘
 ```
 
-Request batching mechanics:
+Механика батчинга запросов:
 
 ```
-Without batching (sequential):
-Request 1: [tokens...] → infer → 500ms
-Request 2: [tokens...] → infer → 500ms
-Request 3: [tokens...] → infer → 500ms
-Total time: 1500ms, Throughput: 2 req/sec
+Без батчинга (последовательно):
+Запрос 1: [tokens...] → infer → 500ms
+Запрос 2: [tokens...] → infer → 500ms
+Запрос 3: [tokens...] → infer → 500ms
+Общее время: 1500ms, Пропускная способность: 2 запроса/сек
 
-With batching (parallel):
+С батчингом (параллельно):
                     ┌──────────────────────────────┐
-Request 1: [tokens]─┤                              │
-Request 2: [tokens]─┤ Batch inference (GPU)       │── 600ms total
-Request 3: [tokens]─┤ Process all at once         │
+Запрос 1: [tokens]─┤                              │
+Запрос 2: [tokens]─┤ Batch inference (GPU)       │── 600ms всего
+Запрос 3: [tokens]─┤ Обработать все одновременно│
                     └──────────────────────────────┘
-Total time: 600ms, Throughput: 5 req/sec
+Общее время: 600ms, Пропускная способность: 5 запросов/сек
 
-vLLM's Paged Attention:
-- Memory fragmentation problem: KV cache → 60% waste
-- Solution: Virtual memory (paging) like OS
-- Result: 4-10x throughput improvement
+Paged Attention в vLLM:
+- Проблема фрагментации памяти: KV cache → 60% потерь
+- Решение: виртуальная память (paging) как в ОС
+- Результат: 4-10x улучшение пропускной способности
 
-KV cache layout:
-Standard attention:
-  Tokens: [t1, t2, t3, t4, ..., t50]
+Схема KV cache:
+Стандартная внимание:
+  Токены: [t1, t2, t3, t4, ..., t50]
   K/V:    [allocated block 1] [allocated block 2] [allocated block 3]
-  Waste:  [gap] [gap] [gap]
+  Потери:  [gap] [gap] [gap]
 
 Paged Attention:
-  Pages: [page1: t1-t10] [page2: t11-t20] [page3: t21-t30]
-  Reuse: pages only as needed, no waste
-  = 60% memory savings
+  Страницы: [page1: t1-t10] [page2: t11-t20] [page3: t21-t30]
+  Переиспользование: страницы только по необходимости, без потерь
+  = 60% экономия памяти
 ```
 
 Quantization benefits:
@@ -1177,45 +1177,45 @@ Tier 3: Specialized (for code, math, etc.)
 - Models: Specialized fine-tuned models
 - Latency: 300-1000ms
 - Cost: $0.02-0.05
-- 5% of queries → answer here
+- 5% запросов → ответ здесь
 
-Cost optimization:
-Total cost = (70% × $0.001) + (25% × $0.01) + (5% × $0.02)
+Оптимизация стоимости:
+Общая стоимость = (70% × $0.001) + (25% × $0.01) + (5% × $0.02)
            = $0.0007 + $0.0025 + $0.001
-           = $0.0042 per query average
+           = $0.0042 за запрос в среднем
 
-vs always using GPT-4:
-Total cost = 100% × $0.02 = $0.02 per query
+vs всегда использовать GPT-4:
+Общая стоимость = 100% × $0.02 = $0.02 за запрос
 
-Savings: ~79% cost reduction with same average quality
+Экономия: ~79% снижение стоимости при той же среднего качестве
 ```
 
-Scaling to 1000 RPS:
+Масштабирование до 1000 RPS:
 
 ```
-Calculation:
-- 1000 RPS = 1000 requests/sec
-- Avg tokens per request: 100 input + 150 output = 250 tokens
-- Avg duration: 5 seconds (for 150 tokens at 30 tokens/sec)
-- Concurrent requests = 1000 × 5 = 5000 concurrent
+Расчёт:
+- 1000 RPS = 1000 запросов/сек
+- Средние токены на запрос: 100 входных + 150 выходных = 250 токенов
+- Средняя длительность: 5 секунд (для 150 токенов при 30 токенов/сек)
+- Одновременные запросы = 1000 × 5 = 5000 параллельных
 
-Deployment:
-- vLLM throughput per GPU: 20-30 req/sec
-- Replicas needed: 5000 / (20 × batch_size)
-- With batch_size=64: 5000 / (20×64) ≈ 4 GPUs
-- With load distribution
+Развёртывание:
+- vLLM пропускная способность на GPU: 20-30 запросов/сек
+- Нужно реплик: 5000 / (20 × batch_size)
+- С batch_size=64: 5000 / (20×64) ≈ 4 GPU
+- С распределением нагрузки
 
-Hardware needed (40 x A100 80GB):
-- 4 inference servers × 8 GPUs = 32 GPUs
-- 1 router/lb + backup: 2 GPUs
-- 2 cache layer: 6 GPUs
-- Total: 40 GPUs
+Оборудование (40 x A100 80GB):
+- 4 inference серверов × 8 GPU = 32 GPU
+- 1 router/lb + backup: 2 GPU
+- 2 cache слоя: 6 GPU
+- Всего: 40 GPU
 
-Cost: 40 × $3.06/hour (AWS A100) = $122.4/hour
-Annual: ~$1M in infrastructure alone
+Стоимость: 40 × $3.06/час (AWS A100) = $122.4/час
+Годовая: ~$1M только на инфраструктуру
 
-But serves 86.4M queries/day = $0.00001 per query compute cost
-(Plus LLM API cost if using OpenAI)
+Но обслуживает 86.4M запросов/день = $0.00001 за запрос стоимость вычислений
+(Плюс стоимость LLM API если использовать OpenAI)
 ```
 
 **Типичные ошибки.**
@@ -1233,8 +1233,8 @@ But serves 86.4M queries/day = $0.00001 per query compute cost
 - Discuss quantization tradeoffs: memory vs accuracy.
 - Explain load balancing: round-robin vs least loaded.
 - Mention vLLM/TensorRT-LLM as key open-source tools.
-- Follow-up: «How would you scale to 10K RPS?» → multi-region, multi-tier models, caching.
-- Follow-up: «How to meet strict latency SLA (< 100ms)?» → smaller models, more aggressive quantization, speculative decoding.
+- Уточняющий вопрос: «How would you scale to 10K RPS?» → multi-region, multi-tier models, caching.
+- Уточняющий вопрос: «How to meet strict latency SLA (< 100ms)?» → smaller models, more aggressive quantization, speculative decoding.
 
 ---
 
@@ -1404,8 +1404,8 @@ At 100M queries/year:
 - Discuss RAG vs fine-tuning tradeoff: retrieval vs training.
 - Mention cost: RAG cheaper for knowledge, fine-tuning cheaper at huge scale.
 - Provide decision framework: try prompting first, RAG if needed, fine-tune as last resort.
-- Follow-up: «How would you measure quality?» → human eval, automatic metrics (BLEU, exact match).
-- Follow-up: «What if fine-tuning model had lower latency?» → might be worth it for real-time systems.
+- Уточняющий вопрос: «How would you measure quality?» → human eval, automatic metrics (BLEU, exact match).
+- Уточняющий вопрос: «What if fine-tuning model had lower latency?» → might be worth it for real-time systems.
 
 ---
 
@@ -1463,20 +1463,20 @@ Complex queries (15%):
 Routing logic:
 ```python
 def select_model(query, context_length):
-    # Score query complexity 0-10
+    # Оценить сложность запроса 0-10
     complexity = 0
 
     if len(query) < 50:
-        complexity += 1  # short = simple
+        complexity += 1  # короткий = простой
 
     if "how" not in query.lower():
-        complexity += 2  # factual = simple
+        complexity += 2  # фактический = простой
 
     if context_length > 5000:
-        complexity += 3  # large context = hard
+        complexity += 3  # большой контекст = сложный
 
     if "not" in query or "but" in query:
-        complexity += 2  # exceptions = hard
+        complexity += 2  # исключения = сложный
 
     if complexity < 3:
         return "gpt-4o-mini"  # $0.002
@@ -1516,21 +1516,21 @@ Cache taxonomy:
 Practical implementation:
 ```python
 def get_response(query, user_id):
-    # Check exact cache
+    # Проверить точный кэш
     cache_key = f"{user_id}:{hash(query)}"
     if cache.exists(cache_key):
         return cache.get(cache_key)  # 5-10ms
 
-    # Embed for semantic cache
+    # Встроить для semantic cache
     emb = embed(query)
     similar = semantic_cache.search(emb, threshold=0.95)
     if similar:
         return similar[0].response  # 20-30ms
 
-    # Cache miss, call LLM
+    # Кэш miss, вызвать LLM
     response = llm.complete(query)
 
-    # Store in both caches
+    # Сохранить в оба кэша
     cache.set(cache_key, response, ttl=3600)
     semantic_cache.add(emb, response)
 
@@ -1542,24 +1542,24 @@ Caching impact:
 - Semantic cache hit: 10% of queries → 90% cost save
 - Total: 20% cache hit rate → 18% average cost savings
 
-Cost: $0.02 per query × 80% (cache miss) = $0.016 (vs $0.02 without)
+Стоимость: $0.02 за запрос × 80% (cache miss) = $0.016 (vs $0.02 без кэша)
 
-Strategy 3: Token budget control
+Стратегия 3: Контроль бюджета токенов
 
 ```
-Per-user token budget (monthly):
+Бюджет токенов пользователя (ежемесячно):
 
-Free tier: 100K tokens
-  → 200 queries at 500 avg tokens
-  → $0.50/month cost
+Бесплатный уровень: 100K токенов
+  → 200 запросов при 500 средних токенов
+  → $0.50/месяц стоимость
 
-Pro tier: 1M tokens
-  → 2000 queries
-  → $5/month cost (user pays $10 → profit)
+Pro уровень: 1M токенов
+  → 2000 запросов
+  → $5/месяц стоимость (пользователь платит $10 → прибыль)
 
-Enterprise: Unlimited
+Enterprise: Безлимитно
 
-Enforcement:
+Исполнение:
 ```python
 def check_token_budget(user_id, tokens_needed):
     used = get_user_usage(user_id, month_start())
@@ -1571,27 +1571,27 @@ def check_token_budget(user_id, tokens_needed):
     return True, None
 ```
 
-Impact: Reduces abuse queries, encourages efficiency
+Влияние: снижает запросы на злоупотребление, поощряет эффективность
 
-Strategy 4: Batch embedding processing
+Стратегия 4: Пакетная обработка embeddings
 
 ```
-Naive approach:
-100K documents to embed
+Наивный подход:
+100K документов для embedding
 
 for doc in documents:
     emb = embed_api(doc)  # 100K × $0.0001 = $10
 
-Issue: 100K API calls, inefficient
+Проблема: 100K API вызовов, неэффективно
 
-Batch approach:
+Подход с батчингом:
 for batch in chunks(documents, 500):
-    embs = embed_batch_api(batch)  # 200 calls
+    embs = embed_batch_api(batch)  # 200 вызовов
 
-Cost: Same $10, but 500x faster
-Latency: 500ms for all vs 50 seconds for naive
+Стоимость: та же $10, но в 500x быстрее
+Latency: 500ms для всех vs 50 секунд для наивного
 
-Batch size strategy:
+Стратегия размера батча:
 - Small docs: batch_size=1000
 - Large docs: batch_size=100
 - Network cost: negligible for batching
@@ -1637,46 +1637,46 @@ Total: $5.80/month vs $115/month (all hot)
 Strategy 6: Open-source models for specific tasks
 
 ```
-Use case: Code generation
+Примеры использования: Генерация кода
 
-Commercial: GPT-4 Turbo
-- Cost: $0.03 per query
-- Quality: 95% on popular benchmarks
-- License: Proprietary
+Коммерческое: GPT-4 Turbo
+- Стоимость: $0.03 за запрос
+- Качество: 95% на популярных бенчмарках
+- Лицензия: Proprietary
 
 Open-source: Code-Llama-70b
-- Cost: $0 (self-hosted) or $0.002 (on-demand)
-- Quality: 92% on benchmarks
-- License: MIT
+- Стоимость: $0 (self-hosted) или $0.002 (on-demand)
+- Качество: 92% на бенчмарках
+- Лицензия: MIT
 
-Quality diff: 3%, but cost diff: 93%
+Разница в качестве: 3%, но разница в стоимости: 93%
 
-For large scale (1M code gen queries/day):
-Commercial: $30k/day = $11M/year
-Open-source: $60/day = $22k/year
-Savings: 99.8% ($11M - $22k)
+Для большого масштаба (1M запросов генерации кода/день):
+Коммерческое: $30k/день = $11M/год
+Open-source: $60/день = $22k/год
+Экономия: 99.8% ($11M - $22k)
 
-Trade-off: Need infrastructure for open-source
-Fixed cost: $1M/year (4 A100 GPUs)
-But still 5x cheaper at this scale
+Компромисс: нужна инфраструктура для open-source
+Фиксированная стоимость: $1M/год (4 A100 GPU)
+Но всё ещё 5x дешевле в этом масштабе
 ```
 
-Cost optimization checklist:
+Контрольный список оптимизации стоимости:
 
 ```
-Week 1 (quick wins, 20% savings):
-- ☐ Implement caching (exact + semantic)
-- ☐ Set token budgets per user tier
-- ☐ Batch embedding requests
+Неделя 1 (быстрые победы, 20% экономии):
+- ☐ Реализовать caching (exact + semantic)
+- ☐ Установить бюджеты токенов по уровню пользователя
+- ☐ Пакетизировать запросы embedding
 
-Week 2 (medium effort, +30% savings):
-- ☐ Implement model routing by complexity
-- ☐ Move cold data to archival storage
-- ☐ Monitor query cost by user/feature
+Неделя 2 (среднее усилие, +30% экономии):
+- ☐ Реализовать routing модели по сложности
+- ☐ Переместить холодные данные в архивное хранилище
+- ☐ Мониторить стоимость запроса по пользователю/функции
 
-Month 1 (significant effort, +20% savings):
-- ☐ Evaluate open-source models for tasks
-- ☐ Implement quantization for self-hosted
+Месяц 1 (значительное усилие, +20% экономии):
+- ☐ Оценить open-source модели для задач
+- ☐ Реализовать quantization для self-hosted
 - ☐ Set up rate limiting per user tier
 
 Ongoing:
@@ -1699,8 +1699,8 @@ Ongoing:
 - Discuss caching: exact vs semantic, TTL, hit rate expectations.
 - Mention token budgets as fairness + cost mechanism.
 - Provide numbers: 50-80% cost savings achievable without much quality loss.
-- Follow-up: «How would you measure cost effectiveness?» → cost per successful query, not just raw cost.
-- Follow-up: «When to move to open-source?» → at scale (millions of queries), when infrastructure cost amortizes.
+- Уточняющий вопрос: «How would you measure cost effectiveness?» → cost per successful query, not just raw cost.
+- Уточняющий вопрос: «When to move to open-source?» → at scale (millions of queries), when infrastructure cost amortizes.
 
 ---
 
@@ -1810,18 +1810,18 @@ class Agent:
         if self.rate_limits.exceeded(action):
             raise RateLimitError(f"Rate limit for {action}")
 
-        # 3. Risk assessment
+        # 3. Оценка рисков
         risk = self.permissions[action]["risk"]
         if risk == "HIGH":
-            # Need approval
+            # Нужно одобрение
             approval_id = await self.request_approval(action, args)
             if not await self.wait_approval(approval_id, timeout=300):
                 raise ApprovalDenied()
 
-        # 4. Sandboxed execution
+        # 4. Выполнение в песочнице
         result = await self.sandbox_execute(action, args)
 
-        # 5. Audit log
+        # 5. Лог аудита
         self.audit_log(action, args, result, status="success")
 
         return result
@@ -1888,8 +1888,8 @@ class Checkpoint:
     timestamp: datetime
     status: str  # running, complete, error
 
-# Persisted to database
-# On failure, can resume from last checkpoint
+# Сохранено в базу данных
+# При отказе можно возобновить с последней контрольной точки
 ```
 
 Recovery logic:
@@ -1901,11 +1901,11 @@ async def run_with_recovery(task_id):
         return checkpoint.step_result
 
     if checkpoint.status == "error":
-        # Resume from last successful step
+        # Возобновить с последнего успешного шага
         messages = checkpoint.messages
         next_action = plan_next_step(messages)
     else:
-        # Start from scratch
+        # Начать с нуля
         messages = []
         next_action = initial_plan(task)
 
@@ -2004,8 +2004,8 @@ Query examples:
 - Discuss sandboxing: Docker for code execution, network isolation.
 - Mention checkpointing: recover from failures, resumable execution.
 - Emphasize audit logging: every action logged, immutable records.
-- Follow-up: «How would you prevent prompt injection?» → validate inputs, constrain outputs.
-- Follow-up: «How to handle agent hallucinations?» → fact verification, source citations.
+- Уточняющий вопрос: «How would you prevent prompt injection?» → validate inputs, constrain outputs.
+- Уточняющий вопрос: «How to handle agent hallucinations?» → fact verification, source citations.
 
 ---
 
@@ -2111,30 +2111,30 @@ Implementing key metrics:
 ```python
 from prometheus_client import Counter, Histogram, Gauge
 
-# Latency tracking
+# Отслеживание latency
 latency_histogram = Histogram(
     'llm_inference_latency_ms',
-    'Time from request to response',
+    'Время от запроса до ответа',
     buckets=[10, 50, 100, 200, 500, 1000, 2000, 5000]
 )
 
-# Cost tracking
+# Отслеживание стоимости
 cost_counter = Counter(
     'llm_cost_cents',
-    'Total cost in cents',
+    'Общая стоимость в центах',
     labelnames=['model', 'user_tier']
 )
 
-# Quality tracking
+# Отслеживание качества
 accuracy_gauge = Gauge(
     'llm_accuracy',
-    'Accuracy percentage',
+    'Процент точности',
     labelnames=['feature']
 )
 
-# Cache metrics
-cache_hits = Counter('cache_hits', 'Cache hit count')
-cache_misses = Counter('cache_misses', 'Cache miss count')
+# Метрики кэша
+cache_hits = Counter('cache_hits', 'Количество попаданий в кэш')
+cache_misses = Counter('cache_misses', 'Количество промахов кэша')
 
 # Usage
 async def handle_query(query, user_id):
@@ -2157,61 +2157,61 @@ async def handle_query(query, user_id):
         log_error(e)
 ```
 
-Alerting rules:
+Правила алертинга:
 
 ```
-Rule 1: High error rate
-IF error_rate > 1% FOR 5 minutes
-THEN send_alert("High error rate", severity="critical")
+Правило 1: Высокий процент ошибок
+IF error_rate > 1% FOR 5 минут
+THEN send_alert("Высокий процент ошибок", severity="critical")
 
-Rule 2: Latency SLA breach
-IF latency_p99 > 2000ms FOR 10 minutes
-THEN send_alert("SLA breach", severity="warning")
+Правило 2: Нарушение SLA latency
+IF latency_p99 > 2000ms FOR 10 минут
+THEN send_alert("Нарушение SLA", severity="warning")
 
-Rule 3: Cost anomaly
-IF cost_per_query > (avg_cost × 1.5) FOR 30 minutes
-THEN send_alert("Cost increase", severity="info")
+Правило 3: Аномалия стоимости
+IF cost_per_query > (avg_cost × 1.5) FOR 30 минут
+THEN send_alert("Увеличение стоимости", severity="info")
 
-Rule 4: Quality degradation
-IF hallucination_rate > 3% FOR 1 hour
-THEN send_alert("Quality degradation", severity="critical")
+Правило 4: Деградация качества
+IF hallucination_rate > 3% FOR 1 часа
+THEN send_alert("Деградация качества", severity="critical")
 
-Rule 5: Cache effectiveness down
-IF cache_hit_rate < 10% (was 20%) FOR 1 hour
-THEN send_alert("Cache issue", severity="warning")
+Правило 5: Эффективность кэша упала
+IF cache_hit_rate < 10% (было 20%) FOR 1 часа
+THEN send_alert("Проблема с кэшем", severity="warning")
 ```
 
-Correlation analysis for root cause:
+Корреляционный анализ для поиска root cause:
 
 ```
-Alert: "Latency p99 > 2000ms"
+Алерт: "Latency p99 > 2000ms"
 
-Investigate:
-1. Is queue depth high?
-   - YES → more concurrent requests → add capacity
+Исследовать:
+1. Высокая ли глубина очереди?
+   - ДА → больше параллельных запросов → добавить мощность
 
-2. Did GPU utilization change?
-   - YES (was 60%, now 95%) → model regression or load increase
+2. Изменилось ли использование GPU?
+   - ДА (было 60%, теперь 95%) → регрессия модели или увеличение нагрузки
 
-3. Did batch size change?
-   - YES (was 32, now 16) → model batching issue
+3. Изменился ли размер батча?
+   - ДА (было 32, теперь 16) → проблема с батчингом модели
 
-4. Is provider responding slower?
-   - YES → provider issue, switch to failover
+4. Медленнее ли отвечает провайдер?
+   - ДА → проблема провайдера, переключиться на failover
 
-5. Did traffic shift to harder queries?
-   - YES (avg tokens increased) → expected, monitor trend
+5. Сместился ли трафик на более сложные запросы?
+   - ДА (средние токены увеличились) → ожидаемо, мониторить тренд
 
-Root cause: Batch size dropped from 32 to 16
-Action: Investigate vLLM server logs, restart if needed
+Root cause: Размер батча упал с 32 на 16
+Действие: Исследовать логи vLLM сервера, перезагрузить если нужно
 ```
 
-Weekly review checklist:
+Еженедельный контрольный список:
 
 ```
-Monday morning:
-□ Check weekendoops → any incidents?
-□ Review cost trends → acceptable range?
+Понедельник утро:
+□ Проверить выходные проблемы → были ли инциденты?
+□ Рассмотреть тренды стоимости → приемлемый диапазон?
 □ Quality metrics → any regressions?
 □ User satisfaction → up or down?
 
@@ -2242,8 +2242,8 @@ Friday:
 - Discuss dashboarding: real-time alerts for critical issues.
 - Mention correlation analysis: latency spike → check queue depth, GPU usage.
 - Provide examples: which metrics indicate which problems.
-- Follow-up: «How would you detect data drift?» → track input distribution, compare to baseline.
-- Follow-up: «How to set alert thresholds?» → baseline + 2σ deviation, or SLA-based.
+- Уточняющий вопрос: «How would you detect data drift?» → track input distribution, compare to baseline.
+- Уточняющий вопрос: «How to set alert thresholds?» → baseline + 2σ deviation, or SLA-based.
 
 ---
 
@@ -2566,8 +2566,8 @@ Phase 3 (1M DAU): $350k/month
 - Discuss database scaling: replicas → sharding progression.
 - Mention caching hierarchy: local → regional → global.
 - Explain data consistency tradeoffs: strong vs eventual.
-- Follow-up: «How would you scale to 10M DAU?» → cross-regional sharding, edge computing.
-- Follow-up: «How to keep costs down while scaling?» → optimize first, then scale; tiered models.
+- Уточняющий вопрос: «How would you scale to 10M DAU?» → cross-regional sharding, edge computing.
+- Уточняющий вопрос: «How to keep costs down while scaling?» → optimize first, then scale; tiered models.
 
 ---
 

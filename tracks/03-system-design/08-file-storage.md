@@ -126,7 +126,7 @@ POST /api/v1/files/upload/init
     "content_type": "video/mp4"
 }
 
-Response:
+Ответ:
 {
     "upload_id": "upload_xyz",
     "chunk_size": 5242880,  # 5MB chunks
@@ -136,11 +136,11 @@ Response:
     ]
 }
 
-# Client uploads chunks directly to storage
+# Клиент загружает chunks напрямую в хранилище
 PUT {presigned_url}
-Body: <binary chunk data>
+Body: <двоичные данные chunk>
 
-# Complete upload
+# Завершение загрузки
 POST /api/v1/files/upload/complete
 {
     "upload_id": "upload_xyz",
@@ -150,15 +150,15 @@ POST /api/v1/files/upload/complete
     ]
 }
 
-Response:
+Ответ:
 {
     "file_id": "file_123",
     "url": "https://cdn.example.com/file_123"
 }
 
-# Download redirects to CDN
+# Скачивание перенаправляет на CDN
 GET /api/v1/files/file_123
-Response: 302 Redirect to
+Ответ: 302 Redirect на
 https://cdn.example.com/file_123?sig=...&expires=...
 ```
 
@@ -171,7 +171,7 @@ https://cdn.example.com/file_123?sig=...&expires=...
 **На интервью.**
 - Расскажи про separation of concerns: upload/download/metadata сервисы независимы.
 - Упомяни presigned URLs как критическую оптимизацию (client пишет напрямую в storage).
-- Follow-up: «Как масштабировать систему на petabytes?» — sharding по user_id или hash(file_id), replication.
+- Уточняющий вопрос: «Как масштабировать систему на petabytes?» — sharding по user_id или hash(file_id), replication.
 
 ---
 
@@ -390,7 +390,7 @@ class UploadService:
 **На интервью.**
 - Объясни, почему presigned URLs генерируются на сервере (не отправляются в client).
 - Упомяни resumability — что произойдёт если disconnect в середине upload.
-- Follow-up: «Как обеспечить atomicity?» — либо все чанки успешны, либо весь upload откатывается.
+- Уточняющий вопрос: «Как обеспечить atomicity?» — либо все чанки успешны, либо весь upload откатывается.
 
 ---
 
@@ -568,7 +568,7 @@ Strategy 4: Signed cookies (for sessions)
 **На интервью.**
 - Объясни про presigned URLs: подпись содержит file_id, user_id, expires.
 - Упомяни несколько стратегий cache invalidation и их trade-offs.
-- Follow-up: «Как обрабатывать случай когда access отозван?» — проверить permissions в API перед redirect на CDN, или store access list в Redis.
+- Уточняющий вопрос: «Как обрабатывать случай когда access отозван?» — проверить permissions в API перед redirect на CDN, или store access list в Redis.
 
 ---
 
@@ -588,12 +588,12 @@ File A: ABCDEFGH
 File B: ABCDEFGH (identical content)
   hash = SHA256(ABCDEFGH) = abc123 (same!)
 
-Storage:
-Block "abc123" → ABCDEFGH (stored once)
-FileA → reference to abc123
-FileB → reference to abc123
+Хранилище:
+Block "abc123" → ABCDEFGH (хранится один раз)
+FileA → ссылка на abc123
+FileB → ссылка на abc123
 
-Savings: 1 block size (no duplication)
+Экономия: 1 размер block (без дублирования)
 ```
 
 **Block-level deduplication (chunking):**
@@ -601,7 +601,7 @@ Savings: 1 block size (no duplication)
 File A: [Block1, Block2, Block3, Block4]
 File B: [Block1, Block5, Block3, Block6]
 
-Hashes:
+Хеши:
 Block1 = hash("data1") = h1
 Block2 = hash("data2") = h2
 Block3 = hash("data3") = h3
@@ -609,16 +609,16 @@ Block4 = hash("data4") = h4
 Block5 = hash("data5") = h5
 Block6 = hash("data6") = h6
 
-Storage:
-h1 → data1 (ref_count: 2, used by A and B)
-h2 → data2 (ref_count: 1, used by A)
-h3 → data3 (ref_count: 2, used by A and B)
-h4 → data4 (ref_count: 1, used by A)
-h5 → data5 (ref_count: 1, used by B)
-h6 → data6 (ref_count: 1, used by B)
+Хранилище:
+h1 → data1 (ref_count: 2, используется A и B)
+h2 → data2 (ref_count: 1, используется A)
+h3 → data3 (ref_count: 2, используется A и B)
+h4 → data4 (ref_count: 1, используется A)
+h5 → data5 (ref_count: 1, используется B)
+h6 → data6 (ref_count: 1, используется B)
 
-Savings: 2 blocks (h1, h3 shared)
-Total stored: 4 blocks instead of 8
+Экономия: 2 blocks (h1, h3 общие)
+Всего хранится: 4 blocks вместо 8
 ```
 
 **Деуп со скользящим окном (для больших файлов):**
@@ -783,7 +783,7 @@ class GarbageCollector:
 **На интервью.**
 - Объясни, как работает content-addressable storage: hash = id.
 - Упомяни reference counting и garbage collection.
-- Follow-up: «Что произойдёт при hash collision?» — вероятность в 2^-256, но можно добавить verification (store actual content hash в метаданные).
+- Уточняющий вопрос: «Что произойдёт при hash collision?» — вероятность в 2^-256, но можно добавить verification (store actual content hash в метаданные).
 
 ---
 
@@ -853,13 +853,13 @@ User B (owner_id = user456)
   hash(user456) = h % 16 = 7
   → Shard 7 (PostgreSQL database 7)
 
-Advantages:
+Преимущества:
 - Load распределена равномерно
 - Все файлы пользователя на одном шарде
-- Easy to compute: hash(owner_id) % num_shards
+- Легко считать: hash(owner_id) % num_shards
 
-Disadvantages:
-- Нельзя сделать global list of all files
+Недостатки:
+- Нельзя сделать глобальный список всех файлов
 - Rebalancing сложная, если изменить num_shards
 
 Topology:
@@ -986,7 +986,7 @@ class ListFilesService:
 **На интервью.**
 - Объясни sharding strategy: hash(owner_id) % num_shards.
 - Упомяни о кэшировании с TTL и инвалидации.
-- Follow-up: «Как обрабатывать глобальный поиск по всем файлам?» — отдельный Elasticsearch индекс для search.
+- Уточняющий вопрос: «Как обрабатывать глобальный поиск по всем файлам?» — отдельный Elasticsearch индекс для search.
 
 ---
 
@@ -1054,10 +1054,10 @@ T3: Client confirms write (ACK sent at T0)
 Window: T0 to T1-T2 → block exists only on Primary
         → if Primary fails, data might be lost!
 
-Solution: Use quorum writes
-- Require ack from 2/3 replicas before ACK to client
-- Ensures data is replicated before client sees success
-- Trade-off: higher latency
+Решение: Используем quorum writes
+- Требуем ack из 2/3 replicas перед ACK клиенту
+- Гарантирует что data реплицирована перед success клиенту
+- Компромисс: выше latency
 ```
 
 **Реализация:**
@@ -1071,10 +1071,10 @@ class ReplicationService:
 
     async def write_block(self, block_id: str, data: bytes) -> None:
         """
-        Write with async replication.
-        Primary ACKs immediately, replicas update asynchronously.
+        Write с async replication.
+        Primary ACKs immediately, replicas обновляются asynchronously.
         """
-        # Write to primary synchronously
+        # Write в primary synchronously
         try:
             await self.primary_dc.store(block_id, data)
         except Exception as e:
@@ -1082,7 +1082,7 @@ class ReplicationService:
 
         # Schedule async replication
         for dc in self.replica_dcs:
-            # Fire-and-forget, but log failures
+            # Fire-and-forget, но логируем failures
             asyncio.create_task(self.replicate_to_dc(dc, block_id, data))
 
         # Metrics
@@ -1201,7 +1201,7 @@ Erasure Coding      50%         High     Slower    Slower
 **На интервью.**
 - Объясни sync primary write + async replica updates.
 - Упомяни data loss window и как его минимизировать (quorum writes).
-- Follow-up: «Как сделать replication synchronous без убийства latency?» — parallel writes, local replication.
+- Уточняющий вопрос: «Как сделать replication synchronous без убийства latency?» — parallel writes, local replication.
 
 ---
 
@@ -1442,7 +1442,7 @@ class DistributedMetadataService:
 **На интервью.**
 - Объясни bit rot detection через checksumming.
 - Упомяни scrubbing как background process.
-- Follow-up: «Как быстро detected corruption?» — зависит от scrubbing schedule (weekly = up to 7 days).
+- Уточняющий вопрос: «Как быстро detected corruption?» — зависит от scrubbing schedule (weekly = up to 7 days).
 
 ---
 
@@ -1653,7 +1653,7 @@ Metadata requirements:
 **На интервью.**
 - Расскажи про sharding по owner_id и как масштабировать на петабайты.
 - Упомяни geo-distributed replicas для low latency и high availability.
-- Follow-up: «Как переехать с 4 шардов на 8 шардов?» — consistent hashing или migration job.
+- Уточняющий вопрос: «Как переехать с 4 шардов на 8 шардов?» — consistent hashing или migration job.
 
 ---
 
@@ -2048,7 +2048,7 @@ localStorage.removeItem('currentUploadId');
 **На интервью.**
 - Объясни resumable upload: состояние в Redis, query status перед retry.
 - Упомяни idempotency: повторная загрузка same chunk = безопасна.
-- Follow-up: «Как обрабатывать случай где клиент загрузил chunk, но сервер crash?» — chunk stored в block storage, но не marked as received; при retry клиент перепошлёт, идемпотент.
+- Уточняющий вопрос: «Как обрабатывать случай где клиент загрузил chunk, но сервер crash?» — chunk stored в block storage, но не marked as received; при retry клиент перепошлёт, идемпотент.
 
 ---
 
@@ -2229,17 +2229,17 @@ User B ─→ CDN edge → Ask "who has file X?"
          → redirect to User A's local copy
 User B ← User A (P2P transfer, less CDN bandwidth)
 
-Benefits:
-- Reduce origin bandwidth
-- Reduce CDN bandwidth
-- Faster downloads for users with good connectivity
-- Risk: user leaves before transfer completes
+Преимущества:
+- Уменьшить bandwidth origin
+- Уменьшить CDN bandwidth
+- Быстрые скачивания для пользователей с хорошей сетью
+- Risk: пользователь уходит перед завершением передачи
 
-Trade-offs:
-- Complexity (tracking who has what)
-- Privacy (user sees other users' IPs)
+Компромиссы:
+- Complexity (tracking кто что имеет)
+- Privacy (пользователь видит IP других пользователей)
 - Security (spoofing, tampering)
-- Only worth for very large files (> 100MB)
+- Стоит только для очень больших файлов (> 100MB)
 ```
 
 **Cost monitoring dashboard:**
@@ -2309,7 +2309,7 @@ class CostDashboard:
 **На интервью.**
 - Расскажи про tiered storage: hot/warm/cold с разными trade-offs.
 - Упомяни compression для cold, и почему не для hot.
-- Follow-up: «Как решить, какой файл переместить?» — access patterns + age.
+- Уточняющий вопрос: «Как решить, какой файл переместить?» — access patterns + age.
 
 ---
 

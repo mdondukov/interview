@@ -182,8 +182,8 @@ func (vs *VideoSystem) GetPlaybackManifest(ctx context.Context, userID, videoID 
 **На интервью.**
 - Объясни, почему upload и processing отделены от playback.
 - Упомяни асинхронность: upload не блокирует пользователя, обработка идёт в фоне.
-- Follow-up: «Как обрабатывать видео, которое загружается 10 часов?» — resumable uploads.
-- Follow-up: «Как оптимизировать стоимость транскодирования?» — spot instances, очередь приоритетов.
+- Уточняющий вопрос: «Как обрабатывать видео, которое загружается 10 часов?» — resumable uploads.
+- Уточняющий вопрос: «Как оптимизировать стоимость транскодирования?» — spot instances, очередь приоритетов.
 
 ---
 
@@ -324,8 +324,8 @@ func (ts *TranscodingService) transcodeVideo(job *TranscodeJob) error {
 **На интервью.**
 - Объясни, почему параллелизм критичен для масштабирования.
 - Упомяни GPU ускорение: NVIDIA NVENC быстрее чем CPU ffmpeg в 50-100x.
-- Follow-up: «Как обрабатывать видео длиной 10 часов?» — разделение на чанки.
-- Follow-up: «Как оптимизировать качество/скорость?» — two-pass encoding.
+- Уточняющий вопрос: «Как обрабатывать видео длиной 10 часов?» — разделение на чанки.
+- Уточняющий вопрос: «Как оптимизировать качество/скорость?» — two-pass encoding.
 
 ---
 
@@ -454,8 +454,8 @@ func (abr *ABRController) estimateBandwidth() float64 {
 **На интервью.**
 - Объясни разницу между HLS и DASH.
 - Упомяни ABR как критичную для хорошего UX.
-- Follow-up: «Как обрабатывать медленную сеть?» — более агрессивное понижение качества.
-- Follow-up: «Как синхронизировать аудио и видео?» — timestamp synchronization.
+- Уточняющий вопрос: «Как обрабатывать медленную сеть?» — более агрессивное понижение качества.
+- Уточняющий вопрос: «Как синхронизировать аудио и видео?» — timestamp synchronization.
 
 ---
 
@@ -560,8 +560,8 @@ func (cdn *CDNManager) WarmCache(videoID string, expectedViews int) error {
 **На интервью.**
 - Объясни иерархию кэширования.
 - Упомяни geo-routing для снижения latency.
-- Follow-up: «Как обновить видео?» — cache invalidation.
-- Follow-up: «Как обрабатывать traffic spike?» — burst capacity на edge.
+- Уточняющий вопрос: «Как обновить видео?» — cache invalidation.
+- Уточняющий вопрос: «Как обрабатывать traffic spike?» — burst capacity на edge.
 
 ---
 
@@ -727,8 +727,8 @@ func (us *UploadService) CompleteUpload(ctx context.Context, uploadID string) er
 **На интервью.**
 - Объясни, почему нужны чанки.
 - Упомяни parallelism для ускорения.
-- Follow-up: «Как обрабатывать network timeouts?» — exponential backoff.
-- Follow-up: «Как избежать storage waste?» — cleanup, garbage collection.
+- Уточняющий вопрос: «Как обрабатывать network timeouts?» — exponential backoff.
+- Уточняющий вопрос: «Как избежать storage waste?» — cleanup, garbage collection.
 
 ---
 
@@ -860,8 +860,8 @@ func (ls *LiveStreamService) IngestStream(ctx context.Context, streamID string, 
 **На интервью.**
 - Объясни разницу live vs VOD.
 - Упомяни real-time constraints.
-- Follow-up: «Как обрабатывать broadcaster disconnect?» — graceful shutdown.
-- Follow-up: «Как масштабировать для миллиона зрителей?» — multi-CDN.
+- Уточняющий вопрос: «Как обрабатывать broadcaster disconnect?» — graceful shutdown.
+- Уточняющий вопрос: «Как масштабировать для миллиона зрителей?» — multi-CDN.
 
 ---
 
@@ -1044,8 +1044,8 @@ func (drm *DRMService) checkAccess(ctx context.Context, userID, videoID string) 
 **На интервью.**
 - Объясни, почему DRM нужен.
 - Упомяни разницу между DRM и просто шифрованием.
-- Follow-up: «Как справиться с circumvention?» — behavioral detection.
-- Follow-up: «Как обновить ключи?» — key rotation на уровне манифеста.
+- Уточняющий вопрос: «Как справиться с circumvention?» — behavioral detection.
+- Уточняющий вопрос: «Как обновить ключи?» — key rotation на уровне манифеста.
 
 ---
 
@@ -1175,8 +1175,8 @@ func (rm *RankingModel) Score(ctx context.Context, user *User, video *Video) flo
 **На интервью.**
 - Объясни двухстадийный подход.
 - Упомяни cold start challenge.
-- Follow-up: «Как обновлять модель?» — daily retrain.
-- Follow-up: «Как A/B тестировать?» — online experimentation.
+- Уточняющий вопрос: «Как обновлять модель?» — daily retrain.
+- Уточняющий вопрос: «Как A/B тестировать?» — online experimentation.
 
 ---
 
@@ -1282,8 +1282,8 @@ func (ss *SearchService) Search(ctx context.Context, req *SearchRequest) (*Searc
 **На интервью.**
 - Объясни BM25.
 - Упомяни кэширование.
-- Follow-up: «Как обрабатывать опечатки?» — fuzzy matching.
-- Follow-up: «Как оптимизировать автозавершение?» — prefix index.
+- Уточняющий вопрос: «Как обрабатывать опечатки?» — fuzzy matching.
+- Уточняющий вопрос: «Как оптимизировать автозавершение?» — prefix index.
 
 ---
 
@@ -1296,29 +1296,29 @@ func (ss *SearchService) Search(ctx context.Context, req *SearchRequest) (*Searc
 **Детальный разбор.**
 
 ```
-BOTTLENECK 1: UPLOAD BANDWIDTH
-30,000 hours/day → need 150K concurrent uploaders
-Solution: CDN upload points, resumable, parallel chunks
+УЗКОЕ МЕСТО 1: ПРОПУСКНАЯ СПОСОБНОСТЬ ЗАГРУЗКИ
+30,000 часов/день → нужно 150K одновременных загрузчиков
+Решение: CDN upload points, resumable, parallel chunks
 
-BOTTLENECK 2: TRANSCODING COST
-$50K-100K/day
-Solution: GPU acceleration, spot instances, smart queue
+УЗКОЕ МЕСТО 2: СТОИМОСТЬ ТРАНСКОДИРОВАНИЯ
+$50K-100K/день
+Решение: GPU acceleration, spot instances, smart queue
 
-BOTTLENECK 3: STORAGE COSTS
-5PB+ data = $115K/month on S3
-Solution: Tiering, archival (Glacier), deduplication
+УЗКОЕ МЕСТО 3: СТОИМОСТЬ ХРАНИЛИЩА
+5PB+ данных = $115K/месяц на S3
+Решение: Tiering, archival (Glacier), deduplication
 
-BOTTLENECK 4: CDN BANDWIDTH
-500 Pbps peak × $0.01-0.05/GB = $5-50M/month
-Solution: Own CDN, ISP partnerships, aggressive caching
+УЗКОЕ МЕСТО 4: ПРОПУСКНАЯ СПОСОБНОСТЬ CDN
+500 Pbps пик × $0.01-0.05/GB = $5-50M/месяц
+Решение: Own CDN, ISP partnerships, aggressive caching
 
-BOTTLENECK 5: DATABASE SCALABILITY
-Billions of videos
-Solution: Sharding, read replicas, separate DBs
+УЗКОЕ МЕСТО 5: МАСШТАБИРУЕМОСТЬ БД
+Миллиарды видео
+Решение: Sharding, read replicas, separate DBs
 
-BOTTLENECK 6: RECOMMENDATION LATENCY
-Generate top 20 in <100ms with billions of videos
-Solution: Pre-compute, candidate selection, caching
+УЗКОЕ МЕСТО 6: LATENCY РЕКОМЕНДАЦИЙ
+Генерировать топ 20 за <100ms с миллиардами видео
+Решение: Pre-compute, candidate selection, caching
 ```
 
 **Пример.**
@@ -1398,12 +1398,12 @@ func (cm *CacheManager) GetSegment(videoID, quality, segmentNum string) ([]byte,
 **На интервью.**
 - Объясни главные bottlenecks в порядке.
 - Упомяни мульти-CDN strategy.
-- Follow-up: «Как обрабатывать viral spike?» — burst queue, spot scaling.
-- Follow-up: «Какой бюджет?» — $100M+/year.
+- Уточняющий вопрос: «Как обрабатывать viral spike?» — burst queue, spot scaling.
+- Уточняющий вопрос: «Какой бюджет?» — $100M+/year.
 
 ---
 
-## Summary
+## Резюме
 
 | Компонент | Challenge | Solution |
 |-----------|-----------|----------|

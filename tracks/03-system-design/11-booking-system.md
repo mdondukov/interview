@@ -783,23 +783,23 @@ async def update_pessimistic(resource_id, update_fn):
 Lock Hold Time      Short (only update) Long (read → update)
 Concurrency         High (parallel)     Low (serial)
 Conflict Cost       Retry overhead      Lock wait
-Best For            Low conflict        High conflict
+Используй для      Low conflict        High conflict
 Deadlock Risk       No                  Yes
 Complexity          Medium              Low
 
-Scenario: Booking confirmation
-- Optimistic: 100ms (read) + 1ms (update) = 101ms, no wait
-- Pessimistic: 100ms (locked read) → 1ms (update), others wait
+Сценарий: Подтверждение бронирования
+- Optimistic: 100ms (read) + 1ms (update) = 101ms, без ожидания
+- Pessimistic: 100ms (locked read) → 1ms (update), остальные ждут
 
-If 10 concurrent users:
-- Optimistic: 10 in parallel → 101ms total
-- Pessimistic: 10 serialized → 1010ms total
+Если 10 одновременных пользователей:
+- Optimistic: 10 параллельно → 101ms всего
+- Pessimistic: 10 последовательно → 1010ms всего
 
-But if 50% retry (high conflict):
-- Optimistic: 10 → conflict → retry → 202ms
-- Pessimistic: still 1010ms
+Но если 50% retry (высокая контентеция):
+- Optimistic: 10 → конфликт → retry → 202ms
+- Pessimistic: всё ещё 1010ms
 
-Break-even: when retry_rate * retry_cost > lock_wait_cost
+Точка равновесия: когда retry_rate * retry_cost > lock_wait_cost
 ```
 
 **Типичные ошибки.**
@@ -3038,17 +3038,17 @@ Contention      Good          Poor         Good
 Deadlock        Yes           No           No
 Complexity      Low           Medium       Medium
 Cost            Low           Low          Medium
-Best For        High conflict Low conflict  Distributed
+Используй для   High conflict Low conflict  Distributed
 ```
 
-**Inventory management approaches:**
+**Подходы управления инвентарём:**
 
 ```
                     Per-Room    Per-Room-Type   Per-Date
-Scalability         Poor        Good            Excellent
-Query Efficiency    Slow        Fast            Very Fast
-Update Frequency    High        Medium          Low
-Storage             Huge        Medium          Small
+Масштабируемость    Poor        Good            Excellent
+Эффективность запросов Slow        Fast            Very Fast
+Частота обновлений  High        Medium          Low
+Хранилище           Huge        Medium          Small
 ```
 
 ---

@@ -269,8 +269,8 @@ class BufferedMetricsClient:
 **На интервью.**
 - Объясни, почему Prometheus выбрал pull, а не push
 - Упомяни Remote Write API (Prometheus может быть source data для других TSDB)
-- Follow-up: «Как обработать случай, когда сервис временно недоступен?» → retry с backoff, staleness marking
-- Follow-up: «Как избежать high cardinality?» → ограничения на labels, cardinality limit alerts
+- Уточняющий вопрос: «Как обработать случай, когда сервис временно недоступен?» → retry с backoff, staleness marking
+- Уточняющий вопрос: «Как избежать high cardinality?» → ограничения на labels, cardinality limit alerts
 
 ---
 
@@ -290,7 +290,7 @@ Series ID = hash(metric_name + sorted(labels))
          = hash("http_requests_total" + "method=GET" + "service=api")
          = 0x7F3A2B1C
 
-Data points:
+Точки данных:
 ┌─────────────────────────────────────────────────────┐
 │ Timestamp      │ Value  │ Timestamp (delta) │        │
 ├─────────────────────────────────────────────────────┤
@@ -387,7 +387,7 @@ Compaction: мёржит 4-8 блоков в 1 для лучшей компре�
 **Индексирование для queries:**
 
 ```
-Label index:
+Индекс labels:
 ┌─────────────────────────────────────────┐
 │ method="GET"  → [Series 1, 3, 7, ...]   │
 │ method="POST" → [Series 2, 5, 9, ...]   │
@@ -595,8 +595,8 @@ class TSDBWriter:
 
 **Сравнительная таблица TSDB:**
 
-| TSDB | Write | Query | Compression | Scaling |
-|------|-------|-------|-------------|---------|
+| TSDB | Запись | Чтение | Компрессия | Масштабирование |
+|------|--------|--------|------------|-----------------|
 | Prometheus | Fast | Good | Gorilla | Single node |
 | InfluxDB | Fast | Good | Delta + compression | Clustering (paid) |
 | TimescaleDB | Medium | Best | PostgreSQL | Horizontal |
@@ -613,8 +613,8 @@ class TSDBWriter:
 **На интервью.**
 - Объясни, почему XOR compression лучше для float, чем delta
 - Упомяни high cardinality problem (логи с user_id)
-- Follow-up: «Как обрабатывать queries который требуют данных из разных блоков?» → merging, buffering
-- Follow-up: «Как оптимизировать query на 10 миллионов серий?» → pre-aggregation, materialized views
+- Уточняющий вопрос: «Как обрабатывать queries который требуют данных из разных блоков?» → merging, buffering
+- Уточняющий вопрос: «Как оптимизировать query на 10 миллионов серий?» → pre-aggregation, materialized views
 
 ---
 
@@ -683,10 +683,10 @@ class TSDBWriter:
 **Форматы логов:**
 
 ```
-Raw text:
+Сырой текст:
 2024-01-27 10:15:42 ERROR [api-service] Request failed: timeout after 5s
 
-Structured JSON:
+Структурированный JSON:
 {
   "timestamp": "2024-01-27T10:15:42.123Z",
   "level": "ERROR",
@@ -702,7 +702,7 @@ Structured JSON:
 }
 
 Преимущества JSON:
-- Queryable fields
+- Поля доступны для запросов
 - Сортировка, фильтрация, агрегация
 - Correlation ID для трейсинга
 - Контекст (user, request, etc)
@@ -947,8 +947,8 @@ class LogRetentionManager:
 **На интервью.**
 - Объясни, почему буферизация в Kafka критична
 - Упомяни structured logging и importance of trace_id
-- Follow-up: «Как обработать 1TB логов в день?» → filtering, sampling, archival
-- Follow-up: «Как избежать PII в логах?» → data masking, redaction rules
+- Уточняющий вопрос: «Как обработать 1TB логов в день?» → filtering, sampling, archival
+- Уточняющий вопрос: «Как избежать PII в логах?» → data masking, redaction rules
 
 ---
 
@@ -1262,8 +1262,8 @@ class AdaptiveAlertingEngine:
 **На интервью.**
 - Объясни разницу между static и adaptive thresholds
 - Упомяни importance of history и cold-start problem
-- Follow-up: «Как избежать alert fatigue?» → grouping, deduplication, на практике только critical alerting
-- Follow-up: «Как обнаруживать медленные аномалии (gradual degradation)?» → trend analysis, rate of change
+- Уточняющий вопрос: «Как избежать alert fatigue?» → grouping, deduplication, на практике только critical alerting
+- Уточняющий вопрос: «Как обнаруживать медленные аномалии (gradual degradation)?» → trend analysis, rate of change
 
 ---
 
@@ -1656,8 +1656,8 @@ class AlertingEngine:
 **На интервью.**
 - Объясни state machine и почему pending нужен
 - Упомяни grouping, deduplication, repeat_interval
-- Follow-up: «Как избежать alert fatigue?» → intelligent routing, silencing, runbooks
-- Follow-up: «Как обрабатывать alert storms?» → inhibition, deduplication, rate limiting
+- Уточняющий вопрос: «Как избежать alert fatigue?» → intelligent routing, silencing, runbooks
+- Уточняющий вопрос: «Как обрабатывать alert storms?» → inhibition, deduplication, rate limiting
 
 ---
 
@@ -2061,8 +2061,8 @@ class DashboardQueryCache:
 **На интервью.**
 - Объясни RED vs USE methods и когда каждый применяется
 - Упомяни importance of alerting thresholds на дашборде
-- Follow-up: «Как оптимизировать queries для больших time ranges?» → downsampling, caching, pre-aggregation
-- Follow-up: «Как организовать dashboards для 100 микросервисов?» → hierarchy, templating, auto-generation
+- Уточняющий вопрос: «Как оптимизировать queries для больших time ranges?» → downsampling, caching, pre-aggregation
+- Уточняющий вопрос: «Как организовать dashboards для 100 микросервисов?» → hierarchy, templating, auto-generation
 
 ---
 
@@ -2443,8 +2443,8 @@ class TraceStorage:
 **На интервью.**
 - Объясни difference между trace, span, и parent-child relationships
 - Упомяни trace context propagation через headers
-- Follow-up: «Как выбирать sampling rate?» → risk of missing errors vs cost
-- Follow-up: «Как найти problematic service в сложной trace?» → latency critical path analysis
+- Уточняющий вопрос: «Как выбирать sampling rate?» → risk of missing errors vs cost
+- Уточняющий вопрос: «Как найти problematic service в сложной trace?» → latency critical path analysis
 
 ---
 
@@ -2492,10 +2492,10 @@ class TraceStorage:
 └─────────────────────────────────────┘
 ```
 
-**SLO Setting (Objective Definition):**
+**Установка SLO (определение целей):**
 
 ```
-Availability SLO Examples:
+Примеры SLO доступности:
 ─────────────────────────
 99.0% (two nines)
  └─ 43.2 minutes downtime/month
@@ -2521,24 +2521,24 @@ Availability SLO Examples:
  └─ 2.6 seconds downtime/month
  └─ almost impossible in practice
 
-Latency SLO Examples:
+Примеры SLO latency:
 ────────────────────
 p99 < 100ms   (fast API)
 p99 < 500ms   (web API)
 p99 < 2s      (batch operations)
 ```
 
-**Error Budget Concept:**
+**Концепция Error Budget:**
 
 ```
 SLO: 99.9% availability (0.1% error rate)
 
-Monthly budget calculation:
+Расчёт ежемесячного бюджета:
 ─────────────────────────
 Total requests/month: 100M
 Allowed errors: 100K (0.1%)
 
-Burndown tracking:
+Отслеживание выгорания бюджета:
 ┌──────────────────────────────────┐
 │ Errors Used vs Budget Over Time  │
 ├──────────────────────────────────┤
@@ -2773,8 +2773,8 @@ Service Level Agreement: API Service
 **На интервью.**
 - Объясни разницу между SLI, SLO, и SLA
 - Упомяни error budget и как он управляет deployment velocity
-- Follow-up: «Как выбирать SLI для нового сервиса?» → начни с RED metrics, iteratively refine
-- Follow-up: «Как обрабатывать SLO miss?» → incident review, error budget planning
+- Уточняющий вопрос: «Как выбирать SLI для нового сервиса?» → начни с RED metrics, iteratively refine
+- Уточняющий вопрос: «Как обрабатывать SLO miss?» → incident review, error budget planning
 
 ---
 
@@ -3104,8 +3104,8 @@ class MetricsDownsampler:
 **На интервью.**
 - Объясни consistent hashing для sharding
 - Упомяни cardinality problem и solutions
-- Follow-up: «Как переши́фтировать данные при добавлении нового шарда?» → resharding, online migration
-- Follow-up: «Как оптимизировать для time-range queries?» → time-based partitioning
+- Уточняющий вопрос: «Как переши́фтировать данные при добавлении нового шарда?» → resharding, online migration
+- Уточняющий вопрос: «Как оптимизировать для time-range queries?» → time-based partitioning
 
 ---
 
@@ -3508,8 +3508,8 @@ groups:
 **На интервью.**
 - Объясни importance of meta-monitoring
 - Упомяни synthetic metrics как canary testing
-- Follow-up: «Как обнаружить когда monitoring скрывает問題?» → check data consistency, correlation analysis
-- Follow-up: «Как дизайнить для high availability monitoring?» → active-active setup, data replication
+- Уточняющий вопрос: «Как обнаружить когда monitoring скрывает問題?» → check data consistency, correlation analysis
+- Уточняющий вопрос: «Как дизайнить для high availability monitoring?» → active-active setup, data replication
 
 ---
 
